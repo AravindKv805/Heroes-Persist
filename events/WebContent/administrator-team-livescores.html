@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="shortcut icon" href="webStuff/default/images/icon-32x32.png">
+
+<!-- Login Check Start -->
+<script>
+function loginCheck(){
+	var xmlhttp;
+	if(window.XMLHttpRequest){
+		xmlhttp = new XMLHttpRequest();
+	}else{port
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function(){
+		if(xmlhttp.readyState==4 && xmlhttp.status==200){
+			if(xmlhttp.responseText=="true"){
+				
+			}
+			else{
+				window.location.assign("login.html");
+			}
+		}
+	}
+		xmlhttp.open("GET","logincheck",true);
+		xmlhttp.send();
+}
+
+loginCheck();
+setInterval(function(){loginCheck();},10000);
+</script>
+<!-- Login Check End -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<!-- Menu Start-->
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/demo.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/icons.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/component.css" />
+<link href="webStuff/default/css/default.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="webStuff/vex/css/vex.css" />
+<link rel="stylesheet" href="webStuff/vex/css/vex-theme-os.css" />
+<script src="webStuff/jquery/jquery-2.0.3.js"></script>
+<script src="webStuff/bootstrap/js/bootstrap.min.js"></script>
+<script src="webStuff/Menu/js/modernizr.custom.js"></script>
+<script src="webStuff/Menu/js/classie.js"></script>
+<script src="webStuff/Menu/js/mlpushmenu.js"></script>
+<script src="webStuff/vex/js/vex.combined.min.js"></script>
+<script>vex.defaultOptions.className = 'vex-theme-os';</script>
+
+<!-- Webservice Ajax Call Start -->
+<script type="text/javascript">
+	//Global variables
+	var currentlyModifying = false;		//true->modifying false->not modifying
+	var HOST_AND_PORT = "10.106.50.32:8080";
+	var newTeam1 = "";
+	var newTeam2 = "";
+	
+	$.ajax({
+		url: 'http://'+ HOST_AND_PORT +'/Sports/api/monitor',
+		type: 'post',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: JSON.stringify({"page":"administrator-team-livescores.html"})
+	});
+
+	function ajaxCall() {
+		/* var xmlhttp;
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else {// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.open("GET","http://"+HOST_AND_PORT+"/Sports/webservice/list/allmatches",true);
+		xmlhttp.send();
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				populateTable(xmlhttp.responseText);
+			}
+		} */
+		
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=PageTurnerzQuiz&gameCategory=NotApplicable&showCriteria=false",
+			success:function(data){populateTable(data)},
+			error:function(xhr){
+				vex.dialog.alert(xhr.responseText);
+			}
+		});
+	}
+
+	ajaxCall();
+
+	function populateTable(response) {
+		var teams = response.teams;
+		//clear all the records
+		document.getElementsByTagName("tbody")[0].innerHTML = "";
+
+		//for every team record
+		for ( var i = 0; i < teams.length; i++) {
+			
+			var newtr = document.createElement("tr");
+			
+			//put round
+			var newtd = document.createElement("td");
+			newtd.appendChild(document.createTextNode(teams[i].round));
+			newtd.setAttribute("onclick","selected("+teams[i].teamId+");");
+			newtr.appendChild(newtd);
+			
+			//put teamName
+			var newtd = document.createElement("td");
+			newtd.appendChild(document.createTextNode(teams[i].teamName));
+			newtd.setAttribute("onclick","selected("+teams[i].teamId+");");
+			newtr.appendChild(newtd);
+
+			//put score
+			var newtd = document.createElement("td");
+			newtd.appendChild(document.createTextNode(teams[i].score));
+			newtd.setAttribute("onclick","selected("+teams[i].teamId+");");
+			newtr.appendChild(newtd);
+	
+			//put save
+			var newtd = document.createElement("td");
+			var newbutton = document.createElement("button");
+			newbutton.setAttribute("onclick","save("+teams[i].teamId+",event);");
+			newbutton.setAttribute("class","btn btn-success");
+			newtd.appendChild(newbutton);
+			newtr.appendChild(newtd);
+			
+			//put show
+			var newtd = document.createElement("td");
+			var newbutton = document.createElement("button");
+			newbutton.setAttribute("onclick","toggleShow("+teams[i].teamId+",this);");
+			if(teams[i].show == false){
+				newbutton.setAttribute("class","btn btn-default");
+			}
+			else{
+				newbutton.setAttribute("class","btn btn-warning");
+			}
+			newtd.appendChild(newbutton);
+			newtr.appendChild(newtd);
+
+			newtr.setAttribute("id",teams[i].teamId);
+			
+			document.getElementsByTagName("tbody")[0].appendChild(newtr);
+			
+		}
+	}
+</script>
+<!-- Webservice Ajax Call End -->
+
+<!-- Table Functions Start -->
+<script>
+function selected(id){
+	if(currentlyModifying == false){
+		var copyRow = document.getElementById(id).cloneNode(true);
+		document.getElementById(id).innerHTML="";
+
+		while(copyRow.hasChildNodes()){
+			if(copyRow.firstChild.firstChild.nodeType == 3){
+				var newtd = document.createElement("td");
+				var newinput = document.createElement("input");
+				newinput.setAttribute("type","text");
+				newinput.setAttribute("class","form-control");
+				newinput.setAttribute("value",copyRow.firstChild.firstChild.nodeValue);
+				newtd.appendChild(newinput);
+				document.getElementById(id).appendChild(newtd);
+			}
+			else{
+				var newtd = document.createElement("td");
+				newbutton = copyRow.firstChild.firstChild;
+				if(newbutton.getAttribute("class")=="btn btn-success"){
+					newbutton.setAttribute("class","btn btn-danger");
+				}
+				newtd.appendChild(newbutton);
+				document.getElementById(id).appendChild(newtd);
+			}
+			copyRow.removeChild(copyRow.firstChild);
+		}
+		currentlyModifying = true;
+	}
+	else{
+		
+	}
+}
+
+function save(id,e){
+	if(currentlyModifying == false){
+		
+	}
+	else{
+		var round = "-";
+		var score = "-";
+		
+		var copyRow = document.getElementById(id).cloneNode(true);
+		while(copyRow.hasChildNodes()){
+			if(copyRow.firstChild.firstChild.getAttribute("class") == "form-control"){
+				switch(copyRow.childElementCount){
+				case 3 : score = copyRow.firstChild.firstChild.value;break;
+				case 4 : newTeam = copyRow.firstChild.firstChild.value;break;
+				case 5 : round = copyRow.firstChild.firstChild.value;break;
+				}
+			}
+			copyRow.removeChild(copyRow.firstChild);
+		}	
+		
+		var xmlhttp; 
+		if(window.XMLHttpRequest){
+			xmlhttp = new XMLHttpRequest();
+		}else{
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function(){
+			if(xmlhttp.readyState==4 && xmlhttp.status==200){
+				var copyRow = document.getElementById(id).cloneNode(true);
+				document.getElementById(id).innerHTML="";
+
+				while(copyRow.hasChildNodes()){
+					if(copyRow.firstChild.firstChild.getAttribute("class") == "form-control"){
+						var newtd = document.createElement("td");
+						newtd.appendChild(document.createTextNode(copyRow.firstChild.firstChild.value));
+						newtd.setAttribute("onclick","selected("+id+");");
+						document.getElementById(id).appendChild(newtd);
+					}
+					else{
+						var newtd = document.createElement("td");
+						newbutton = copyRow.firstChild.firstChild;
+						if(newbutton.getAttribute("class")=="btn btn-danger"){
+							newbutton.setAttribute("class","btn btn-success");
+						}
+						newtd.appendChild(newbutton);
+						document.getElementById(id).appendChild(newtd);
+					}
+					copyRow.removeChild(copyRow.firstChild);
+				}
+				document.getElementById(id).childNodes[document.getElementById(id).childNodes.length-2].firstChild.setAttribute("class","btn btn-success");
+				currentlyModifying = false;
+			}
+			else if(xmlhttp.readyState == 4 && xmlhttp.status == 400){
+				vex.dialog.alert(xmlhttp.responseText);
+			}
+			else if(xmlhttp.readyState == 4 && xmlhttp.status == 404){
+				vex.dialog.alert("Give all the details required to process (OR) -");
+			}
+		}
+		xmlhttp.open("PUT","http://"+HOST_AND_PORT+"/Sports/api/teams/"+id,true);
+		xmlhttp.setRequestHeader("Content-type","application/json");
+		var data = {name:newTeam,score:score,round:round};
+		xmlhttp.send(JSON.stringify(data));
+	}
+}
+
+function toggleShow(id,button){
+	if(currentlyModifying == false){
+		var xmlhttp;
+		if(window.XMLHttpRequest){
+			xmlhttp = new XMLHttpRequest();
+		}else{
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function(){
+			if(xmlhttp.readyState==4 && xmlhttp.status==200){
+				if(button.getAttribute("class") == "btn btn-default"){
+					button.setAttribute("class","btn btn-warning");
+				}
+				else{
+					button.setAttribute("class","btn btn-default");
+				}
+			}
+		}
+		if(button.getAttribute("class") == "btn btn-default"){
+			xmlhttp.open("PUT","http://"+HOST_AND_PORT+"/Sports/api/teams/"+id+"/show/"+true,true);
+		}
+		else{
+			xmlhttp.open("PUT","http://"+HOST_AND_PORT+"/Sports/api/teams/"+id+"/show/"+false,true);
+		}
+		xmlhttp.send();
+	}
+	else{
+		vex.dialog.alert("Save Then Show");
+	}
+}
+
+</script>
+<!-- Table Functions End -->
+
+<title>::: Sports Admin Live Scores:::</title>
+</head>
+<body>
+	<!-- Push Wrapper -->
+	<div class="mp-pusher" id="mp-pusher">
+		<!-- mp-menu -->
+		<nav id="mp-menu" class="mp-menu">
+			<div class="mp-level">
+				<h2><img src="webStuff/default/images/icon.png" height="80px" width="80px"></img>Menu</h2>
+				<ul>
+					<li><a class="icon icon-wallet" href="administrator-livescores.html">Match Live Scores</a></li>
+					<li><a class="icon icon-wallet" href="#">Team Live Scores</a></li>
+					<li><a class="icon icon-wallet"	href="administrator-dashboard.html">Dashboard</a></li>
+					<li><a class="icon icon-wallet" href="logout">Log Out</a></li>
+				</ul>
+			</div>
+		</nav>
+		<!-- /mp-menu -->
+
+		<div class="scroller">
+			<!-- this is for emulating position fixed of the nav -->
+			<div class="scroller-inner">
+				<a href="#" id="trigger" class="menu-trigger">Menu<img src="webStuff/default/images/logo.png" id="logo"></img></a>
+				<div class="page-header">Live Scores</div>
+				<!-- Live Scores Starts-->
+				<div class="livescores">
+				<div class="game">
+						<div class="topic">
+							<p>PAGETURNERZ QUIZ</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Round</th>
+										<th>Team</th>
+										<th>Score</th>
+										<th>Save</th>
+										<th>Show</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					</div>
+					<!-- Live Scores End-->
+				</div>
+				<!-- /scroller-inner -->
+			</div>
+			<!-- /scroller -->
+
+		</div>
+		<!-- /pusher -->
+	<!-- /container -->
+	<script>
+		new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
+	</script>
+</body>
+</html>

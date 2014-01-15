@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="webStuff/default/images/icon-32x32.png">
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/demo.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/icons.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/component.css" />
+<link href="webStuff/default/css/default.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="webStuff/vex/css/vex.css" />
+<link rel="stylesheet" href="webStuff/vex/css/vex-theme-os.css" />
+<script src="webStuff/jquery/jquery-2.0.3.js"></script>
+<script src="webStuff/bootstrap/js/bootstrap.min.js"></script>
+<script src="webStuff/Menu/js/modernizr.custom.js"></script>
+<script src="webStuff/Menu/js/classie.js"></script>
+<script src="webStuff/Menu/js/mlpushmenu.js"></script>
+<script src="webStuff/vex/js/vex.combined.min.js"></script>
+<script>vex.defaultOptions.className = 'vex-theme-os';</script>
+
+<title>::: Badminton Page :::</title>
+<script>
+
+	var HOST_AND_PORT = "10.106.50.32:8080";
+	
+	$.ajax({
+		url: 'http://'+ HOST_AND_PORT +'/Sports/api/monitor',
+		type: 'post',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: JSON.stringify({"page":"fullscores-badminton-mixed.html"})
+	});
+	
+function ajaxCall() {
+	/* var xmlhttp;
+	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp = new XMLHttpRequest();
+	} else {// code for IE6, IE5
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			populateTable(xmlhttp.responseText);
+		}
+	}
+	xmlhttp.open("GET","http://"+HOST_AND_PORT+"/Sports/webservice/list/matches/forgame/Badminton/Mixed",true);
+	xmlhttp.send(); */
+	
+	$.ajax({
+		type: 'get',
+		dataType: 'json',
+		url:"http://"+HOST_AND_PORT+"/Sports/api/games/matches?gameName=Badminton&gameCategory=Mixed&showCriteria=false",
+		success:function(data){populateTable(data)},
+		error:function(xhr){
+			if(xhr.status==404){
+				vex.dialog.alert("Services not running");
+			}
+			else{
+				vex.dialog.alert(xhr.responseText);
+			}
+		}
+	});
+}
+
+ajaxCall();
+setInterval(function(){ajaxCall()},10000);
+
+function populateTable(response) {
+	var matches = response.matches;
+
+	//clear all the records
+	document.getElementsByTagName("tbody")[0].innerHTML = "";
+
+	//for every match record
+	for ( var i = 0; i < matches.length; i++) {
+		var newtr = document.createElement("tr");
+
+		//put team1 name
+		var newtd = document.createElement("td");
+		newtd.appendChild(document
+				.createTextNode(matches[i].teamName1));
+		newtr.appendChild(newtd);
+
+		//put score
+		var newtd = document.createElement("td");
+		newtd.appendChild(document.createTextNode(matches[i].score));
+		newtr.appendChild(newtd);
+
+		//put team2 name
+		var newtd = document.createElement("td");
+		newtd.appendChild(document
+				.createTextNode(matches[i].teamName2));
+		newtr.appendChild(newtd);
+
+		//put round
+		var newtd = document.createElement("td");
+		newtd.appendChild(document.createTextNode(matches[i].round));
+		newtr.appendChild(newtd);
+
+		//put scheduled_time
+		var newtd = document.createElement("td");
+		newtd.appendChild(document
+				.createTextNode(matches[i].scheduledTime));
+		newtr.appendChild(newtd);
+
+		//put location
+		var newtd = document.createElement("td");
+		newtd.appendChild(document.createTextNode(matches[i].location));
+		newtr.appendChild(newtd);
+
+		//put status
+		var newtd = document.createElement("td");
+		newtd.appendChild(document.createTextNode(matches[i].status));
+		newtr.appendChild(newtd);
+
+		//put winner
+		var newtd = document.createElement("td");
+		newtd.appendChild(document.createTextNode(matches[i].winner));
+		newtr.appendChild(newtd);
+
+		document.getElementsByTagName("tbody")[0].appendChild(newtr);
+	}
+	
+}	
+
+</script>
+</head>
+<body class="fullscorebody">
+	<!-- Push Wrapper -->
+	<div class="mp-pusher" id="mp-pusher">
+		<!-- mp-menu -->
+		<nav id="mp-menu" class="mp-menu">
+			<div class="mp-level">
+				<h2><img src="webStuff/default/images/icon.png" height="80px" width="80px"></img>Menu</h2>
+				<ul>
+					<li><a class="icon" href="index.html">Live Scores<img src="webStuff/default/images/livescores-icon.png" class="my-icon"/></a></li>
+					<li class="icon icon-arrow-left"><a class="icon"href="#">Full Scores<img src="webStuff/default/images/fullscores-icon.png" class="my-icon"/></a>
+						<div class="mp-level">
+							<h2 class="icon icon-display">Full Scores</h2>
+							<a class="mp-back" href="#">back</a>
+							<ul>
+								<li class="icon icon-arrow-left"><a href="#">Badminton<img src="webStuff/default/images/badminton-icon.png" class="my-icon"/></a>
+									<div class="mp-level">
+										<h2>Badminton</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-badminton-singles.html">Singles</a></li>
+											<li><a href="fullscores-badminton-doubles.html">Doubles</a></li>
+											<li><a href="fullscores-badminton-mixed.html">Mixed Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon icon-arrow-left"><a 
+									href="#">Carrom<img src="webStuff/default/images/carrom-icon.png" class="my-icon"/></a>
+									<div class="mp-level">
+										<h2>Carrom</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-carrom-singles.html">Singles</a></li>
+											<li><a href="fullscores-carrom-doubles.html">Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon"><a href="fullscores-chess-notapplicable.html">Chess<img src="webStuff/default/images/chess-icon.png" class="my-icon"/></a>
+								</li>
+								<li class="icon"><a href="fullscores-cricket-notapplicable.html">Cricket<img src="webStuff/default/images/cricket-icon.png" class="my-icon"/></a>
+								</li>
+								<li class="icon"><a href="fullscores-throwball-notapplicable.html">Throw Ball<img src="webStuff/default/images/throwball-icon.png" class="my-icon"/></a></li>
+								<li class="icon"><a href="fullscores-volleyball-notapplicable.html">Volley	Ball<img src="webStuff/default/images/volleyball-icon.png" class="my-icon"/></a></li>
+								<li class="icon"><a href="fullscores-pageturnersquiz-notapplicable.html">PageTurnerz Quiz<img src="webStuff/default/images/quiz-icon.png" class="my-icon"/></a></li>
+							</ul>
+						</div></li>
+					<li><a class="icon" href="about.html">About<img src="webStuff/default/images/about-icon.png" class="my-icon"/></a></li>
+				</ul>
+			</div>
+		</nav>
+		<!-- /mp-menu -->
+
+		<div class="scroller">
+			<!-- this is for emulating position fixed of the nav -->
+			<div class="scroller-inner">
+				<a href="#" id="trigger" class="menu-trigger">Menu<a href="http://www.listertechnologies.com" target="_blank"><img src="webStuff/default/images/logo.png" id="logo"></img></a></a>
+				<div class="livescores">
+					<span class="livescorestag">FULL SCORES</span>
+
+					<div class="game">
+						<div class="topic">
+							<p>BADMINTON</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Winner</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+			</div>
+		<!-- /scroller-inner -->
+		
+		<div id="madeWith">Made with <img src ="webStuff/default/images/heart-icon.png" height = "19px" width = "19px"></img> in Bean Bag Room, Lister Technologies, India.</div>
+	</div>
+	<!-- /scroller -->
+
+	</div>
+	<!-- /pusher -->
+	</div>
+	<!-- /container -->
+	<script>
+		new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
+	</script>
+</body>
+</html>

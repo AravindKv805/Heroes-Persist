@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css"
+	href="webStuff/Menu/css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/demo.css" />
+<link rel="shortcut icon" href="webStuff/default/images/icon-32x32.png">
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/icons.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/component.css" />
+<link href="webStuff/default/css/default.css" rel="stylesheet" media="screen">
+<script src="webStuff/jquery/jquery-2.0.3.js"></script>
+<script src="webStuff/bootstrap/js/bootstrap.min.js"></script>
+<script src="webStuff/Menu/js/modernizr.custom.js"></script>
+<script src="webStuff/Menu/js/classie.js"></script>
+<script src="webStuff/Menu/js/mlpushmenu.js"></script>
+<script src="webStuff/airport-text/jquery.airport-text.js"></script>
+
+<title>::: About Sports :::</title>
+<script>
+	$(document).ready(function() {
+		$("#joinspan").hide();
+		$("#futurespan").hide();
+	});
+
+	$(document).ready(function() {
+		$("#join").click(function() {
+			$("#joinspan").animate({ height:'toggle'});
+			$("#futurespan").animate({ height: 'hide'});
+		});
+		$("#future").click(function() {
+			$("#futurespan").animate({ height:'toggle'});
+			$("#joinspan").animate({ height:'hide'});
+		});
+	});
+	
+	var HOST_AND_PORT = "10.106.50.32:8080";
+	$.ajax({
+		url: 'http://'+ HOST_AND_PORT +'/Sports/api/monitor',
+		type: 'post',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: JSON.stringify({"page":"about.html"})
+	});
+	
+</script>
+</head>
+<body>
+	<!-- Push Wrapper -->
+	<div class="mp-pusher" id="mp-pusher">
+		<!-- mp-menu -->
+		<nav id="mp-menu" class="mp-menu">
+			<div class="mp-level">
+				<h2><img src="webStuff/default/images/icon.png" height="80px" width="80px"></img>Menu</h2>
+				<ul>
+					<li><a class="icon" href="index.html">Live Scores<img src="webStuff/default/images/livescores-icon.png" class="my-icon"/></a></li>
+					<li class="icon icon-arrow-left"><a class="icon"href="#">Full Scores<img src="webStuff/default/images/fullscores-icon.png" class="my-icon"/></a>
+						<div class="mp-level">
+							<h2 class="icon icon-display">Full Scores</h2>
+							<a class="mp-back" href="#">back</a>
+							<ul>
+								<li class="icon icon-arrow-left"><a href="#">Badminton<img src="webStuff/default/images/badminton-icon.png" class="my-icon"/></a>
+									<div class="mp-level">
+										<h2>Badminton</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-badminton-singles.html">Singles</a></li>
+											<li><a href="fullscores-badminton-doubles.html">Doubles</a></li>
+											<li><a href="fullscores-badminton-mixed.html">Mixed Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon icon-arrow-left"><a 
+									href="#">Carrom<img src="webStuff/default/images/carrom-icon.png" class="my-icon"/></a>
+									<div class="mp-level">
+										<h2>Carrom</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-carrom-singles.html">Singles</a></li>
+											<li><a href="fullscores-carrom-doubles.html">Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon"><a href="fullscores-chess-notapplicable.html">Chess<img src="webStuff/default/images/chess-icon.png" class="my-icon"/></a>
+								</li>
+								<li class="icon"><a href="fullscores-cricket-notapplicable.html">Cricket<img src="webStuff/default/images/cricket-icon.png" class="my-icon"/></a>
+								</li>
+								<li class="icon"><a href="fullscores-throwball-notapplicable.html">Throw Ball<img src="webStuff/default/images/throwball-icon.png" class="my-icon"/></a></li>
+								<li class="icon"><a href="fullscores-volleyball-notapplicable.html">Volley	Ball<img src="webStuff/default/images/volleyball-icon.png" class="my-icon"/></a></li>
+								<li class="icon"><a href="fullscores-pageturnersquiz-notapplicable.html">PageTurnerz Quiz<img src="webStuff/default/images/quiz-icon.png" class="my-icon"/></a></li>
+							</ul>
+						</div></li>
+					<li><a class="icon" href="about.html">About<img src="webStuff/default/images/about-icon.png" class="my-icon"/></a></li>
+				</ul>
+			</div>
+		</nav>
+		<!-- /mp-menu -->
+
+		<div class="scroller">
+			<!-- this is for emulating position fixed of the nav -->
+			<div class="scroller-inner">
+
+				<a href="#" id="trigger" class="menu-trigger">Menu<a href="http://www.listertechnologies.com" target="_blank"><img src="webStuff/default/images/logo.png" id="logo"></img></a></a>
+
+				<div class="linkcontainer">
+					<p id="about-header"><img src="webStuff/default/images/icon.png" height="50px" width="50px"><span id="heroes-persist"></span>&nbsp;&nbsp;V 3.0</p><hr>
+					<h4>Welcome!<br><br>This sports portal was specially created with an interest to automate the procedures involved in organizing a Events like Sports Meet which comprises team registrations, generation of fixtures and score updation. To Minimize manual work! We try to follow the best practices to stand as a best example.<br>Go on, be a sport and participate!</h4>
+					<h5>We also have powerful yet simple <a href="webStuff/default/images/Dashboard.PNG"><u>Administrator Dashboard</u></a> and <a href="webStuff/default/images/Livescores.PNG"><u>Livescores Updator</u></a></h5>
+				</div>
+				<br>
+				<div class="linkcontainer">
+					<div id="join" class="thumbnail">
+						<img src="webStuff/default/images/jointheteam.png" alt="Contribute">
+						<div class="caption">
+							<h3>Join the Team</h3>
+						</div>
+					</div>
+					<div id="future" class="thumbnail">
+						<img src="webStuff/default/images/future1.png" alt="Future">
+						<div class="caption">
+							<h3>Future Developments</h3>
+						</div>
+					</div>
+				</div>
+
+				<div class="linkcontainer">
+					<br>
+					<span id="joinspan" class="col-lg-11 mylabel mylabel-info">Review code and refactor to increase quality.<br>Contribute to new feature developement.<br>For source code (OR) Feedback drop a mail to <h3>saipranav.ravichandran@listertechnologies.com</h3></span>
+					<span id="futurespan" class="col-lg-11 mylabel mylabel-warning">Automatic Fixture Generation Algorithm.<br>Automatic Email Alerts.<br>Display photos of players.<br>Comment on matches<br>Automatic Rating Algorithm<br>Share and celebrate your victory on social networks.</span>
+				</div>
+
+				<svg id="clouds" xmlns="http://www.w3.org/2000/svg" version="1.1"
+					width="100%" height="100" viewBox="0 0 100 100"
+					preserveAspectRatio="none">
+				<path
+						d="M-5 100 Q 0 20 5 100 Z
+						 M0 100 Q 5 0 10 100
+						 M5 100 Q 10 30 15 100
+						 M10 100 Q 15 10 20 100
+						 M15 100 Q 20 30 25 100
+						 M20 100 Q 25 -10 30 100
+						 M25 100 Q 30 10 35 100
+						 M30 100 Q 35 30 40 100
+						 M35 100 Q 40 10 45 100
+						 M40 100 Q 45 50 50 100
+						 M45 100 Q 50 20 55 100
+						 M50 100 Q 55 40 60 100
+						 M55 100 Q 60 60 65 100
+						 M60 100 Q 65 50 70 100
+						 M65 100 Q 70 20 75 100
+						 M70 100 Q 75 45 80 100
+						 M75 100 Q 80 30 85 100
+						 M80 100 Q 85 20 90 100
+						 M85 100 Q 90 50 95 100
+						 M90 100 Q 95 25 100 100
+						 M95 100 Q 100 15 105 100 Z">
+				</path>
+			</svg>
+
+				<div id="creditscontainer">
+					<div class="person">
+						<span class="photo"> <img src="webStuff/default/images/Sai Pranav.png" alt="person name"></img></span>
+						<span class="name">
+							<h3>Sai Pranav</h3>
+						</span>
+						<span class="description">
+							<h5>Highly Innovative.<br>The guy behind the idea, design and implementation of this Events Portal.<br>HeroesPersist is his brainchild !</h5>
+						</span>
+					</div>
+					<div class="person">
+						<span class="photo"> <img src="webStuff/default/images/Dwarak.png" alt="person name"></img></span>
+						<span class="name">
+							<h3>Dwarakanath</h3>
+						</span>
+						<span class="description">
+							<h5>Enthusiastic and extremely supportive.<br>Helped a lot with setting up the server.<br>The site couldn't have gone live without him !</h5>
+						</span>
+					</div>
+					<div class="person">
+						<span class="photo"> <img src="webStuff/default/images/Aarti.png" alt="person name"></img></span>
+						<span class="name">
+							<h3>Aarti</h3>
+						</span>
+						<span class="description">
+							<h5>Core developer.<br>Designed different scenarios.<br>Content writer.</h5>
+						</span>
+					</div>
+					<div class="person">
+						<span class="photo"> <img src="webStuff/default/images/Sudarshan.png" alt="person name"></img></span>
+						<span class="name">
+							<h3>Sudharsan</h3>
+						</span>
+						<span class="description">
+							<h5>The Refactoring Specialist.<br>Gave very valuables inputs on code structuring.<br>Ensured that we learned from our mistakes.</h5>
+						</span>
+					</div>
+					<div class="person">
+						<span class="photo"> <img src="webStuff/default/images/Karthik.png" alt="person name"></img></span>
+						<span class="name">
+							<h3>Karthik</h3>
+						</span>
+						<span class="description">
+							<h5>The Cool Tech Guru.<br>Very encouraging.<br>Patiently reviewed the code and helped make it more efficient.</h5>
+						</span>
+					</div>
+					<div class="person">
+						<span class="photo"> <img src="webStuff/default/images/Vamsi.png" alt="person name"></img></span>
+						<span class="name">
+							<h3>Vamsi</h3>
+						</span>
+						<span class="description">
+							<h5><br>Techie.<br>Threw light on the Schema Design during the initial stages.</h5>
+						</span>
+					</div>
+					<div class="person">
+						<span class="photo"> <img src="webStuff/default/images/Hari.png" alt="person name"></img></span>
+						<span class="name">
+							<h3>Hari</h3>
+						</span>
+						<span class="description">
+							<h5><br>Ever ready to lend a helping hand.<br>Motivating.</h5>
+						</span>
+					</div>
+					<div class="person">
+						<span class="photo"> <img src="webStuff/default/images/canbeyou.png" alt="person name"></img></span>
+						<span class="name">
+							<h3>You</h3>
+						</span>
+						<span class="description">
+							<h5><br><br>Join the team!</h5>
+						</span>
+					</div>
+					<div class="person">
+						<span class="photo"> <img src="webStuff/default/images/Vikas.png" alt="person name"></img></span>
+						<span class="name">
+							<h3>Vikas</h3>
+						</span>
+						<span class="description">
+							<h5><br><br>He gives a lot of freedom to try things</h5>
+						</span>
+					</div>
+					<div class="person">
+						<span class="photo"> <img src="webStuff/default/images/KarthikV.png" alt="person name"></img></span>
+						<span class="name">
+							<h3>Karthik Venkataraman</h3>
+						</span>
+						<span class="description">
+							<h5>A special thanks for his guidance</h5>
+						</span>
+					</div>
+					<div class="person">
+						<span class="photo"><a href="webStuff/default/images/group.png"><img src="webStuff/default/images/group.png" alt="person name" height="254px" width="340px"></img></a></span>
+						<span class="name">
+							<h3>ITop 13</h3>
+						</span>
+						<span class="description">
+							<h5>A special thanks for their support</h5>
+						</span>
+					</div>
+				</div>
+				
+				<div id="madeWith">Made with <img src ="webStuff/default/images/heart-icon.png" height = "19px" width = "19px"></img> in Bean Bag Room, Lister Technologies, India.</div>
+
+			</div>
+			<!-- /scroller-inner -->
+		</div>
+		<!-- /scroller -->
+
+	</div>
+	<!-- /pusher -->
+	<!-- /container -->
+	<script>
+		new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
+		$('#heroes-persist').airport([ 'e sPorts is Here', 'Heroes Persist' ]);
+	</script>
+</body>
+</html>

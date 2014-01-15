@@ -1,0 +1,942 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="shortcut icon" href="webStuff/default/images/icon-32x32.png">
+
+<!-- Login Check Start -->
+<script>
+function loginCheck(){
+	$.ajax({
+		url: 'logincheck',
+		type: 'get',
+		success: function(data){
+			if(data == 'false'){
+				window.location.assign("login.html");
+			}
+		},
+	});
+	/* var xmlhttp;
+	if(window.XMLHttpRequest){
+		xmlhttp = new XMLHttpRequest();
+	}else{port
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function(){
+		if(xmlhttp.readyState==4 && xmlhttp.status==200){
+			if(xmlhttp.responseText=="true"){
+				
+			}
+			else{
+				window.location.assign("login.html");
+			}
+		}
+	}
+		xmlhttp.open("GET","logincheck",true);
+		xmlhttp.send(); */
+}
+
+loginCheck();
+setInterval(function(){loginCheck();},10000);
+</script>
+<!-- Login Check End -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<!-- Menu Start-->
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/demo.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/icons.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/component.css" />
+<link href="webStuff/default/css/default.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="webStuff/vex/css/vex.css" />
+<link rel="stylesheet" href="webStuff/vex/css/vex-theme-os.css" />
+<script src="webStuff/jquery/jquery-2.0.3.js"></script>
+<script src="webStuff/bootstrap/js/bootstrap.min.js"></script>
+<script src="webStuff/Menu/js/modernizr.custom.js"></script>
+<script src="webStuff/Menu/js/classie.js"></script>
+<script src="webStuff/Menu/js/mlpushmenu.js"></script>
+<script src="webStuff/vex/js/vex.combined.min.js"></script>
+<script>vex.defaultOptions.className = 'vex-theme-os';</script>
+
+<!-- Webservice Ajax Call Start -->
+<script type="text/javascript">
+	//Global variables
+	var currentlyModifying = false;		//true->modifying false->not modifying
+	var HOST_AND_PORT = "10.106.50.32:8080";
+	var newTeam1 = "";
+	var newTeam2 = "";
+	
+	$.ajax({
+		url: 'http://'+ HOST_AND_PORT +'/Sports/api/monitor',
+		type: 'post',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: JSON.stringify({"page":"administrator-livescores.html"})
+	});
+
+	function ajaxCall() {
+		/* var xmlhttp;
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else {// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.open("GET","http://"+HOST_AND_PORT+"/Sports/webservice/list/allmatches",true);
+		xmlhttp.send();
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				populateTable(xmlhttp.responseText);
+			}
+		} */
+		
+		$.ajax({
+			url: 'http://'+ HOST_AND_PORT +'/Sports/api/matches',
+			type: 'get',
+			dataType: 'json',
+			contentType: 'application/json',
+			success: function(data){
+						populateTable(data);
+					},
+			error: function(xhr){
+						if(xhr.status == 404){
+							vex.dialog.alert("Services not Running");
+						}
+						else{
+							vex.dialog.alert(xhr.responseText);
+						}
+					}
+		});
+	}
+
+	ajaxCall();
+
+	function populateTable(response) {
+		var matches = response.matches;
+		//clear all the records
+		for ( var i = 0; i < 6; i++) {
+			document.getElementsByTagName("tbody")[i].innerHTML = "";
+		}
+
+		//for every match record
+		for ( var i = 0; i < matches.length; i++) {
+			
+			//get the game
+			var gameOfMatch = matches[i].gameName;
+			if (gameOfMatch == "Badminton") {
+				
+				var newtr = document.createElement("tr");
+				//put category
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].gameCategory));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName1));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName2));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].scheduledTime));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+				
+				//put save
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","save("+matches[i].matchId+",event);");
+				newbutton.setAttribute("class","btn btn-success");
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put show
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","toggleShow("+matches[i].matchId+",this);");
+				if(matches[i].show == false){
+					newbutton.setAttribute("class","btn btn-default");
+				}
+				else{
+					newbutton.setAttribute("class","btn btn-warning");
+				}
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+
+				newtr.setAttribute("id",matches[i].matchId);
+				
+				document.getElementsByTagName("tbody")[0].appendChild(newtr);
+
+			} else if (gameOfMatch == "Carrom") {
+
+				var newtr = document.createElement("tr");
+				//put category
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].gameCategory));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName1));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName2));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].scheduledTime));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+				
+				//put save
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","save("+matches[i].matchId+",event);");
+				newbutton.setAttribute("class","btn btn-success");
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put show
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","toggleShow("+matches[i].matchId+",this);");
+				if(matches[i].show == false){
+					newbutton.setAttribute("class","btn btn-default");
+				}
+				else{
+					newbutton.setAttribute("class","btn btn-warning");
+				}
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+
+				newtr.setAttribute("id",matches[i].matchId);
+				
+				document.getElementsByTagName("tbody")[1].appendChild(newtr);
+
+			} else if (gameOfMatch == "Chess") {
+
+				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName1));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName2));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].scheduledTime));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+				
+				//put save
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","save("+matches[i].matchId+",event);");
+				newbutton.setAttribute("class","btn btn-success");
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put show
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","toggleShow("+matches[i].matchId+",this);");
+				if(matches[i].show == false){
+					newbutton.setAttribute("class","btn btn-default");
+				}
+				else{
+					newbutton.setAttribute("class","btn btn-warning");
+				}
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+
+				newtr.setAttribute("id",matches[i].matchId);
+				
+				document.getElementsByTagName("tbody")[2].appendChild(newtr);
+
+			} else if (gameOfMatch == "Cricket") {
+
+				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName1));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName2));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].scheduledTime));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+				
+				//put save
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","save("+matches[i].matchId+",event);");
+				newbutton.setAttribute("class","btn btn-success");
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put show
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","toggleShow("+matches[i].matchId+",this);");
+				if(matches[i].show == false){
+					newbutton.setAttribute("class","btn btn-default");
+				}
+				else{
+					newbutton.setAttribute("class","btn btn-warning");
+				}
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+
+				newtr.setAttribute("id",matches[i].matchId);
+				
+				document.getElementsByTagName("tbody")[3].appendChild(newtr);
+
+			} else if (gameOfMatch == "ThrowBall") {
+
+				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName1));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName2));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].scheduledTime));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+				
+				//put save
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","save("+matches[i].matchId+",event);");
+				newbutton.setAttribute("class","btn btn-success");
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put show
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","toggleShow("+matches[i].matchId+",this);");
+				if(matches[i].show == false){
+					newbutton.setAttribute("class","btn btn-default");
+				}
+				else{
+					newbutton.setAttribute("class","btn btn-warning");
+				}
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+
+				newtr.setAttribute("id",matches[i].matchId);
+				
+				document.getElementsByTagName("tbody")[4].appendChild(newtr);
+
+			} else if (gameOfMatch == "VolleyBall") {
+
+				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName1));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put score
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName2));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put round
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].scheduledTime));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put location
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put status
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put winner
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+				
+				//put save
+				newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","save("+matches[i].matchId+",event);");
+				newbutton.setAttribute("class","btn btn-success");
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put show
+				newtd = document.createElement("td");
+				newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","toggleShow("+matches[i].matchId+",this);");
+				if(matches[i].show == false){
+					newbutton.setAttribute("class","btn btn-default");
+				}
+				else{
+					newbutton.setAttribute("class","btn btn-warning");
+				}
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+
+				newtr.setAttribute("id",matches[i].matchId);
+				
+				document.getElementsByTagName("tbody")[5].appendChild(newtr);
+
+			}
+		}
+	}
+</script>
+<!-- Webservice Ajax Call End -->
+
+<!-- Table Functions Start -->
+<script>
+function selected(id){
+	if(currentlyModifying == false){
+		var copyRow = document.getElementById(id).cloneNode(true);
+		document.getElementById(id).innerHTML="";
+
+		while(copyRow.hasChildNodes()){
+			if(copyRow.firstChild.firstChild.nodeType == 3){
+				var newtd = document.createElement("td");
+				var newinput = document.createElement("input");
+				newinput.setAttribute("type","text");
+				newinput.setAttribute("class","form-control");
+				newinput.setAttribute("value",copyRow.firstChild.firstChild.nodeValue);
+				newtd.appendChild(newinput);
+				document.getElementById(id).appendChild(newtd);
+			}
+			else{
+				var newtd = document.createElement("td");
+				newbutton = copyRow.firstChild.firstChild;
+				if(newbutton.getAttribute("class")=="btn btn-success"){
+					newbutton.setAttribute("class","btn btn-danger");
+				}
+				newtd.appendChild(newbutton);
+				document.getElementById(id).appendChild(newtd);
+			}
+			copyRow.removeChild(copyRow.firstChild);
+		}
+		currentlyModifying = true;
+	}
+	else{
+		
+	}
+}
+
+function save(id,e){
+	if(currentlyModifying == false){
+		
+	}
+	else{
+		var round = "-";
+		var time = "-";
+		var location = "-";
+		var status = "-";
+		var winner = "-";
+		var score = "-";
+		
+		var copyRow = document.getElementById(id).cloneNode(true);
+		while(copyRow.hasChildNodes()){
+			if(copyRow.firstChild.firstChild.getAttribute("class") == "form-control"){
+				switch(copyRow.childElementCount){
+				case 3 : winner = copyRow.firstChild.firstChild.value;break;
+				case 4 : status = copyRow.firstChild.firstChild.value;break;
+				case 5 : location = copyRow.firstChild.firstChild.value;break;
+				case 6 : time = copyRow.firstChild.firstChild.value;break;
+				case 7 : round = copyRow.firstChild.firstChild.value;break;
+				case 8 : newTeam2 = copyRow.firstChild.firstChild.value;break;
+				case 9 : score = copyRow.firstChild.firstChild.value;break;
+				case 10 : newTeam1 = copyRow.firstChild.firstChild.value;break;
+				}
+			}
+			copyRow.removeChild(copyRow.firstChild);
+		}	
+		
+		var xmlhttp; 
+		if(window.XMLHttpRequest){
+			xmlhttp = new XMLHttpRequest();
+		}else{
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function(){
+			if(xmlhttp.readyState==4 && xmlhttp.status==200){
+				var copyRow = document.getElementById(id).cloneNode(true);
+				document.getElementById(id).innerHTML="";
+
+				while(copyRow.hasChildNodes()){
+					if(copyRow.firstChild.firstChild.getAttribute("class") == "form-control"){
+						var newtd = document.createElement("td");
+						newtd.appendChild(document.createTextNode(copyRow.firstChild.firstChild.value));
+						newtd.setAttribute("onclick","selected("+id+");");
+						document.getElementById(id).appendChild(newtd);
+					}
+					else{
+						var newtd = document.createElement("td");
+						newbutton = copyRow.firstChild.firstChild;
+						if(newbutton.getAttribute("class")=="btn btn-danger"){
+							newbutton.setAttribute("class","btn btn-success");
+						}
+						newtd.appendChild(newbutton);
+						document.getElementById(id).appendChild(newtd);
+					}
+					copyRow.removeChild(copyRow.firstChild);
+				}
+				document.getElementById(id).childNodes[document.getElementById(id).childNodes.length-2].firstChild.setAttribute("class","btn btn-success");
+				currentlyModifying = false;
+			}
+			else if(xmlhttp.readyState == 4 && xmlhttp.status == 400){
+				vex.dialog.alert(xmlhttp.responseText);
+			}
+			else if(xmlhttp.readyState == 4 && xmlhttp.status == 404){
+				vex.dialog.alert("Give all the details required to process");
+			}
+		}
+		xmlhttp.open("PUT","http://"+HOST_AND_PORT+"/Sports/api/matches/livescores/"+id,true);
+		var teams = new Array();
+		teams.push(newTeam1);
+		teams.push(newTeam2);
+		data = {"teams":teams,"round":round,"scheduledTime":time,"location":location,"status":status,"winner":winner,"score":score};
+		xmlhttp.setRequestHeader("Content-type","application/json");
+		xmlhttp.send(JSON.stringify(data));
+	}
+}
+
+function toggleShow(id,button){
+	if(currentlyModifying == false){
+		var xmlhttp;
+		if(window.XMLHttpRequest){
+			xmlhttp = new XMLHttpRequest();
+		}else{
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function(){
+			if(xmlhttp.readyState==4 && xmlhttp.status==200){
+				if(button.getAttribute("class") == "btn btn-default"){
+					button.setAttribute("class","btn btn-warning");
+				}
+				else{
+					button.setAttribute("class","btn btn-default");
+				}
+			}
+		}
+		if(button.getAttribute("class") == "btn btn-default"){
+			xmlhttp.open("PUT","http://"+HOST_AND_PORT+"/Sports/api/matches/"+id+"/show/"+true,true);
+		}
+		else{
+			xmlhttp.open("PUT","http://"+HOST_AND_PORT+"/Sports/api/matches/"+id+"/show/"+false,true);
+		}
+		xmlhttp.send();
+	}
+	else{
+		window.alert("Save Then Show");
+	}
+}
+
+</script>
+<!-- Table Functions End -->
+
+<title>::: Sports Admin Live Scores:::</title>
+</head>
+<body>
+	<!-- Push Wrapper -->
+	<div class="mp-pusher" id="mp-pusher">
+		<!-- mp-menu -->
+		<nav id="mp-menu" class="mp-menu">
+			<div class="mp-level">
+				<h2><img src="webStuff/default/images/icon.png" height="80px" width="80px"></img>Menu</h2>
+				<ul>
+					<li><a class="icon icon-wallet"	href="#">Match Live Scores</a></li>
+					<li><a class="icon icon-wallet" href="administrator-team-livescores.html">Team Live Scores</a></li>
+					<li><a class="icon icon-wallet"	href="administrator-dashboard.html">Dashboard</a></li>
+					<li><a class="icon icon-wallet" href="logout">Log Out</a></li>
+				</ul>
+			</div>
+		</nav>
+		<!-- /mp-menu -->
+
+		<div class="scroller">
+			<!-- this is for emulating position fixed of the nav -->
+			<div class="scroller-inner">
+				<a href="#" id="trigger" class="menu-trigger">Menu<img src="webStuff/default/images/logo.png" id="logo"></img></a>
+				<div class="page-header">Live Scores</div>
+				<!-- Live Scores Starts-->
+				<div class="livescores">
+				<div class="game">
+						<div class="topic">
+							<p>BADMINTON</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Category</th>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Won By</th>
+										<th>Save</th>
+										<th>Show</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>CARROM</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Category</th>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Won By</th>
+										<th>Save</th>
+										<th>Show</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>CHESS</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Won By</th>
+										<th>Save</th>
+										<th>Show</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>CRICKET</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Won By</th>
+										<th>Save</th>
+										<th>Show</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>THROW BALL</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Won By</th>
+										<th>Save</th>
+										<th>Show</th>
+										</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+					<div class="topic">
+						<p>VOLLEY BALL</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Won By</th>
+										<th>Save</th>
+										<th>Show</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					</div>
+					<!-- Live Scores End-->
+				</div>
+				<!-- /scroller-inner -->
+			</div>
+			<!-- /scroller -->
+
+		</div>
+		<!-- /pusher -->
+	<!-- /container -->
+	<script>
+		new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
+	</script>
+</body>
+</html>

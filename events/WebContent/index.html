@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="webStuff/default/images/icon-32x32.png">
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/demo.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/icons.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/component.css" />
+<link rel="stylesheet" href="webStuff/vex/css/vex.css" />
+<link rel="stylesheet" href="webStuff/vex/css/vex-theme-os.css" />
+<link href="webStuff/default/css/default.css" rel="stylesheet" media="screen">
+<script src="webStuff/jquery/jquery-2.0.3.js"></script>
+<script src="webStuff/bootstrap/js/bootstrap.min.js"></script>
+<script src="webStuff/Menu/js/modernizr.custom.js"></script>
+<script src="webStuff/Menu/js/classie.js"></script>
+<script src="webStuff/Menu/js/mlpushmenu.js"></script>
+<script src="webStuff/vex/js/vex.combined.min.js"></script>
+<script>vex.defaultOptions.className = 'vex-theme-os';</script>
+
+
+<title>::: Sports :::</title>
+
+<!-- Webservice Ajax Call Start -->
+<script type="text/javascript">
+	var HOST_AND_PORT = "10.106.50.32:8080";
+	
+	$.ajax({
+		url: 'http://'+ HOST_AND_PORT +'/Sports/api/monitor',
+		type: 'post',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: JSON.stringify({"page":"index.html"})
+	});
+	
+	setTimeout(function(){clearAll()},1000);
+	setTimeout(function(){teamsAjaxCall()},1000);
+	setTimeout(function(){matchAjaxCall()},1000);
+	setInterval(function(){clearAll()},10000);
+	setInterval(function(){teamsAjaxCall()},10000);
+	setInterval(function(){matchAjaxCall()},10000);
+
+	function clearAll(){
+		//clear all the records
+		for ( var i = 0; i < 7; i++) {
+			document.getElementsByTagName("tbody")[i].innerHTML = "";
+		}
+	}
+	
+	function matchAjaxCall() {
+		
+		$.ajax({
+			url: 'http://'+ HOST_AND_PORT +'/Sports/api/matches?showCriteria=true',
+			type: 'get',
+			dataType: 'json',
+			contentType: 'application/json',
+			success: function(data){
+						populateTable(data);
+					},
+			error: function(xhr){
+						if(xhr.status == 404){
+							vex.dialog.alert("Services not Running");
+						}
+					}
+		});
+		
+	}
+	
+	function teamsAjaxCall() {
+		
+		$.ajax({
+			url: 'http://'+ HOST_AND_PORT +'/Sports/api/games/teams?gameName=PageTurnerzQuiz&gameCategory=NotApplicable&showCriteria=true',
+			type: 'get',
+			dataType: 'json',
+			contentType: 'application/json',
+			success: function(data){
+						populateTeamTable(data);
+					},
+			error: function(xhr){
+						if(xhr.status == 404){
+							vex.dialog.alert("Services not Running");
+						}
+					}
+		});
+	}
+
+	function populateTable(response) {
+		var matches = response.matches;
+
+		//for every match record
+		for ( var i = 0; i < matches.length; i++) {
+			//get the game
+			var gameOfMatch = matches[i].gameName;
+			if (gameOfMatch == "Badminton") {
+				var newtr = document.createElement("tr");
+				//put category
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].gameCategory));
+				newtr.appendChild(newtd);
+
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName1));
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName2));
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].scheduledTime));
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtr.appendChild(newtd);
+
+				document.getElementsByTagName("tbody")[1].appendChild(newtr);
+
+			} else if (gameOfMatch == "Carrom") {
+
+				var newtr = document.createElement("tr");
+				//put category
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].gameCategory));
+				newtr.appendChild(newtd);
+
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName1));
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName2));
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].scheduledTime));
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtr.appendChild(newtd);
+
+				document.getElementsByTagName("tbody")[2].appendChild(newtr);
+
+			} else if (gameOfMatch == "Chess") {
+
+				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName1));
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName2));
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].scheduledTime));
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtr.appendChild(newtd);
+
+				document.getElementsByTagName("tbody")[3].appendChild(newtr);
+
+			} else if (gameOfMatch == "Cricket") {
+
+				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName1));
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName2));
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].scheduledTime));
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtr.appendChild(newtd);
+
+				document.getElementsByTagName("tbody")[4].appendChild(newtr);
+
+			} else if (gameOfMatch == "ThrowBall") {
+
+				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName1));
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName2));
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].scheduledTime));
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtr.appendChild(newtd);
+
+				document.getElementsByTagName("tbody")[5].appendChild(newtr);
+
+			} else if (gameOfMatch == "VolleyBall") {
+
+				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName1));
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName2));
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].scheduledTime));
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtr.appendChild(newtd);
+
+				document.getElementsByTagName("tbody")[6].appendChild(newtr);
+
+			}
+		}
+	}
+	
+	function populateTeamTable(response) {
+		var teams = response.teams;
+
+		//for every match record
+		for ( var i = 0; i < teams.length; i++) {
+			var newtr = document.createElement("tr");
+	
+			//put round
+			var newtd = document.createElement("td");
+			newtd.appendChild(document.createTextNode(teams[i].round));
+			newtr.appendChild(newtd);
+			
+			//put team name
+			var newtd = document.createElement("td");
+			newtd.appendChild(document.createTextNode(teams[i].teamName));
+			newtr.appendChild(newtd);
+	
+			//put score
+			var newtd = document.createElement("td");
+			newtd.appendChild(document.createTextNode(teams[i].score));
+			newtr.appendChild(newtd);
+	
+			document.getElementsByTagName("tbody")[0].appendChild(newtr);
+		}
+	}
+	
+</script>
+<!-- Webservice Ajax Call End -->
+
+</head>
+<body>
+	<!-- Push Wrapper -->
+	<div class="mp-pusher" id="mp-pusher">
+		<!-- mp-menu -->
+	<nav id="mp-menu" class="mp-menu">
+			<div class="mp-level">
+				<h2><img src="webStuff/default/images/icon.png" height="80px" width="80px"></img>Menu</h2>
+				<ul>
+					<li><a class="icon" href="index.html">Live Scores<img src="webStuff/default/images/livescores-icon.png" class="my-icon"/></a></li>
+					<li class="icon icon-arrow-left"><a class="icon"href="#">Full Scores<img src="webStuff/default/images/fullscores-icon.png" class="my-icon"/></a>
+						<div class="mp-level">
+							<h2 class="icon icon-display">Full Scores</h2>
+							<a class="mp-back" href="#">back</a>
+							<ul>
+								<li class="icon icon-arrow-left"><a href="#">Badminton<img src="webStuff/default/images/badminton-icon.png" class="my-icon"/></a>
+									<div class="mp-level">
+										<h2>Badminton</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-badminton-singles.html">Singles</a></li>
+											<li><a href="fullscores-badminton-doubles.html">Doubles</a></li>
+											<li><a href="fullscores-badminton-mixed.html">Mixed Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon icon-arrow-left"><a 
+									href="#">Carrom<img src="webStuff/default/images/carrom-icon.png" class="my-icon"/></a>
+									<div class="mp-level">
+										<h2>Carrom</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-carrom-singles.html">Singles</a></li>
+											<li><a href="fullscores-carrom-doubles.html">Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon"><a href="fullscores-chess-notapplicable.html">Chess<img src="webStuff/default/images/chess-icon.png" class="my-icon"/></a>
+								</li>
+								<li class="icon"><a href="fullscores-cricket-notapplicable.html">Cricket<img src="webStuff/default/images/cricket-icon.png" class="my-icon"/></a>
+								</li>
+								<li class="icon"><a href="fullscores-throwball-notapplicable.html">Throw Ball<img src="webStuff/default/images/throwball-icon.png" class="my-icon"/></a></li>
+								<li class="icon"><a href="fullscores-volleyball-notapplicable.html">Volley	Ball<img src="webStuff/default/images/volleyball-icon.png" class="my-icon"/></a></li>
+								<li class="icon"><a href="fullscores-pageturnersquiz-notapplicable.html">PageTurnerz Quiz<img src="webStuff/default/images/quiz-icon.png" class="my-icon"/></a></li>
+							</ul>
+						</div></li>
+					<li><a class="icon" href="about.html">About<img src="webStuff/default/images/about-icon.png" class="my-icon"/></a></li>
+				</ul>
+			</div>
+		</nav>
+		<!-- /mp-menu -->
+
+		<div class="scroller">
+			<!-- this is for emulating position fixed of the nav -->
+			<div class="scroller-inner">
+
+				<a href="#" id="trigger" class="menu-trigger">Menu<a href="http://www.listertechnologies.com" target="_blank"><img src="webStuff/default/images/logo.png" id="logo"></img></a></a>
+				<!-- Live Scores Starts-->
+				<div class="livescores">
+					<span class="livescorestag">LIVE SCORES</span>
+
+					<div class="game">
+						<div class="topic">
+							<p>PAGE TURNERZ QUIZ</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Round</th>
+										<th>Player/Team</th>
+										<th>Score</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					<div class="game">
+						<div class="topic">
+							<p>BADMINTON</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Category</th>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Winner</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="game">
+						<div class="topic">
+							<p>CARROM</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Category</th>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Winner</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="game">
+						<div class="topic">
+							<p>CHESS</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Winner</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="game">
+						<div class="topic">
+							<p>CRICKET</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Winner</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="game">
+						<div class="topic">
+							<p>THROW BALL</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Winner</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="game">
+						<div class="topic">
+							<p>VOLLEY BALL</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Winner</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!-- Live Scores End-->
+			
+			<div id="madeWith">Made with <img src ="webStuff/default/images/heart-icon.png" height = "19px" width = "19px"></img> in Bean Bag Room, Lister Technologies, India.</div>
+		</div>
+		<!-- /scroller-inner -->
+	</div>
+	<!-- /scroller -->
+	<!-- /pusher -->
+	<!-- /container -->
+	<script>
+		new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
+	</script>
+</body>
+</html>
