@@ -202,20 +202,26 @@ a {
 	margin-left: 92%;
 }
 
-.my-icon {
+.my-menu-icon {
 height:30px;
 width:30px;
 float:right;
 }
 
 #heroes-persist{
-	font-size: 20px;
+	margin-top: 10px;
+	font-size: 30px;
 	font-weight: bold;
 	text-transform: capitalize;
 }
 
 #about-header{
 	display: block-inline;
+}
+
+.my-icon{
+	height:50px;
+	width:50px;
 }
 
 /* BOOTSTRAP START */

@@ -488,32 +488,6 @@ setInterval(function(){loginCheck();},10000);
 	
 	/* Game frame functions */
 	function game(option) {
-	/* 	var xmlhttp;
-		if (window.XMLHttpRequest) {
-			xmlhttp = new XMLHttpRequest();
-		} else {
-			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.onreadystatechange = function() {
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				gamesArray[gamesArray.length-1] = false;
-			}
-			else if(xmlhttp.readyState == 4 && xmlhttp.status == 400){
-				vex.dialog.alert(xmlhttp.responseText);
-			}
-			else if(xmlhttp.readyState == 4 && xmlhttp.status == 404){
-				vex.dialog.alert("Give all the details required to process");
-			}
-		}
-		if (option == "add") {
-			xmlhttp.open("POST", "http://" + HOST_AND_PORT + "/Sports/webservice/add/game/" + document.getElementById("game-name").value + "/" + document.getElementById("game-category").value + "/" + document.getElementById("game-no-of-players").value, true);
-		} else if (option == "modify") {
-			xmlhttp.open("GET", "http://" + HOST_AND_PORT + "/Sports/webservice/modify/game/" + document.getElementById("game-id").value + "/"	+ document.getElementById("game-name").value + "/" + document.getElementById("game-category").value + "/" + document.getElementById("game-no-of-players").value, true);
-		} else if (option == "delete") {
-			xmlhttp.open("DELETE", "http://" + HOST_AND_PORT + "/Sports/game/" + document.getElementById("game-id").value, true);
-		}
-		xmlhttp.send();
-	 */	
 		if(option == "add"){
 			$.ajax({
 				type:"post",
@@ -521,13 +495,12 @@ setInterval(function(){loginCheck();},10000);
 				dataType:'json',
 				contentType:'application/json',
 				data:JSON.stringify({"name":document.getElementById("game-name").value,"category":document.getElementById("game-category").value,"noPlayers":document.getElementById("game-no-of-players").value}),
-				success:function(){gamesArray[gamesArray.length-1] = false;},
+				success:function(){gamesArray[gamesArray.length-1] = false; vex.dialog.alert("Game successfully added");},
 				error:function(xhr){
 					if(xhr.status==404){
 						vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");
 					}
 					else{
-						
 						vex.dialog.alert(xhr.responseText);
 					}
 				}
@@ -540,7 +513,7 @@ setInterval(function(){loginCheck();},10000);
 				dataType:'json',
 				contentType:'application/json',
 				data:JSON.stringify({"name":document.getElementById("game-name").value,"category":document.getElementById("game-category").value,"noPlayers":document.getElementById("game-no-of-players").value}),
-				success:function(){gamesArray[gamesArray.length-1] = false;},
+				success:function(){gamesArray[gamesArray.length-1] = false; vex.dialog.alert("Game successfully modified");},
 				error:function(xhr){
 					if(xhr.status==404){
 						vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");
@@ -555,7 +528,7 @@ setInterval(function(){loginCheck();},10000);
 			$.ajax({
 				type:"delete",
 				url:"http://" + HOST_AND_PORT + "/Sports/api/games/" + document.getElementById("game-id").value,
-				success:function(){gamesArray[gamesArray.length-1] = false;},
+				success:function(){gamesArray[gamesArray.length-1] = false; vex.dialog.alert("Game successfully deleted");},
 				error:function(xhr){
 					if(xhr.status==404){
 						vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");
@@ -570,32 +543,6 @@ setInterval(function(){loginCheck();},10000);
 
 	/* Employee frame functions */
 	function employee(option) {
-		/* var xmlhttp;
-		if (window.XMLHttpRequest) {
-			xmlhttp = new XMLHttpRequest();
-		} else {
-			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.onreadystatechange = function() {
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				playersArray[playersArray.length-1] = false;
-			}
-			else if(xmlhttp.readyState == 4 && xmlhttp.status == 400){
-				vex.dialog.alert(xmlhttp.responseText);
-			}
-			else if(xmlhttp.readyState == 4 && xmlhttp.status == 404){
-				vex.dialog.alert("Give all the details required to process");
-			}
-		}
-		if (option == "add") {
-			xmlhttp.open("GET", "http://" + HOST_AND_PORT + "/Sports/webservice/modify/player/admin/" + document.getElementById("employee-id").value + "/" + document.getElementById("employee-name").value + "/"	+ document.getElementById("employee-email").value + "/"	+ playerGames, true);
-		} else if (option == "modify") {
-			xmlhttp.open("GET", "http://" + HOST_AND_PORT + "/Sports/webservice/modify/player/admin/" + document.getElementById("player-id").value + "/" + document.getElementById("employee-name").value + "/"	+ document.getElementById("employee-email").value+ "/"	+ playerGames, true);
-		} else if (option == "delete") {
-			xmlhttp.open("GET", "http://" + HOST_AND_PORT + "/Sports/webservice/delete/player/" + document.getElementById("player-id").value, true);
-		}
-		xmlhttp.send(); */
-		
 		if(option == "add"){
 			var games = new Array();
 			var tempGames = playerGames.split(",")
@@ -610,7 +557,7 @@ setInterval(function(){loginCheck();},10000);
 				dataType: 'json',
 				contentType: 'application/json',
 				data: JSON.stringify({"employeeId":document.getElementById("employee-id").value,"employeeName":document.getElementById("employee-name").value,"employeeEmail":document.getElementById("employee-email").value,"games":games}),
-				success: function(){playersArray[playersArray.length-1] = false;},
+				success: function(){playersArray[playersArray.length-1] = false; vex.dialog.alert("Player successfully added");},
 				error: function(xhr){
 					if(xhr.status==404){
 						vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");
@@ -636,7 +583,7 @@ setInterval(function(){loginCheck();},10000);
 				dataType: 'json',
 				contentType: 'application/json',
 				data: JSON.stringify({"employeeId":document.getElementById("employee-id").value,"employeeName":document.getElementById("employee-name").value,"employeeEmail":document.getElementById("employee-email").value,"games":games}),
-				success: function(){playersArray[playersArray.length-1] = false;},
+				success: function(){playersArray[playersArray.length-1] = false; vex.dialog.alert("Team successfully modified");},
 				error: function(xhr){
 					if(xhr.status==404){
 						vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");
@@ -651,7 +598,7 @@ setInterval(function(){loginCheck();},10000);
 			$.ajax({
 				type:"delete",
 				url:"http://" + HOST_AND_PORT + "/Sports/api/games/" + document.getElementById("game-id").value,
-				success:function(){playersArray[playersArray.length-1] = false;},
+				success:function(){playersArray[playersArray.length-1] = false; vex.dialog.alert("Player successfully deleted");},
 				error:function(xhr){
 					if(xhr.status==404){
 						vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");
@@ -671,32 +618,6 @@ setInterval(function(){loginCheck();},10000);
 
 	/* Team frame functions */
 	function team(option) {
-		/* var xmlhttp;
-		if (window.XMLHttpRequest) {
-			xmlhttp = new XMLHttpRequest();
-		} else {
-			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.onreadystatechange = function() {
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				
-			}
-			else if(xmlhttp.readyState == 4 && xmlhttp.status == 400){
-				vex.dialog.alert(xmlhttp.responseText);
-			}
-			else if(xmlhttp.readyState == 4 && xmlhttp.status == 404){
-				vex.dialog.alert("Give all the details required to process");
-			}
-		}
-		if (option == "add") {
-			xmlhttp.open("GET", "http://" + HOST_AND_PORT + "/Sports/webservice/add/team/" + document.getElementById("team-name").value + "/" + document.getElementById("team-rating").value + "/" + teamPlayers + "/" + document.getElementById("team-game").value + "/" + document.getElementById("team-category").value, true);
-		} else if (option == "modify") {
-			xmlhttp.open("GET", "http://" + HOST_AND_PORT + "/Sports/webservice/modify/team/admin/" + document.getElementById("team-id").value + "/" + document.getElementById("team-name").value + "/" + document.getElementById("team-rating").value + "/" + teamPlayers , true);
-		} else if (option == "delete") {
-			xmlhttp.open("GET", "http://" + HOST_AND_PORT + "/Sports/webservice/delete/team/" + document.getElementById("team-id").value, true);
-		}
-		xmlhttp.send(); */
-		
 		if(option == "add"){
 			var players = new Array();
 			var tempPlayers = teamPlayers.split(",");
@@ -710,7 +631,7 @@ setInterval(function(){loginCheck();},10000);
 				dataType: 'json',
 				contentType: 'application/json',
 				data: JSON.stringify({"name":document.getElementById("team-name").value,"rating":document.getElementById("team-rating").value,"score":0,"round":0,"show":false,"players":players,"game":{"gameName":document.getElementById("team-game").value,"gameCategory":document.getElementById("team-category").value}}),
-				success: function(){},
+				success: function(){vex.dialog.alert("Team successfully added");},
 				error: function(xhr){
 					if(xhr.status==404){
 						vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");
@@ -735,7 +656,7 @@ setInterval(function(){loginCheck();},10000);
 				dataType: 'json',
 				contentType: 'application/json',
 				data: JSON.stringify({"name":document.getElementById("team-name").value,"rating":document.getElementById("team-rating").value,"score":0,"round":0,"show":false,"players":players,"game":{"gameName":document.getElementById("team-game").value,"gameCategory":document.getElementById("team-category").value}}),
-				success: function(){},
+				success: function(){vex.dialog.alert("Team successfully modified");},
 				error: function(xhr){
 					if(xhr.status==404){
 						vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");
@@ -750,7 +671,7 @@ setInterval(function(){loginCheck();},10000);
 			$.ajax({
 				type: "delete",
 				url: "http://" + HOST_AND_PORT + "/Sports/api/teams/" + document.getElementById("team-id").value,
-				success: function(){},
+				success: function(){vex.dialog.alert("Team successfully deleted");},
 				error: function(xhr){
 					if(xhr.status==404){
 						vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");
@@ -770,31 +691,6 @@ setInterval(function(){loginCheck();},10000);
 
 	/* Match frame functions */
 	function match(option) {
-		/* var xmlhttp;
-		if (window.XMLHttpRequest) {
-			xmlhttp = new XMLHttpRequest();
-		} else {
-			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.onreadystatechange = function() {
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			}
-			else if(xmlhttp.readyState == 4 && xmlhttp.status == 400){
-				vex.dialog.alert(xmlhttp.responseText);
-			}
-			else if(xmlhttp.readyState == 4 && xmlhttp.status == 404){
-				vex.dialog.alert("Give all the details required to process");
-			}
-		}
-		if (option == "add") {
-			xmlhttp.open("GET", "http://" + HOST_AND_PORT + "/Sports/webservice/add/match/" + document.getElementById("match-game").value + "/"	+ document.getElementById("match-category").value + "/"	+ matchTeams + "/" + document.getElementById("match-round").value + "/" + document.getElementById("match-time").value + "/" + document.getElementById("match-location").value + "/" + document.getElementById("match-status").value + "/" + "-" + "/" + "-" + "/" + document.getElementById("match-show").value, true);
-		} else if (option == "modify") {
-			xmlhttp.open("GET", "http://" + HOST_AND_PORT + "/Sports/webservice/modify/match/admin/" + document.getElementById("match-id").value + "/" + matchTeams + "/" + document.getElementById("match-round").value + "/" + document.getElementById("match-time").value + "/" + document.getElementById("match-location").value + "/" + document.getElementById("match-status").value + "/" + document.getElementById("match-winner").value + "/" + document.getElementById("match-score").value , true);
-		} else if (option == "delete") {
-			xmlhttp.open("GET", "http://" + HOST_AND_PORT + "/Sports/webservice/delete/match/" + document.getElementById("match-id").value, true);
-		}
-		xmlhttp.send(); */
-		
 		if(option == "add"){
 			var teams = new Array();
 			var tempTeams = matchTeams.split(",");
@@ -808,7 +704,7 @@ setInterval(function(){loginCheck();},10000);
 				dataType: 'json',
 				contentType: 'application/json',
 				data: JSON.stringify({"game":{"gameName":document.getElementById("match-game").value,"gameCategory":document.getElementById("match-category").value},"teams":teams,"round":document.getElementById("match-round").value,"scheduledTime":document.getElementById("match-time").value,"location":document.getElementById("match-location").value,"status":document.getElementById("match-status").value,"winner":document.getElementById("match-winner").value,"score":document.getElementById("match-score").value,"show":document.getElementById("match-show").value}),
-				success: function(){},
+				success: function(){vex.dialog.alert("Match successfully added");},
 				error: function(xhr){
 					if(xhr.status==404){
 						vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");
@@ -833,7 +729,7 @@ setInterval(function(){loginCheck();},10000);
 				dataType: 'json',
 				contentType: 'application/json',
 				data: JSON.stringify({"game":{"gameName":document.getElementById("match-game").value,"gameCategory":document.getElementById("match-category").value},"teams":teams,"round":document.getElementById("match-round").value,"scheduledTime":document.getElementById("match-time").value,"location":document.getElementById("match-location").value,"status":document.getElementById("match-status").value,"winner":document.getElementById("match-winner").value,"score":document.getElementById("match-score").value,"show":document.getElementById("match-show").value}),
-				success: function(){},
+				success: function(){vex.dialog.alert("Match successfully modified");},
 				error: function(xhr){
 					if(xhr.status==404){
 						vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");
@@ -848,7 +744,7 @@ setInterval(function(){loginCheck();},10000);
 			$.ajax({
 				type: "delete",
 				url: "http://" + HOST_AND_PORT + "/Sports/api/matches/" + document.getElementById("match-id").value,
-				success: function(){},
+				success: function(){vex.dialog.alert("Match successfully deleted");},
 				error: function(xhr){
 					if(xhr.status==404){
 						vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");

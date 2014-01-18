@@ -34,6 +34,7 @@
 		data: JSON.stringify({"page":"index.html"})
 	});
 	
+	setTimeout(function(){vex.dialog.alert("Your Feedback is valuable.<br>See About page for more details");},1000);
 	setTimeout(function(){clearAll()},1000);
 	setTimeout(function(){teamsAjaxCall()},1000);
 	setTimeout(function(){matchAjaxCall()},1000);
@@ -49,7 +50,6 @@
 	}
 	
 	function matchAjaxCall() {
-		
 		$.ajax({
 			url: 'http://'+ HOST_AND_PORT +'/Sports/api/matches?showCriteria=true',
 			type: 'get',
@@ -68,7 +68,6 @@
 	}
 	
 	function teamsAjaxCall() {
-		
 		$.ajax({
 			url: 'http://'+ HOST_AND_PORT +'/Sports/api/games/teams?gameName=PageTurnerzQuiz&gameCategory=NotApplicable&showCriteria=true',
 			type: 'get',
@@ -433,13 +432,13 @@
 			<div class="mp-level">
 				<h2><img src="webStuff/default/images/icon.png" height="80px" width="80px"></img>Menu</h2>
 				<ul>
-					<li><a class="icon" href="index.html">Live Scores<img src="webStuff/default/images/livescores-icon.png" class="my-icon"/></a></li>
-					<li class="icon icon-arrow-left"><a class="icon"href="#">Full Scores<img src="webStuff/default/images/fullscores-icon.png" class="my-icon"/></a>
+					<li><a class="icon" href="index.html">Live Scores<img src="webStuff/default/images/livescores-icon.png" class="my-menu-icon"/></a></li>
+					<li class="icon icon-arrow-left"><a class="icon"href="#">Full Scores<img src="webStuff/default/images/fullscores-icon.png" class="my-menu-icon"/></a>
 						<div class="mp-level">
 							<h2 class="icon icon-display">Full Scores</h2>
 							<a class="mp-back" href="#">back</a>
 							<ul>
-								<li class="icon icon-arrow-left"><a href="#">Badminton<img src="webStuff/default/images/badminton-icon.png" class="my-icon"/></a>
+								<li class="icon icon-arrow-left"><a href="#">Badminton<img src="webStuff/default/images/badminton-icon.png" class="my-menu-icon"/></a>
 									<div class="mp-level">
 										<h2>Badminton</h2>
 										<a class="mp-back" href="#">back</a>
@@ -450,7 +449,7 @@
 										</ul>
 									</div></li>
 								<li class="icon icon-arrow-left"><a 
-									href="#">Carrom<img src="webStuff/default/images/carrom-icon.png" class="my-icon"/></a>
+									href="#">Carrom<img src="webStuff/default/images/carrom-icon.png" class="my-menu-icon"/></a>
 									<div class="mp-level">
 										<h2>Carrom</h2>
 										<a class="mp-back" href="#">back</a>
@@ -459,16 +458,16 @@
 											<li><a href="fullscores-carrom-doubles.html">Doubles</a></li>
 										</ul>
 									</div></li>
-								<li class="icon"><a href="fullscores-chess-notapplicable.html">Chess<img src="webStuff/default/images/chess-icon.png" class="my-icon"/></a>
+								<li class="icon"><a href="fullscores-chess-notapplicable.html">Chess<img src="webStuff/default/images/chess-icon.png" class="my-menu-icon"/></a>
 								</li>
-								<li class="icon"><a href="fullscores-cricket-notapplicable.html">Cricket<img src="webStuff/default/images/cricket-icon.png" class="my-icon"/></a>
+								<li class="icon"><a href="fullscores-cricket-notapplicable.html">Cricket<img src="webStuff/default/images/cricket-icon.png" class="my-menu-icon"/></a>
 								</li>
-								<li class="icon"><a href="fullscores-throwball-notapplicable.html">Throw Ball<img src="webStuff/default/images/throwball-icon.png" class="my-icon"/></a></li>
-								<li class="icon"><a href="fullscores-volleyball-notapplicable.html">Volley	Ball<img src="webStuff/default/images/volleyball-icon.png" class="my-icon"/></a></li>
-								<li class="icon"><a href="fullscores-pageturnersquiz-notapplicable.html">PageTurnerz Quiz<img src="webStuff/default/images/quiz-icon.png" class="my-icon"/></a></li>
+								<li class="icon"><a href="fullscores-throwball-notapplicable.html">Throw Ball<img src="webStuff/default/images/throwball-icon.png" class="my-menu-icon"/></a></li>
+								<li class="icon"><a href="fullscores-volleyball-notapplicable.html">Volley	Ball<img src="webStuff/default/images/volleyball-icon.png" class="my-menu-icon"/></a></li>
+								<li class="icon"><a href="fullscores-pageturnersquiz-notapplicable.html">PageTurnerz Quiz<img src="webStuff/default/images/quiz-icon.png" class="my-menu-icon"/></a></li>
 							</ul>
 						</div></li>
-					<li><a class="icon" href="about.html">About<img src="webStuff/default/images/about-icon.png" class="my-icon"/></a></li>
+					<li><a class="icon" href="about.html">About<img src="webStuff/default/images/about-icon.png" class="my-menu-icon"/></a></li>
 				</ul>
 			</div>
 		</nav>

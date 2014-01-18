@@ -33,20 +33,6 @@ $.ajax({
 });
 
 function ajaxCall() {
-	/* var xmlhttp;
-	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp = new XMLHttpRequest();
-	} else {// code for IE6, IE5
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			populateTable(xmlhttp.responseText);
-		}
-	}
-	xmlhttp.open("GET","http://"+HOST_AND_PORT+"/Sports/webservice/list/matches/forgame/VolleyBall/NotApplicable",true);
-	xmlhttp.send(); */
-	
 	$.ajax({
 		type: 'get',
 		dataType: 'json',
@@ -71,6 +57,7 @@ function populateTable(response) {
 
 	//clear all the records
 	document.getElementsByTagName("tbody")[0].innerHTML = "";
+	document.getElementsByTagName("tbody")[1].innerHTML = "";
 
 	//for every match record
 	for ( var i = 0; i < teams.length; i++) {
@@ -86,8 +73,11 @@ function populateTable(response) {
 		newtd.appendChild(document.createTextNode(teams[i].score));
 		newtr.appendChild(newtd);
 
-		if(teams[i].round == "0"){
+		if(teams[i].round == "2"){
 			document.getElementsByTagName("tbody")[0].appendChild(newtr);
+		}
+		else if(teams[i].round == "1"){
+			document.getElementsByTagName("tbody")[1].appendChild(newtr);
 		}
 		
 	}
@@ -104,13 +94,13 @@ function populateTable(response) {
 			<div class="mp-level">
 				<h2><img src="webStuff/default/images/icon.png" height="80px" width="80px"></img>Menu</h2>
 				<ul>
-					<li><a class="icon" href="index.html">Live Scores<img src="webStuff/default/images/livescores-icon.png" class="my-icon"/></a></li>
-					<li class="icon icon-arrow-left"><a class="icon"href="#">Full Scores<img src="webStuff/default/images/fullscores-icon.png" class="my-icon"/></a>
+					<li><a class="icon" href="index.html">Live Scores<img src="webStuff/default/images/livescores-icon.png" class="my-menu-icon"/></a></li>
+					<li class="icon icon-arrow-left"><a class="icon"href="#">Full Scores<img src="webStuff/default/images/fullscores-icon.png" class="my-menu-icon"/></a>
 						<div class="mp-level">
 							<h2 class="icon icon-display">Full Scores</h2>
 							<a class="mp-back" href="#">back</a>
 							<ul>
-								<li class="icon icon-arrow-left"><a href="#">Badminton<img src="webStuff/default/images/badminton-icon.png" class="my-icon"/></a>
+								<li class="icon icon-arrow-left"><a href="#">Badminton<img src="webStuff/default/images/badminton-icon.png" class="my-menu-icon"/></a>
 									<div class="mp-level">
 										<h2>Badminton</h2>
 										<a class="mp-back" href="#">back</a>
@@ -121,7 +111,7 @@ function populateTable(response) {
 										</ul>
 									</div></li>
 								<li class="icon icon-arrow-left"><a 
-									href="#">Carrom<img src="webStuff/default/images/carrom-icon.png" class="my-icon"/></a>
+									href="#">Carrom<img src="webStuff/default/images/carrom-icon.png" class="my-menu-icon"/></a>
 									<div class="mp-level">
 										<h2>Carrom</h2>
 										<a class="mp-back" href="#">back</a>
@@ -130,16 +120,16 @@ function populateTable(response) {
 											<li><a href="fullscores-carrom-doubles.html">Doubles</a></li>
 										</ul>
 									</div></li>
-								<li class="icon"><a href="fullscores-chess-notapplicable.html">Chess<img src="webStuff/default/images/chess-icon.png" class="my-icon"/></a>
+								<li class="icon"><a href="fullscores-chess-notapplicable.html">Chess<img src="webStuff/default/images/chess-icon.png" class="my-menu-icon"/></a>
 								</li>
-								<li class="icon"><a href="fullscores-cricket-notapplicable.html">Cricket<img src="webStuff/default/images/cricket-icon.png" class="my-icon"/></a>
+								<li class="icon"><a href="fullscores-cricket-notapplicable.html">Cricket<img src="webStuff/default/images/cricket-icon.png" class="my-menu-icon"/></a>
 								</li>
-								<li class="icon"><a href="fullscores-throwball-notapplicable.html">Throw Ball<img src="webStuff/default/images/throwball-icon.png" class="my-icon"/></a></li>
-								<li class="icon"><a href="fullscores-volleyball-notapplicable.html">Volley	Ball<img src="webStuff/default/images/volleyball-icon.png" class="my-icon"/></a></li>
-								<li class="icon"><a href="fullscores-pageturnersquiz-notapplicable.html">PageTurnerz Quiz<img src="webStuff/default/images/quiz-icon.png" class="my-icon"/></a></li>
+								<li class="icon"><a href="fullscores-throwball-notapplicable.html">Throw Ball<img src="webStuff/default/images/throwball-icon.png" class="my-menu-icon"/></a></li>
+								<li class="icon"><a href="fullscores-volleyball-notapplicable.html">Volley	Ball<img src="webStuff/default/images/volleyball-icon.png" class="my-menu-icon"/></a></li>
+								<li class="icon"><a href="fullscores-pageturnersquiz-notapplicable.html">PageTurnerz Quiz<img src="webStuff/default/images/quiz-icon.png" class="my-menu-icon"/></a></li>
 							</ul>
 						</div></li>
-					<li><a class="icon" href="about.html">About<img src="webStuff/default/images/about-icon.png" class="my-icon"/></a></li>
+					<li><a class="icon" href="about.html">About<img src="webStuff/default/images/about-icon.png" class="my-menu-icon"/></a></li>
 				</ul>
 			</div>
 		</nav>
@@ -149,11 +139,12 @@ function populateTable(response) {
 			<!-- this is for emulating position fixed of the nav -->
 			<div class="scroller-inner">
 				<a href="#" id="trigger" class="menu-trigger">Menu<a href="http://www.listertechnologies.com" target="_blank"><img src="webStuff/default/images/logo.png" id="logo"></img></a></a>
+				<div class="livescores">
 					<span class="livescorestag">QUIZ</span>
 
 					<div class="game">
 						<div class="topic">
-							<p>Round 0</p>
+							<p>Round 2</p>
 						</div>
 						<div class="span4">
 							<table class="table table-striped">
@@ -168,6 +159,25 @@ function populateTable(response) {
 							</table>
 						</div>
 					</div>
+					
+					<div class="game">
+						<div class="topic">
+							<p>Round 1</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Team</th>
+										<th>Score</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
 			</div>
 		<!-- /scroller-inner -->
 		

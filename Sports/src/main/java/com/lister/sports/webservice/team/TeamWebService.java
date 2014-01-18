@@ -40,7 +40,7 @@ public class TeamWebService {
 	public Response addTeam(TeamForm teamForm) {
 		int tempId;
 		try{
-			teamForm.getPlayers().remove(0);
+/*			teamForm.getPlayers().remove(0);*/
 			tempId = teamService.addTeam(teamForm);
 		}
 		catch(Exception e){
@@ -132,7 +132,7 @@ public class TeamWebService {
 	public Response modifyTeamFromAdmin(@PathParam("id") int id, TeamForm teamForm) {
 		int tempId;
 		try{
-			teamForm.getPlayers().remove(0);
+			/*teamForm.getPlayers().remove(0);*/
 			tempId = teamService.modifyTeamFromAdmin(id, teamForm);
 		}
 		catch(Exception e){

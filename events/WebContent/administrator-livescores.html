@@ -17,24 +17,6 @@ function loginCheck(){
 			}
 		},
 	});
-	/* var xmlhttp;
-	if(window.XMLHttpRequest){
-		xmlhttp = new XMLHttpRequest();
-	}else{port
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange=function(){
-		if(xmlhttp.readyState==4 && xmlhttp.status==200){
-			if(xmlhttp.responseText=="true"){
-				
-			}
-			else{
-				window.location.assign("login.html");
-			}
-		}
-	}
-		xmlhttp.open("GET","logincheck",true);
-		xmlhttp.send(); */
 }
 
 loginCheck();
@@ -79,20 +61,6 @@ setInterval(function(){loginCheck();},10000);
 	});
 
 	function ajaxCall() {
-		/* var xmlhttp;
-		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp = new XMLHttpRequest();
-		} else {// code for IE6, IE5
-			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.open("GET","http://"+HOST_AND_PORT+"/Sports/webservice/list/allmatches",true);
-		xmlhttp.send();
-		xmlhttp.onreadystatechange = function() {
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				populateTable(xmlhttp.responseText);
-			}
-		} */
-		
 		$.ajax({
 			url: 'http://'+ HOST_AND_PORT +'/Sports/api/matches',
 			type: 'get',
