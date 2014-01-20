@@ -135,10 +135,10 @@ public class TeamDaoImpl implements TeamDao {
 		List<Team> teams;
 		try{
 			if(showCriteria){
-				teams = session.createCriteria(Team.class).add(Restrictions.eq("game.id", game.getId())).add(Restrictions.eq("show", true)).addOrder(Order.desc("score")).list();
+				teams = session.createCriteria(Team.class).add(Restrictions.eq("game.id", game.getId())).add(Restrictions.eq("show", true)).addOrder(Order.desc("score")).setCacheable(true).list();
 			}
 			else{
-				teams = session.createCriteria(Team.class).add(Restrictions.eq("game.id", game.getId())).addOrder(Order.desc("score")).list();
+				teams = session.createCriteria(Team.class).add(Restrictions.eq("game.id", game.getId())).addOrder(Order.desc("score")).setCacheable(true).list();
 			}
 		}
 		catch(HibernateException e){

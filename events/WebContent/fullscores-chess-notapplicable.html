@@ -50,11 +50,10 @@ function ajaxCall() {
 }
 
 ajaxCall();
-setInterval(function(){ajaxCall()},10000);
+setInterval(function(){ajaxCall()},60*1000);
 
 function populateTable(response) {
-	var JSONResponse = JSON.parse(response);
-	var matches = JSONResponse.matches;
+	var matches = response.matches;
 
 	//clear all the records
 	document.getElementsByTagName("tbody")[0].innerHTML = "";

@@ -50,7 +50,7 @@ function ajaxCall() {
 }
 
 ajaxCall();
-setInterval(function(){ajaxCall()},10000);
+setInterval(function(){ajaxCall()},60*1000);
 
 function populateTable(response) {
 	var teams = response.teams;

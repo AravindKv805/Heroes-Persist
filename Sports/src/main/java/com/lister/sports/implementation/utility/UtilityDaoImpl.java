@@ -33,9 +33,7 @@ public class UtilityDaoImpl implements UtilityDao {
 	public Game getGame(String name, String category){
 		Session session = getSession();
 		
-		List<Game> gameList = session.createCriteria(Game.class)
-				.add(Restrictions.eq("name", name))
-				.add(Restrictions.eq("category", category)).list();
+		List<Game> gameList = session.createCriteria(Game.class).add(Restrictions.eq("name", name)).add(Restrictions.eq("category", category)).setCacheable(true).list();
 		
 		if(gameList.size()==1){
 			return gameList.get(0);
@@ -158,8 +156,7 @@ public class UtilityDaoImpl implements UtilityDao {
 	public List<Integer> getGameIds(){
 		Session session = getSession();
 		List<Integer> ids = new ArrayList<Integer>();
-		List<Game> gameList = session.createCriteria(Game.class)
-							  		 .list();
+		List<Game> gameList = session.createCriteria(Game.class).setCacheable(true).list();
 		for(Game game: gameList){
 			ids.add(game.getId());
 		}

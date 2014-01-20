@@ -158,10 +158,10 @@ public class MatchDaoImpl implements MatchDao {
 		List<Match> matches;
 		try{
 			if(showCriteria){
-				matches = session.createCriteria(Match.class).add(Restrictions.in("game.id", utilityDao.getGameIds())).add(Restrictions.eq("show", true)).addOrder(Order.desc("round")).addOrder(Order.asc("id")).list();
+				matches = session.createCriteria(Match.class).add(Restrictions.in("game.id", utilityDao.getGameIds())).add(Restrictions.eq("show", true)).addOrder(Order.desc("round")).addOrder(Order.asc("id")).setCacheable(true).list();
 			}
 			else{
-				matches = session.createCriteria(Match.class).add(Restrictions.in("game.id", utilityDao.getGameIds())).addOrder(Order.desc("round")).addOrder(Order.asc("id")).list();
+				matches = session.createCriteria(Match.class).add(Restrictions.in("game.id", utilityDao.getGameIds())).addOrder(Order.desc("round")).addOrder(Order.asc("id")).setCacheable(true).list();
 			}
 		}catch(HibernateException e){
 			throw e;
@@ -175,7 +175,7 @@ public class MatchDaoImpl implements MatchDao {
 
 	public List<Match> getMatchesByGame(Game game) {
 		Session session = utilityDao.getSession();
-		List<Match> matches = session.createCriteria(Match.class).add(Restrictions.eq("game.id", game.getId())).addOrder(Order.desc("round")).list();
+		List<Match> matches = session.createCriteria(Match.class).add(Restrictions.eq("game.id", game.getId())).addOrder(Order.desc("round")).setCacheable(true).list();
 		return matches;
 	}
 

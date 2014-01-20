@@ -57,7 +57,7 @@ public class GameDaoImpl implements GameDao {
 		Session session = utilityDao.getSession();
 		List<Game> games;
 		try{
-			games = session.createCriteria(Game.class).list();
+			games = session.createCriteria(Game.class).setCacheable(true).list();
 		}
 		catch(HibernateException e){
 			throw e;
