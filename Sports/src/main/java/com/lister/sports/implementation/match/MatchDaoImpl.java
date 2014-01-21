@@ -175,7 +175,13 @@ public class MatchDaoImpl implements MatchDao {
 
 	public List<Match> getMatchesByGame(Game game) {
 		Session session = utilityDao.getSession();
-		List<Match> matches = session.createCriteria(Match.class).add(Restrictions.eq("game.id", game.getId())).addOrder(Order.desc("round")).setCacheable(true).list();
+		List<Match> matches = session.createCriteria(Match.class).add(Restrictions.eq("game.id", game.getId())).addOrder(Order.desc("round")).list();
+		return matches;
+	}
+	
+	public List<Match> getMatchesByGame(Game game, int round) {
+		Session session = utilityDao.getSession();
+		List<Match> matches = session.createCriteria(Match.class).add(Restrictions.eq("round", round)).add(Restrictions.eq("game.id", game.getId())).addOrder(Order.desc("round")).list();
 		return matches;
 	}
 

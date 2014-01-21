@@ -24,5 +24,6 @@ public interface MatchDao {
 	public int modifyMatchFromAdmin(Match match, List<Team> teams,int round, String time, String location, String status, String winner, String score);
 	public List<Match> allMatches(boolean showCriteria);
 	public List<Match> getMatchesByGame(Game game);
+	public List<Match> getMatchesByGame(Game game, int round);
 	
 }

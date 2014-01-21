@@ -122,18 +122,16 @@ public class UtilityDaoImpl implements UtilityDao {
 		return teams;
 	}
 
-	public Match getMatch(Game game, List<Team> teams, int round, List<Match> matches) {
+	public Match getMatch(Game game, List<Team> teams, List<Match> matches) {
 		boolean teamDuplicate = false;
 		for(Match match: matches){
-			if( (match.getGame().getId() == game.getId()) && match.getRound() == round){
-				for(Team team: teams){
-					if(checkTeam(team, matches)){
-						teamDuplicate = true;
-					}
+			for(Team team: teams){
+				if(checkTeam(team, matches)){
+					teamDuplicate = true;
 				}
-				if(teamDuplicate==true){
-					return match;
-				}
+			}
+			if(teamDuplicate==true){
+				return match;
 			}
 		}
 		return null;

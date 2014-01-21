@@ -28,7 +28,7 @@ public interface UtilityDao {
 	public boolean checkPlayers(List<Team> teams ,List<Player> playersList);
 	public boolean checkTeamName(List<Team> teams, String name);
 	public List<Team> getTeams(List<String> teams, List<Team> gameTeams) throws SportsException;
-	public Match getMatch(Game game, List<Team> teams, int round, List<Match> matches);
+	public Match getMatch(Game game, List<Team> teams, List<Match> matches);
 	public Match getMatch(int id);
 	
 	public List<Integer> getGameIds();

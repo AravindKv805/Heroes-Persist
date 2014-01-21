@@ -43,11 +43,11 @@ public class MatchServiceImpl implements MatchService{
 			throw new SportsException("No such game");
 		}
 		List<Team> teams = utilityDao.getTeams(matchForm.getTeams(),teamDao.getTeamsByGame(game,false));
-		List<Match> matches = matchDao.getMatchesByGame(game);
+		List<Match> matches = matchDao.getMatchesByGame(game, matchForm.getRound());
 		for(Match tempMatch : matches){
 			tempMatch.getTeams().size();
 		}
-		Match match = utilityDao.getMatch(game,teams,matchForm.getRound(),matches);
+		Match match = utilityDao.getMatch(game,teams,matches);
 		if(match==null){
 			return matchDao.addMatch(matchForm.getRound(), matchForm.getScheduledTime(), matchForm.getLocation(), matchForm.getStatus(), matchForm.getWinner(), matchForm.getScore(), matchForm.isShow(), teams, game);
 		}
@@ -77,8 +77,8 @@ public class MatchServiceImpl implements MatchService{
 			List<String> teamNames = new ArrayList<String>(1);
 			teamNames.add(teamName);
 			List<Team> teams = utilityDao.getTeams(teamNames,teamDao.getTeamsByGame(match.getGame(),false));
-			List<Match> matches = matchDao.getMatchesByGame(match.getGame());
-			match = utilityDao.getMatch(match.getGame(),teams,match.getRound(),matches);
+			List<Match> matches = matchDao.getMatchesByGame(match.getGame(),match.getRound());
+			match = utilityDao.getMatch(match.getGame(),teams,matches);
 			if(match!=null){
 				if(match.getTeams().size()==2){
 					throw new SportsException("Cannot Add Team, Match already has 2 teams");
