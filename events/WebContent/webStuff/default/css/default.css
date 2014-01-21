@@ -2915,11 +2915,11 @@ border-top-left-radius
 	line-height: 1.428571429;
 	border: 1px solid #73880A;
 	background-color: #73880A;
-	border-radius: 1em 4em 1em 4em;
+	border-radius: 1em;
 	-webkit-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
 	margin-left: 20%;
-	box-shadow: 0px 0px 30px #151515;
+	box-shadow: 0px 10px 10px #151515;
 }
 
 .thumbnail>img {
