@@ -224,7 +224,11 @@ float:right;
 
 #heroes-persist{
 	margin-top: 10px;
+<<<<<<< Updated upstream
 	font-size: 25px;
+=======
+	font-size: 30px;
+>>>>>>> Stashed changes
 	font-weight: bold;
 	text-transform: capitalize;
 }
@@ -238,6 +242,7 @@ float:right;
 	width:50px;
 }
 
+<<<<<<< Updated upstream
 #feedback{
 	z-index: 100;
 	height:50px;
@@ -260,6 +265,8 @@ float:right;
 	color: #FFFFFF;
 }
 
+=======
+>>>>>>> Stashed changes
 /* BOOTSTRAP START */
 table {
 	max-width: 100%;
