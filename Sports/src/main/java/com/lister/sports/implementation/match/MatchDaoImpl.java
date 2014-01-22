@@ -176,11 +176,7 @@ public class MatchDaoImpl implements MatchDao {
 		List<Match> matches;
 		try{
 			if(showCriteria){
-<<<<<<< Updated upstream
 				matches = session.createCriteria(Match.class).add(Restrictions.in("game.id", utilityDao.getGameIds())).add(Restrictions.eq("show", true)).addOrder(Order.desc("round")).addOrder(Order.asc("id")).setCacheable(true).list();
-=======
-				matches = session.createCriteria(Match.class).add(Restrictions.in("game.id", utilityDao.getGameIds())).add(Restrictions.eq("show", true)).addOrder(Order.desc("round")).addOrder(Order.asc("id")).list();
->>>>>>> Stashed changes
 			}
 			else{
 				matches = session.createCriteria(Match.class).add(Restrictions.in("game.id", utilityDao.getGameIds())).addOrder(Order.desc("round")).addOrder(Order.asc("id")).setCacheable(true).list();
