@@ -16,38 +16,28 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.lister.sports.dto;
+package com.lister.sports.webservice.feedback;
 
 /**
  * @author Sai Pranav
  *
  */
-public class PlayerModel {
+public class FeedbackForm {
+
+	private String email;
+	private String feed;
 	
-	private int employeeId;
-	
-	public PlayerModel(PlayerModelBuilder playerModelBuilder){
-		this.employeeId = playerModelBuilder.employeeId;
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getFeed() {
+		return feed;
+	}
+	public void setFeed(String feed) {
+		this.feed = feed;
 	}
 	
-	public int getEmployeeId(){
-		return employeeId;
-	}
-	
-	public void setEmployeeId(int employeeId){
-		this.employeeId = employeeId;
-	}
-	
-	public static class PlayerModelBuilder{
-		
-		private int employeeId;
-		
-		public PlayerModelBuilder(int employeeId){
-			this.employeeId = employeeId;
-		}
-		
-		public PlayerModel build(){
-			return new PlayerModel(this);
-		}
-	}
 }

@@ -16,38 +16,37 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.lister.sports.dto;
+package com.lister.sports.implementation.feedback;
+
+import org.hibernate.HibernateException;
+import org.hibernate.classic.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.lister.sports.interfaces.feedback.FeedbackDao;
+import com.lister.sports.interfaces.utility.UtilityDao;
+import com.lister.sports.model.Feedback;
 
 /**
  * @author Sai Pranav
  *
  */
-public class PlayerModel {
+
+@Repository
+public class FeedbackDaoImpl implements FeedbackDao{
+
+	@Autowired
+	UtilityDao utilityDao;
 	
-	private int employeeId;
-	
-	public PlayerModel(PlayerModelBuilder playerModelBuilder){
-		this.employeeId = playerModelBuilder.employeeId;
-	}
-	
-	public int getEmployeeId(){
-		return employeeId;
-	}
-	
-	public void setEmployeeId(int employeeId){
-		this.employeeId = employeeId;
-	}
-	
-	public static class PlayerModelBuilder{
-		
-		private int employeeId;
-		
-		public PlayerModelBuilder(int employeeId){
-			this.employeeId = employeeId;
+	public int recordFeedback(Feedback feedback) {
+		Session session = utilityDao.getSession();
+		try {
+			session.save(feedback);
+		}catch(HibernateException e){
+			e.printStackTrace();
+			throw e;
 		}
-		
-		public PlayerModel build(){
-			return new PlayerModel(this);
-		}
+		return feedback.getId();
 	}
+
 }

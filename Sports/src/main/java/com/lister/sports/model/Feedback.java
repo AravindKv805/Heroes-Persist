@@ -18,8 +18,6 @@
 */
 package com.lister.sports.model;
 
-import java.sql.Timestamp;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,47 +31,50 @@ import org.hibernate.annotations.GenericGenerator;
  *
  */
 @Entity
-@Table(name="monitor")
-public class Monitor {
+@Table(name="feedback")
+public class Feedback {
 
 	@Id
-	@GenericGenerator(name="monitor_seq_gen" , strategy="increment")
-	@GeneratedValue(generator="monitor_seq_gen")
+	@GenericGenerator(name="feedback_seq_gen" , strategy="increment")
+	@GeneratedValue(generator="feedback_seq_gen")
 	@Column(name = "id")
 	private int id;
 	
-	@Column(name = "ip_address")
-	private String ipAddress;
+	@Column(name = "email")
+	private String email;
 	
-	@Column(name = "page")
-	private String page;
+	@Column(name = "feed")
+	private String feed;
 	
-	@Column(name = "timestamp")
-	private Timestamp Timestamp;
+	public Feedback(){}
+	
+	public Feedback(String email, String feed){
+		this.email = email;
+		this.feed = feed;
+	}
 	
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getIpAddress() {
-		return ipAddress;
+
+	public String getEmail() {
+		return email;
 	}
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public String getPage() {
-		return page;
+
+	public String getFeed() {
+		return feed;
 	}
-	public void setPage(String page) {
-		this.page = page;
-	}
-	public Timestamp getTimestamp() {
-		return Timestamp;
-	}
-	public void setTimestamp(Timestamp timestamp) {
-		Timestamp = timestamp;
+
+	public void setFeed(String feed) {
+		this.feed = feed;
 	}
 	
 }

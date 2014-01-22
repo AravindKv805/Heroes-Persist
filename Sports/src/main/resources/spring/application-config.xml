@@ -31,6 +31,7 @@
 				<value>com.lister.sports.model.Player</value>
 				<value>com.lister.sports.model.Team</value>
 				<value>com.lister.sports.model.Monitor</value>
+				<value>com.lister.sports.model.Feedback</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

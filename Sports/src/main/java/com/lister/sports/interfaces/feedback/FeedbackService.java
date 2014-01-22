@@ -16,38 +16,19 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.lister.sports.dto;
+package com.lister.sports.interfaces.feedback;
+
+import org.hibernate.HibernateException;
+
+import com.lister.sports.exception.SportsException;
+import com.lister.sports.webservice.feedback.FeedbackForm;
 
 /**
  * @author Sai Pranav
  *
  */
-public class PlayerModel {
+public interface FeedbackService {
+
+	public int recordFeedback(FeedbackForm feedbackForm) throws SportsException, HibernateException;
 	
-	private int employeeId;
-	
-	public PlayerModel(PlayerModelBuilder playerModelBuilder){
-		this.employeeId = playerModelBuilder.employeeId;
-	}
-	
-	public int getEmployeeId(){
-		return employeeId;
-	}
-	
-	public void setEmployeeId(int employeeId){
-		this.employeeId = employeeId;
-	}
-	
-	public static class PlayerModelBuilder{
-		
-		private int employeeId;
-		
-		public PlayerModelBuilder(int employeeId){
-			this.employeeId = employeeId;
-		}
-		
-		public PlayerModel build(){
-			return new PlayerModel(this);
-		}
-	}
 }

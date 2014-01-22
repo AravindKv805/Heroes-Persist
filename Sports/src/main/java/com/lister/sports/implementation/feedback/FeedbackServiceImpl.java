@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.lister.sports.implementation.monitor;
+package com.lister.sports.implementation.feedback;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -27,10 +27,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lister.sports.exception.SportsException;
-import com.lister.sports.interfaces.monitor.MonitorDao;
-import com.lister.sports.interfaces.monitor.MonitorService;
-import com.lister.sports.model.Monitor;
-import com.lister.sports.webservice.monitor.MonitorForm;
+import com.lister.sports.interfaces.feedback.FeedbackDao;
+import com.lister.sports.interfaces.feedback.FeedbackService;
+import com.lister.sports.model.Feedback;
+import com.lister.sports.webservice.feedback.FeedbackForm;
 
 /**
  * @author Sai Pranav
@@ -39,17 +39,16 @@ import com.lister.sports.webservice.monitor.MonitorForm;
 
 @Component
 @Transactional
-public class MonitorServiceImpl implements MonitorService {
+public class FeedbackServiceImpl implements FeedbackService{
 
 	@Autowired
-	MonitorDao monitorDao;
+	FeedbackDao feedbackDao;
 	
-	public int recordPageHit(String ipAddress, MonitorForm monitorForm) throws SportsException, HibernateException{
-		Monitor monitor = new Monitor();
-		monitor.setIpAddress(ipAddress);
-		monitor.setPage(monitorForm.getPage());
-		monitor.setTimestamp(new Timestamp(new Date().getTime()));
-		return monitorDao.recordPageHit(monitor);
+	public int recordFeedback(FeedbackForm feedbackForm) throws SportsException, HibernateException{
+		Feedback feedback = new Feedback();
+		feedback.setEmail(feedbackForm.getEmail());
+		feedback.setFeed(feedbackForm.getFeed());
+		return feedbackDao.recordFeedback(feedback);
 	}
 
 }

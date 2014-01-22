@@ -16,29 +16,44 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.lister.sports.exception;
+package com.lister.sports.webservice.feedback;
 
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.lister.sports.exception.RESTException;
+import com.lister.sports.interfaces.feedback.FeedbackService;
+
 /**
- * Custom javax.ws.rs exception for throwing Sports Exceptions.
- * 
  * @author Sai Pranav
  *
  */
+@Component
+@Path("/feedback")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public class FeedbackWebService {
 
-public class RESTException extends WebApplicationException{
+	@Autowired
+	FeedbackService feedbackService;
 	
-	public RESTException(){
-		super(Response.status(Response.Status.BAD_REQUEST)
-	             .entity("Sports Exception").type(MediaType.TEXT_PLAIN).build());
-	}
-	
-	public RESTException(String message){
-		super(Response.status(Response.Status.BAD_REQUEST)
-	             .entity(message).type(MediaType.TEXT_PLAIN).build());
+	@POST
+	public Response recordPageHits(FeedbackForm feedbackForm){
+		int tempId;
+		try{
+			tempId = feedbackService.recordFeedback(feedbackForm);
+		}
+		catch(Exception e){
+			throw new RESTException(e.getMessage());
+		}
+		return Response.status(200).entity(tempId).build();
 	}
 	
 }

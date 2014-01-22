@@ -1,5 +1,23 @@
 <!DOCTYPE html>
 <html>
+<!-- Heroes Persist
+    Product which helps in organizing, broadcasting, celebrating events
+    Copyright (C) 2014  Sai Pranav
+    Email: rsaipranav92@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
 <head>
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,18 +28,43 @@
 <link rel="stylesheet" type="text/css" href="webStuff/Menu/css/icons.css" />
 <link rel="stylesheet" type="text/css" href="webStuff/Menu/css/component.css" />
 <link href="webStuff/default/css/default.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="webStuff/vex/css/vex.css" />
+<link rel="stylesheet" href="webStuff/vex/css/vex-theme-os.css" />
 <script src="webStuff/jquery/jquery-2.0.3.js"></script>
 <script src="webStuff/bootstrap/js/bootstrap.min.js"></script>
 <script src="webStuff/Menu/js/modernizr.custom.js"></script>
 <script src="webStuff/Menu/js/classie.js"></script>
 <script src="webStuff/Menu/js/mlpushmenu.js"></script>
 <script src="webStuff/airport-text/jquery.airport-text.js"></script>
+<script src="webStuff/vex/js/vex.combined.min.js"></script>
+<script>vex.defaultOptions.className = 'vex-theme-os';</script>
 
 <title>::: About Heroes Persist :::</title>
 <script>
+	var HOST_AND_PORT = "10.106.50.32:8080";
+	$.ajax({
+		url: 'http://'+ HOST_AND_PORT +'/Sports/api/monitor',
+		type: 'post',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: JSON.stringify({"page":"about.html"})
+	});
+	
 	$(document).ready(function() {
 		$("#joinspan").hide();
 		$("#futurespan").hide();
+		setInterval(function(){
+			if($("#feedback").hasClass("down")){
+				$("#feedback").animate({marginTop:'+=10px'});
+				$("#feedback").removeClass("down");
+				$("#feedback").addClass("up");
+			}
+			else{
+				$("#feedback").animate({marginTop:'-=10px'});
+				$("#feedback").removeClass("up");
+				$("#feedback").addClass("down");
+			}
+		}, 250);
 	});
 
 	$(document).ready(function() {
@@ -33,15 +76,29 @@
 			$("#futurespan").animate({ height:'toggle'});
 			$("#joinspan").animate({ height:'hide'});
 		});
-	});
-	
-	var HOST_AND_PORT = "10.106.50.32:8080";
-	$.ajax({
-		url: 'http://'+ HOST_AND_PORT +'/Sports/api/monitor',
-		type: 'post',
-		dataType: 'json',
-		contentType: 'application/json',
-		data: JSON.stringify({"page":"about.html"})
+		$("#feedback>.close").click(function(){
+			$(".alert").alert("close");
+		});
+		$("#feedback").click(function(){
+			vex.dialog.open({
+				message: 'Thank you for your time and effort',
+				input: '<input name="feedback_email" class="form-control" placeholder="Email Address"></input><textarea name="feedback_feed" class="form-control" placeholder="Feed Here"></textarea>',
+				callback: function(data){
+					if(data.feedback_feed == ""){
+						vex.dialog.alert("You can submit feedback as anonymous but not as blank feed.");
+					}
+					else{
+						$.ajax({
+							url: 'http://'+ HOST_AND_PORT +'/Sports/api/feedback',
+							type: 'post',
+							dataType: 'json',
+							contentType: 'application/json',
+							data: JSON.stringify({"email":data.feedback_email, "feed":data.feedback_feed})
+						});
+					}
+				}
+			});
+		});
 	});
 	
 </script>
@@ -100,7 +157,11 @@
 			<div class="scroller-inner">
 
 				<a href="#" id="trigger" class="menu-trigger">Menu<a href="http://www.listertechnologies.com" target="_blank"><img src="webStuff/default/images/logo.png" id="logo"></img></a></a>
-
+				
+				<div id="feedback" class="alert down">
+					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+					<p>Your feedback is valuable.</p>
+				</div>
 				<div class="linkcontainer">
 					<p id="about-header"><img src="webStuff/default/images/icon.png" class="my-icon"><span id="heroes-persist"></span>&nbsp;&nbsp;V 1<b>.</b>0</p><hr>
 					<p>Welcome!<br><br>This sports portal was specially created with an interest to automate the procedures involved in organizing a Events like Sports Meet which comprises team registrations, generation of fixtures and score updation. To Minimize manual work! We are proud to create something useful by applying what we know. We try to follow the best practices to stand as a best example. Go on, be a sport and participate!</p>
