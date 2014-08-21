@@ -18,6 +18,8 @@
 */
 package com.lister.sports.webservice.team;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -164,6 +166,17 @@ public class TeamWebService {
 	public PlayerWrapper getPlayersByTeam(@PathParam("teamid") int teamId) {
 		try{
 			return DTOUtility.createPlayerWrapper(playerService.getPlayersByTeam(teamId));
+		}
+		catch(Exception e){
+			throw new RESTException(e.getMessage());
+		}
+	}
+	
+	@GET
+	@Path("{teamid}/playeremails")
+	public List<String> getPlayersEmailsByTeam(@PathParam("teamid") int teamId) {
+		try{
+			return playerService.getPlayerEmails(teamId);
 		}
 		catch(Exception e){
 			throw new RESTException(e.getMessage());

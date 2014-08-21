@@ -41,6 +41,7 @@ public interface PlayerService {
 	public int modifyPlayerFromAdmin(int employeeId, PlayerForm playerForm) throws SportsException, HibernateException;
 
 	public List<Player> getPlayers();
+	public List<String> getPlayerEmails(int teamId) throws SportsException, HibernateException;
 	public List<Player> getPlayersByTeam(int teamId) throws SportsException, HibernateException;
 	public List<Player> getPlayersByGame(String gameName, String gameCategory) throws SportsException, HibernateException;
 }

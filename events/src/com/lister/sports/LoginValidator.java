@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 public class LoginValidator extends HttpServlet{
 
 	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse res){
+	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		
 		HttpSession session;
 		String host = "10.106.50.32";
@@ -42,18 +42,10 @@ public class LoginValidator extends HttpServlet{
 			session=req.getSession(true);
 			session.setAttribute("role", "admin");
 			session.setMaxInactiveInterval(60);
-			try {
-				req.getRequestDispatcher("administrator-livescores.html").forward(req, res);
-			} catch (ServletException | IOException e) {
-				e.printStackTrace();
-			}
+			req.getRequestDispatcher("administrator-livescores.html").forward(req, res);
 		}
 		else{
-			try {
-				req.getRequestDispatcher("loginerror.html").forward(req, res);
-			} catch (ServletException | IOException e) {
-				e.printStackTrace();
-			}
+			req.getRequestDispatcher("loginerror.html").forward(req, res);
 		}
 	}
 }

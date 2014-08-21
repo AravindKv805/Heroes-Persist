@@ -90,20 +90,38 @@ setInterval(function(){loginCheck();},60*1000);
 		$.ajax({
 			type: 'get',
 			dataType: 'json',
-			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=PageTurnerzQuiz&gameCategory=NotApplicable&showCriteria=false",
-			success:function(data){populateTable(data)},
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=Carrom&gameCategory=Singles&showCriteria=false",
+			success:function(data){populateTable(data,"Carrom")},
 			error:function(xhr){
 				vex.dialog.alert(xhr.responseText);
 			}
 		});
+		
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=BasketBall&gameCategory=NotApplicable&showCriteria=false",
+			success:function(data){populateTable(data,"BasketBall")},
+			error:function(xhr){
+				vex.dialog.alert(xhr.responseText);
+			}
+		});
+		
 	}
 
 	ajaxCall();
 
-	function populateTable(response) {
+	function populateTable(response,game) {
+		var index = 0;
+		if(game == "Carrom"){
+			index = 0;
+		}
+		if(game == "BasketBall"){
+			index = 1;
+		}
 		var teams = response.teams;
 		//clear all the records
-		document.getElementsByTagName("tbody")[0].innerHTML = "";
+		document.getElementsByTagName("tbody")[index].innerHTML = "";
 
 		//for every team record
 		for ( var i = 0; i < teams.length; i++) {
@@ -148,10 +166,19 @@ setInterval(function(){loginCheck();},60*1000);
 			}
 			newtd.appendChild(newbutton);
 			newtr.appendChild(newtd);
+			
+			//put email
+			var newtd = document.createElement("td");
+			var newimg = document.createElement("img");
+			newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
+			newimg.setAttribute("onclick","email("+teams[i].teamId+",event);");
+			newimg.setAttribute("class","my-email-icon");
+			newtd.appendChild(newimg);
+			newtr.appendChild(newtd);
 
 			newtr.setAttribute("id",teams[i].teamId);
 			
-			document.getElementsByTagName("tbody")[0].appendChild(newtr);
+			document.getElementsByTagName("tbody")[index].appendChild(newtr);
 			
 		}
 	}
@@ -290,6 +317,30 @@ function toggleShow(id,button){
 	}
 }
 
+function email(teamId){
+	$.ajax({
+		url: 'http://'+ HOST_AND_PORT +'/Sports/api/teams/'+teamId+'/playeremails',
+		type: 'get',
+		dataType: 'json',
+		contentType: 'application/json',
+		success: function(data){
+			var toField = "";
+			for(var i=0; i<data.length; i++){
+				toField = data[i]+",";
+			}
+			 window.location = "mailto:"+toField;
+		},
+		error: function(xhr){
+			if(xhr.status == 404){
+				vex.dialog.alert("Services not Running");
+			}
+			else{
+				vex.dialog.alert(xhr.responseText);
+			}
+		}
+	});
+}
+
 </script>
 <!-- Table Functions End -->
 
@@ -319,9 +370,9 @@ function toggleShow(id,button){
 				<div class="page-header">Live Scores</div>
 				<!-- Live Scores Starts-->
 				<div class="livescores">
-				<div class="game">
+					<div class="game">
 						<div class="topic">
-							<p>PAGETURNERZ QUIZ</p>
+							<p>CARROM</p>
 						</div>
 						<div class="span4">
 							<table class="table table-striped">
@@ -332,6 +383,7 @@ function toggleShow(id,button){
 										<th>Score</th>
 										<th>Save</th>
 										<th>Show</th>
+										<th>Email</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -339,7 +391,28 @@ function toggleShow(id,button){
 							</table>
 						</div>
 					</div>
+					<div class="game">
+						<div class="topic">
+							<p>BASKETBALL</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Round</th>
+										<th>Team</th>
+										<th>Score</th>
+										<th>Save</th>
+										<th>Show</th>
+										<th>Email</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
 					</div>
+				</div>
 					<!-- Live Scores End-->
 				</div>
 				<!-- /scroller-inner -->

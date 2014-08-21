@@ -33,6 +33,7 @@ import com.lister.sports.interfaces.team.TeamDao;
 import com.lister.sports.interfaces.utility.UtilityDao;
 import com.lister.sports.model.Game;
 import com.lister.sports.model.Match;
+import com.lister.sports.model.Player;
 import com.lister.sports.model.Team;
 import com.lister.sports.webservice.match.MatchForm;
 import com.lister.sports.webservice.match.SimpleMatchForm;
@@ -203,6 +204,26 @@ public class MatchServiceImpl implements MatchService{
 	public List<Match> allMatches(boolean showCriteria) {
 		List<Match> matches = matchDao.allMatches(showCriteria);
 		return matches;
+	}
+	
+	public List<String> playerEmails(int matchId) throws SportsException, HibernateException {
+		Match match = utilityDao.getMatch(matchId);
+		if(match!=null){
+			//return matchDao.playerEmails(match);
+			List<String> emails = new ArrayList<String>();
+			List<Team> teams = match.getTeams();
+			List<Player> players;
+			for(Team team : teams){
+				players = team.getPlayers();
+				for(Player player : players){
+					emails.add(player.getEmployeeEmail());
+				}
+			}
+			return emails;
+		}
+		else{
+			throw new SportsException("Match does not exists");
+		}
 	}
 	
 	public List<Match> getMatchesByGame(String gameName, String gameCategory) throws SportsException, HibernateException{

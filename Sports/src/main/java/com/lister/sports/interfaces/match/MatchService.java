@@ -47,6 +47,7 @@ public interface MatchService {
 	
 	/*List functions*/
 	public List<Match> allMatches(boolean showCriteria);
+	public List<String> playerEmails(int id) throws SportsException, HibernateException;
 	
 	/*Utility functions*/
 	public List<Match> getMatchesByGame(String gameName, String gameCategory) throws SportsException, HibernateException;

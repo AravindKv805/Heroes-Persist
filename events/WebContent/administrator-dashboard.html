@@ -421,6 +421,18 @@ setInterval(function(){loginCheck();},60*1000);
 			break;
 		}
 	}
+
+	function displayList(option){
+	
+		switch(option){
+		
+			case "teams" :
+			
+		
+		}
+	
+
+	}
 	
 	function getPlayerGames(id){
 			$.ajax({
@@ -779,9 +791,44 @@ setInterval(function(){loginCheck();},60*1000);
 		getList("teams");
 		displayDialog("teams");
 	}
+
+	function team_show(){
+		var game = $("#team-game").val();
+		var category = $("#team-category").val();
+
+		if(game!="" && category!="") {
+
+		$.ajax({
+			url: 'http://10.106.50.32:8080/Sports/api/games/teams?gameName='+game+'&gameCategory='+category,
+			type: 'get',
+			dataType: 'json',
+			contentType: 'application/json',
+			success: function(data){
+				showTeams(data);
+			}
+		});
+
+		}
+	
+		else vex.dialog.alert("Enter both game and category!");
+	}
+
+	function showTeams(response){
+		var content = document.createElement("div");
+		var team = response.teams;
+		for(i=0;i<team.length;i++){
+			content.appendChild(document.createElement("br"));
+			content.appendChild(document.createTextNode(team[i].teamId));
+		}
+	
+		
+		vex.open({
+    			content: content,
+  		});
+
+	}
 </script>
 <!-- Script End -->
-<title>::: Heroes Persist Admin Dashboard :::</title>
 </head>
 <body onload="initial();">
 
@@ -857,6 +904,7 @@ setInterval(function(){loginCheck();},60*1000);
 							<option>Cricket</option>
 							<option>ThrowBall</option>
 							<option>VolleyBall</option>
+							<option>BasketBall</option>
 							<option>PageTurnerzQuiz</option>
 						</select>
 						<select id="team-category">
@@ -907,6 +955,7 @@ setInterval(function(){loginCheck();},60*1000);
 							<option>Cricket</option>
 							<option>ThrowBall</option>
 							<option>VolleyBall</option>
+							<option>BasketBall</option>
 							<option>PageTurnerzQuiz</option>
 						</select> <select id="match-category">
 							<option></option>

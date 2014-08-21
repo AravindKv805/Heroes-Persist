@@ -18,6 +18,8 @@
 */
 package com.lister.sports.webservice.match;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -30,12 +32,14 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.lister.sports.dto.MatchWrapper;
 import com.lister.sports.dto.TeamWrapper;
 import com.lister.sports.exception.RESTException;
+import com.lister.sports.exception.SportsException;
 import com.lister.sports.interfaces.match.MatchService;
 import com.lister.sports.interfaces.team.TeamService;
 import com.lister.sports.utility.DTOUtility;
@@ -162,6 +166,17 @@ public class MatchWebService {
 	@GET
 	public MatchWrapper allMatches(@QueryParam("showCriteria") boolean showCriteria) {
 		return DTOUtility.createMatchWrapper(matchService.allMatches(showCriteria));
+	}
+	
+	@GET
+	@Path("/{id}/playeremails")
+	public List<String> playerEmails(@PathParam("id") int id) {
+		try {
+			return matchService.playerEmails(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@GET

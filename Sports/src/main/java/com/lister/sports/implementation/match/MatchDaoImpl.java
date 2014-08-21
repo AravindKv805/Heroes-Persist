@@ -190,7 +190,7 @@ public class MatchDaoImpl implements MatchDao {
 		}
 		return matches;
 	}
-
+	
 	public List<Match> getMatchesByGame(Game game) {
 		Session session = utilityDao.getSession();
 		List<Match> matches = session.createCriteria(Match.class).add(Restrictions.eq("game.id", game.getId())).addOrder(Order.desc("round")).list();

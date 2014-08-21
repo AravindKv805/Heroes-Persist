@@ -25,15 +25,24 @@
 <!-- Login Check Start -->
 <script>
 function loginCheck(){
-	$.ajax({
-		url: 'logincheck',
-		type: 'get',
-		success: function(data){
-			if(data == 'false'){
+	var xmlhttp;
+	if(window.XMLHttpRequest){
+		xmlhttp = new XMLHttpRequest();
+	}else{port
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function(){
+		if(xmlhttp.readyState==4 && xmlhttp.status==200){
+			if(xmlhttp.responseText=="true"){
+				
+			}
+			else{
 				window.location.assign("login.html");
 			}
-		},
-	});
+		}
+	}
+		xmlhttp.open("GET","logincheck",true);
+		xmlhttp.send();
 }
 
 loginCheck();
@@ -188,6 +197,15 @@ setInterval(function(){loginCheck();},60*1000);
 				}
 				newtd.appendChild(newbutton);
 				newtr.appendChild(newtd);
+				
+				//put email
+				var newtd = document.createElement("td");
+				var newimg = document.createElement("img");
+				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
+				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
+				newimg.setAttribute("class","my-email-icon");
+				newtd.appendChild(newimg);
+				newtr.appendChild(newtd);
 
 				newtr.setAttribute("id",matches[i].matchId);
 				
@@ -270,6 +288,15 @@ setInterval(function(){loginCheck();},60*1000);
 				}
 				newtd.appendChild(newbutton);
 				newtr.appendChild(newtd);
+				
+				//put email
+				var newtd = document.createElement("td");
+				var newimg = document.createElement("img");
+				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
+				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
+				newimg.setAttribute("class","my-email-icon");
+				newtd.appendChild(newimg);
+				newtr.appendChild(newtd);
 
 				newtr.setAttribute("id",matches[i].matchId);
 				
@@ -345,6 +372,15 @@ setInterval(function(){loginCheck();},60*1000);
 					newbutton.setAttribute("class","btn btn-warning");
 				}
 				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put email
+				var newtd = document.createElement("td");
+				var newimg = document.createElement("img");
+				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
+				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
+				newimg.setAttribute("class","my-email-icon");
+				newtd.appendChild(newimg);
 				newtr.appendChild(newtd);
 
 				newtr.setAttribute("id",matches[i].matchId);
@@ -422,6 +458,15 @@ setInterval(function(){loginCheck();},60*1000);
 				}
 				newtd.appendChild(newbutton);
 				newtr.appendChild(newtd);
+				
+				//put email
+				var newtd = document.createElement("td");
+				var newimg = document.createElement("img");
+				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
+				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
+				newimg.setAttribute("class","my-email-icon");
+				newtd.appendChild(newimg);
+				newtr.appendChild(newtd);
 
 				newtr.setAttribute("id",matches[i].matchId);
 				
@@ -497,6 +542,15 @@ setInterval(function(){loginCheck();},60*1000);
 					newbutton.setAttribute("class","btn btn-warning");
 				}
 				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put email
+				var newtd = document.createElement("td");
+				var newimg = document.createElement("img");
+				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
+				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
+				newimg.setAttribute("class","my-email-icon");
+				newtd.appendChild(newimg);
 				newtr.appendChild(newtd);
 
 				newtr.setAttribute("id",matches[i].matchId);
@@ -574,10 +628,104 @@ setInterval(function(){loginCheck();},60*1000);
 				}
 				newtd.appendChild(newbutton);
 				newtr.appendChild(newtd);
+				
+				//put email
+				var newtd = document.createElement("td");
+				var newimg = document.createElement("img");
+				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
+				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
+				newimg.setAttribute("class","my-email-icon");
+				newtd.appendChild(newimg);
+				newtr.appendChild(newtd);
 
 				newtr.setAttribute("id",matches[i].matchId);
 				
 				document.getElementsByTagName("tbody")[5].appendChild(newtr);
+
+			} else if (gameOfMatch == "BasketBall") {
+
+				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName1));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put score
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName2));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put round
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].scheduledTime));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put location
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put status
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put winner
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+				
+				//put save
+				newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","save("+matches[i].matchId+",event);");
+				newbutton.setAttribute("class","btn btn-success");
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put show
+				newtd = document.createElement("td");
+				newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","toggleShow("+matches[i].matchId+",this);");
+				if(matches[i].show == false){
+					newbutton.setAttribute("class","btn btn-default");
+				}
+				else{
+					newbutton.setAttribute("class","btn btn-warning");
+				}
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put email
+				var newtd = document.createElement("td");
+				var newimg = document.createElement("img");
+				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
+				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
+				newimg.setAttribute("class","my-email-icon");
+				newtd.appendChild(newimg);
+				newtr.appendChild(newtd);
+
+				newtr.setAttribute("id",matches[i].matchId);
+				
+				document.getElementsByTagName("tbody")[6].appendChild(newtr);
 
 			}
 		}
@@ -729,6 +877,30 @@ function toggleShow(id,button){
 	}
 }
 
+function email(matchId){
+	$.ajax({
+		url: 'http://'+ HOST_AND_PORT +'/Sports/api/matches/'+matchId+'/playeremails',
+		type: 'get',
+		dataType: 'json',
+		contentType: 'application/json',
+		success: function(data){
+			var toField = "";
+			for(var i=0; i<data.length; i++){
+				toField = data[i]+",";
+			}
+			 window.location = "mailto:"+toField;
+		},
+		error: function(xhr){
+			if(xhr.status == 404){
+				vex.dialog.alert("Services not Running");
+			}
+			else{
+				vex.dialog.alert(xhr.responseText);
+			}
+		}
+	});
+}
+
 </script>
 <!-- Table Functions End -->
 
@@ -777,6 +949,7 @@ function toggleShow(id,button){
 										<th>Won By</th>
 										<th>Save</th>
 										<th>Show</th>
+										<th>Email</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -803,6 +976,7 @@ function toggleShow(id,button){
 										<th>Won By</th>
 										<th>Save</th>
 										<th>Show</th>
+										<th>Email</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -828,6 +1002,7 @@ function toggleShow(id,button){
 										<th>Won By</th>
 										<th>Save</th>
 										<th>Show</th>
+										<th>Email</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -853,6 +1028,7 @@ function toggleShow(id,button){
 										<th>Won By</th>
 										<th>Save</th>
 										<th>Show</th>
+										<th>Email</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -878,6 +1054,7 @@ function toggleShow(id,button){
 										<th>Won By</th>
 										<th>Save</th>
 										<th>Show</th>
+										<th>Email</th>
 										</tr>
 								</thead>
 								<tbody>
@@ -903,6 +1080,33 @@ function toggleShow(id,button){
 										<th>Won By</th>
 										<th>Save</th>
 										<th>Show</th>
+										<th>Email</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+					<div class="topic">
+						<p>BASKET BALL</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Won By</th>
+										<th>Save</th>
+										<th>Show</th>
+										<th>Email</th>
 									</tr>
 								</thead>
 								<tbody>

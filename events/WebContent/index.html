@@ -52,7 +52,6 @@
 		data: JSON.stringify({"page":"index.html"})
 	});
 	
-<<<<<<< Updated upstream
 	setTimeout(function(){vex.dialog.alert("<img src='webStuff/default/images/Heroes Persist with tag.png'><br><br>Heroes Persist is a product specially created for organizing events, broadcasting scores, sharing happiness.See About page for more details.<br><br>To view results of all matches go for Full Scores.<br>Your Feedback is valuable.");},0.25*1000);
 	setTimeout(function(){clearAll()},1*1000);
 	setTimeout(function(){teamsAjaxCall()},1*1000);
@@ -98,15 +97,6 @@
 			});
 		});
 	});
-=======
-	setTimeout(function(){vex.dialog.alert("Your Feedback is valuable.<br>See About page for more details");},1000);
-	setTimeout(function(){clearAll()},1000);
-	setTimeout(function(){teamsAjaxCall()},1000);
-	setTimeout(function(){matchAjaxCall()},1000);
-	setInterval(function(){clearAll()},10000);
-	setInterval(function(){teamsAjaxCall()},10000);
-	setInterval(function(){matchAjaxCall()},10000);
->>>>>>> Stashed changes
 
 	function clearAll(){
 		//get the scroll position
@@ -458,6 +448,54 @@
 
 				document.getElementsByTagName("tbody")[6].appendChild(newtr);
 
+			} else if (gameOfMatch == "BasketBall") {
+
+				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName1));
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName2));
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].scheduledTime));
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtr.appendChild(newtd);
+
+				document.getElementsByTagName("tbody")[7].appendChild(newtr);
+
 			}
 		}
 	}
@@ -532,9 +570,11 @@
 								</li>
 								<li class="icon"><a href="fullscores-throwball-notapplicable.html">Throw Ball<img src="webStuff/default/images/throwball-icon.png" class="my-menu-icon"/></a></li>
 								<li class="icon"><a href="fullscores-volleyball-notapplicable.html">Volley	Ball<img src="webStuff/default/images/volleyball-icon.png" class="my-menu-icon"/></a></li>
+								<li class="icon"><a href="fullscores-basketball-notapplicable.html">Basket	Ball<img src="webStuff/default/images/volleyball-icon.png" class="my-menu-icon"/></a></li>
 								<li class="icon"><a href="fullscores-pageturnersquiz-notapplicable.html">PageTurnerz Quiz<img src="webStuff/default/images/quiz-icon.png" class="my-menu-icon"/></a></li>
 							</ul>
 						</div></li>
+					<li><a class="icon" href="registration.html">Register<img src="webStuff/default/images/registration-icon.png" class="my-menu-icon"/></a></li>
 					<li><a class="icon" href="about.html">About<img src="webStuff/default/images/about-icon.png" class="my-menu-icon"/></a></li>
 				</ul>
 			</div>
@@ -700,6 +740,30 @@
 					<div class="game">
 						<div class="topic">
 							<p>VOLLEY BALL</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Winner</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					<div class="game">
+						<div class="topic">
+							<p>BASKET BALL</p>
 						</div>
 						<div class="span4">
 							<table class="table table-striped">

@@ -19,11 +19,13 @@ Servers/
 ## will correctly set the classpath based on the declared dependencies.
 .project
 .classpath
+.metadata
 eclipse-build
 */.project
 */.classpath
 */eclipse-build
 /.settings/
+*/.settings/
 !/.settings/org.eclipse.core.resources.prefs
 !/.settings/org.eclipse.jdt.core.prefs
 !/.settings/org.eclipse.jdt.ui.prefs

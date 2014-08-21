@@ -184,6 +184,21 @@ public class PlayerServiceImpl implements PlayerService{
 	public List<Player> getPlayers(){
 		return playerDao.getPlayers();
 	}
+	
+	public List<String> getPlayerEmails(int teamId) throws SportsException, HibernateException{
+		Team team = utilityDao.getTeam(teamId);
+		if(team!=null){
+			List<String> emails = new ArrayList<String>();
+			List<Player> players = team.getPlayers();
+			for(Player player : players){
+				emails.add(player.getEmployeeEmail());
+			}
+			return emails;
+		}
+		else{
+			throw new SportsException("Team does not exist");
+		}
+	}
 
 	public List<Player> getPlayersByTeam(int teamId) throws SportsException, HibernateException{
 		Team team = utilityDao.getTeam(teamId);
