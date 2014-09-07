@@ -200,7 +200,7 @@
 				newtd.appendChild(document.createTextNode(matches[i].winner));
 				newtr.appendChild(newtd);
 
-				document.getElementsByTagName("tbody")[1].appendChild(newtr);
+				document.getElementsByTagName("tbody")[0].appendChild(newtr);
 
 			} else if (gameOfMatch == "Carrom") {
 
@@ -398,7 +398,7 @@
 				newtd.appendChild(document.createTextNode(matches[i].winner));
 				newtr.appendChild(newtd);
 
-				document.getElementsByTagName("tbody")[5].appendChild(newtr);
+				document.getElementsByTagName("tbody")[8].appendChild(newtr);
 
 			} else if (gameOfMatch == "VolleyBall") {
 
@@ -446,11 +446,119 @@
 				newtd.appendChild(document.createTextNode(matches[i].winner));
 				newtr.appendChild(newtd);
 
-				document.getElementsByTagName("tbody")[6].appendChild(newtr);
+				document.getElementsByTagName("tbody")[9].appendChild(newtr);
 
 			} else if (gameOfMatch == "BasketBall") {
 
 				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName1));
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName2));
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].scheduledTime));
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtr.appendChild(newtd);
+
+				document.getElementsByTagName("tbody")[1].appendChild(newtr);
+
+			} else if (gameOfMatch == "TableTennis") {
+
+				var newtr = document.createElement("tr");
+				//put category
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].gameCategory));
+				newtr.appendChild(newtd);
+
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName1));
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].teamName2));
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].scheduledTime));
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtr.appendChild(newtd);
+
+				document.getElementsByTagName("tbody")[6].appendChild(newtr);
+
+			} else if (gameOfMatch == "Tennikoit") {
+
+				var newtr = document.createElement("tr");
+				//put category
+				var newtd = document.createElement("td");
+				newtd.appendChild(document
+						.createTextNode(matches[i].gameCategory));
+				newtr.appendChild(newtd);
+
 				//put team1 name
 				var newtd = document.createElement("td");
 				newtd.appendChild(document
@@ -522,7 +630,7 @@
 			newtd.appendChild(document.createTextNode(teams[i].score));
 			newtr.appendChild(newtd);
 	
-			document.getElementsByTagName("tbody")[0].appendChild(newtr);
+			document.getElementsByTagName("tbody")[5].appendChild(newtr);
 		}
 	}
 	
@@ -564,6 +672,26 @@
 											<li><a href="fullscores-carrom-doubles.html">Doubles</a></li>
 										</ul>
 									</div></li>
+								<li class="icon icon-arrow-left"><a 
+									href="#">Table Tennis<img src="webStuff/default/images/tabletennis-icon.png" class="my-menu-icon"/></a>
+									<div class="mp-level">
+										<h2>Table Tennis</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-tabletennis-singles.html">Singles</a></li>
+											<li><a href="fullscores-tabletennis-doubles.html">Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon icon-arrow-left"><a 
+									href="#">Tennikoit<img src="webStuff/default/images/tennikoit-icon.png" class="my-menu-icon"/></a>
+									<div class="mp-level">
+										<h2>Tennikoit</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-tennikoit-singles.html">Singles</a></li>
+											<li><a href="fullscores-tennikoit-doubles.html">Doubles</a></li>
+										</ul>
+									</div></li>
 								<li class="icon"><a href="fullscores-chess-notapplicable.html">Chess<img src="webStuff/default/images/chess-icon.png" class="my-menu-icon"/></a>
 								</li>
 								<li class="icon"><a href="fullscores-cricket-notapplicable.html">Cricket<img src="webStuff/default/images/cricket-icon.png" class="my-menu-icon"/></a>
@@ -598,15 +726,21 @@
 
 					<div class="game">
 						<div class="topic">
-							<p>PAGE TURNERZ QUIZ</p>
+							<p>BADMINTON</p>
 						</div>
 						<div class="span4">
 							<table class="table table-striped">
 								<thead>
 									<tr>
-										<th>Round</th>
+										<th>Category</th>
 										<th>Player/Team</th>
 										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Winner</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -617,13 +751,12 @@
 					
 					<div class="game">
 						<div class="topic">
-							<p>BADMINTON</p>
+							<p>BASKET BALL</p>
 						</div>
 						<div class="span4">
 							<table class="table table-striped">
 								<thead>
 									<tr>
-										<th>Category</th>
 										<th>Player/Team</th>
 										<th>Score</th>
 										<th>Player/Team</th>
@@ -712,6 +845,75 @@
 							</table>
 						</div>
 					</div>
+					
+					<div class="game">
+						<div class="topic">
+							<p>PAGE TURNERZ QUIZ</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Round</th>
+										<th>Player/Team</th>
+										<th>Score</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					<div class="game">
+						<div class="topic">
+							<p>TABLE TENNIS</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Category</th>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Winner</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					<div class="game">
+						<div class="topic">
+							<p>TENNIKOIT</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Category</th>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Winner</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
 
 					<div class="game">
 						<div class="topic">
@@ -761,30 +963,6 @@
 						</div>
 					</div>
 					
-					<div class="game">
-						<div class="topic">
-							<p>BASKET BALL</p>
-						</div>
-						<div class="span4">
-							<table class="table table-striped">
-								<thead>
-									<tr>
-										<th>Player/Team</th>
-										<th>Score</th>
-										<th>Player/Team</th>
-										<th>Round</th>
-										<th>Scheduled Time</th>
-										<th>Location</th>
-										<th>Status</th>
-										<th>Winner</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
-					</div>
-
 				</div>
 			</div>
 			<!-- Live Scores End-->

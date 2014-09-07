@@ -118,6 +118,11 @@ a {
 	border: 5px solid #eeeeee;
 }
 
+.frame-right-side {
+	position: absolute;
+	margin-left: 52.5%;
+}
+
 .page-header {
 	font-size: 50px;
 	font-weight: 900;
@@ -194,6 +199,10 @@ a {
 	width: 200px;
 }
 
+.person > .description > h5{
+	font-weight: 500;
+}
+
 #madeWith{
 	height: 25px;
 	width: 100%;
@@ -263,6 +272,14 @@ float:right;
 
 #feedback>.close{
 	color: #FFFFFF;
+}
+
+div.mp-level {
+	overflow-x: auto; 
+}
+
+.select2-container .select2-choice{
+	width: 200px;
 }
 
 /* BOOTSTRAP START */

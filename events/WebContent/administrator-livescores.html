@@ -21,32 +21,24 @@
 <head>
 <meta charset="ISO-8859-1">
 <link rel="shortcut icon" href="webStuff/default/images/icon-32x32.png">
-
+<script src="webStuff/jquery/jquery-2.0.3.js"></script>
+<script src="webStuff/jQuery Cookie Plugin/jQuery Cookie Plugin.js"></script>
 <!-- Login Check Start -->
 <script>
 function loginCheck(){
-	var xmlhttp;
-	if(window.XMLHttpRequest){
-		xmlhttp = new XMLHttpRequest();
-	}else{port
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	if(!$.cookie('HeroesPersist_Username')){
+		window.location.assign("login.html");
 	}
-	xmlhttp.onreadystatechange=function(){
-		if(xmlhttp.readyState==4 && xmlhttp.status==200){
-			if(xmlhttp.responseText=="true"){
-				
-			}
-			else{
-				window.location.assign("login.html");
-			}
-		}
-	}
-		xmlhttp.open("GET","logincheck",true);
-		xmlhttp.send();
+}
+
+function logout(){
+	$.removeCookie('HeroesPersist_Username');
+	$.removeCookie('HeroesPersist_Password', null);
+	window.location.assign("index.html")
 }
 
 loginCheck();
-setInterval(function(){loginCheck();},60*1000);
+//setInterval(function(){loginCheck();},108000000);
 </script>
 <!-- Login Check End -->
 
@@ -62,21 +54,26 @@ setInterval(function(){loginCheck();},60*1000);
 <link href="webStuff/default/css/default.css" rel="stylesheet" media="screen">
 <link rel="stylesheet" href="webStuff/vex/css/vex.css" />
 <link rel="stylesheet" href="webStuff/vex/css/vex-theme-os.css" />
-<script src="webStuff/jquery/jquery-2.0.3.js"></script>
 <script src="webStuff/bootstrap/js/bootstrap.min.js"></script>
 <script src="webStuff/Menu/js/modernizr.custom.js"></script>
 <script src="webStuff/Menu/js/classie.js"></script>
 <script src="webStuff/Menu/js/mlpushmenu.js"></script>
 <script src="webStuff/vex/js/vex.combined.min.js"></script>
+
+
 <script>vex.defaultOptions.className = 'vex-theme-os';</script>
 
 <!-- Webservice Ajax Call Start -->
 <script type="text/javascript">
+
+
+
 	//Global variables
 	var currentlyModifying = false;		//true->modifying false->not modifying
 	var HOST_AND_PORT = "10.106.50.32:8080";
 	var newTeam1 = "";
 	var newTeam2 = "";
+	var toField = "";
 	
 	$.ajax({
 		url: 'http://'+ HOST_AND_PORT +'/Sports/api/monitor',
@@ -98,6 +95,9 @@ setInterval(function(){loginCheck();},60*1000);
 			error: function(xhr){
 						if(xhr.status == 404){
 							vex.dialog.alert("Services not Running");
+						}
+						else if(xhr.status == 500){
+							vex.dialog.alert("OOPS! something went wrong we are figuring it now. Until then please do add the feedback to improvise!");
 						}
 						else{
 							vex.dialog.alert(xhr.responseText);
@@ -198,18 +198,103 @@ setInterval(function(){loginCheck();},60*1000);
 				newtd.appendChild(newbutton);
 				newtr.appendChild(newtd);
 				
-				//put email
+				//put email check
 				var newtd = document.createElement("td");
-				var newimg = document.createElement("img");
-				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
-				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
-				newimg.setAttribute("class","my-email-icon");
-				newtd.appendChild(newimg);
+				var newcheckbox = document.createElement("input");
+				newcheckbox.setAttribute("value",matches[i].matchId);
+				newcheckbox.setAttribute("type","checkbox");
+				newcheckbox.setAttribute("name","email_check");
+				newtd.appendChild(newcheckbox);
 				newtr.appendChild(newtd);
 
 				newtr.setAttribute("id",matches[i].matchId);
 				
 				document.getElementsByTagName("tbody")[0].appendChild(newtr);
+
+			} else if (gameOfMatch == "BasketBall") {
+
+				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName1));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put score
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName2));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put round
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].scheduledTime));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put location
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put status
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put winner
+				newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+				
+				//put save
+				newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","save("+matches[i].matchId+",event);");
+				newbutton.setAttribute("class","btn btn-success");
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put show
+				newtd = document.createElement("td");
+				newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","toggleShow("+matches[i].matchId+",this);");
+				if(matches[i].show == false){
+					newbutton.setAttribute("class","btn btn-default");
+				}
+				else{
+					newbutton.setAttribute("class","btn btn-warning");
+				}
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put email check
+				var newtd = document.createElement("td");
+				var newcheckbox = document.createElement("input");
+				newcheckbox.setAttribute("value",matches[i].matchId);
+				newcheckbox.setAttribute("type","checkbox");
+				newcheckbox.setAttribute("name","email_check");
+				newtd.appendChild(newcheckbox);
+				newtr.appendChild(newtd);
+
+				newtr.setAttribute("id",matches[i].matchId);
+				
+				document.getElementsByTagName("tbody")[1].appendChild(newtr);
 
 			} else if (gameOfMatch == "Carrom") {
 
@@ -289,18 +374,18 @@ setInterval(function(){loginCheck();},60*1000);
 				newtd.appendChild(newbutton);
 				newtr.appendChild(newtd);
 				
-				//put email
+				//put email check
 				var newtd = document.createElement("td");
-				var newimg = document.createElement("img");
-				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
-				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
-				newimg.setAttribute("class","my-email-icon");
-				newtd.appendChild(newimg);
+				var newcheckbox = document.createElement("input");
+				newcheckbox.setAttribute("value",matches[i].matchId);
+				newcheckbox.setAttribute("type","checkbox");
+				newcheckbox.setAttribute("name","email_check");
+				newtd.appendChild(newcheckbox);
 				newtr.appendChild(newtd);
 
 				newtr.setAttribute("id",matches[i].matchId);
 				
-				document.getElementsByTagName("tbody")[1].appendChild(newtr);
+				document.getElementsByTagName("tbody")[2].appendChild(newtr);
 
 			} else if (gameOfMatch == "Chess") {
 
@@ -374,18 +459,18 @@ setInterval(function(){loginCheck();},60*1000);
 				newtd.appendChild(newbutton);
 				newtr.appendChild(newtd);
 				
-				//put email
+				//put email check
 				var newtd = document.createElement("td");
-				var newimg = document.createElement("img");
-				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
-				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
-				newimg.setAttribute("class","my-email-icon");
-				newtd.appendChild(newimg);
+				var newcheckbox = document.createElement("input");
+				newcheckbox.setAttribute("value",matches[i].matchId);
+				newcheckbox.setAttribute("type","checkbox");
+				newcheckbox.setAttribute("name","email_check");
+				newtd.appendChild(newcheckbox);
 				newtr.appendChild(newtd);
 
 				newtr.setAttribute("id",matches[i].matchId);
 				
-				document.getElementsByTagName("tbody")[2].appendChild(newtr);
+				document.getElementsByTagName("tbody")[3].appendChild(newtr);
 
 			} else if (gameOfMatch == "Cricket") {
 
@@ -459,18 +544,188 @@ setInterval(function(){loginCheck();},60*1000);
 				newtd.appendChild(newbutton);
 				newtr.appendChild(newtd);
 				
-				//put email
+				//put email check
 				var newtd = document.createElement("td");
-				var newimg = document.createElement("img");
-				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
-				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
-				newimg.setAttribute("class","my-email-icon");
-				newtd.appendChild(newimg);
+				var newcheckbox = document.createElement("input");
+				newcheckbox.setAttribute("value",matches[i].matchId);
+				newcheckbox.setAttribute("type","checkbox");
+				newcheckbox.setAttribute("name","email_check");
+				newtd.appendChild(newcheckbox);
 				newtr.appendChild(newtd);
 
 				newtr.setAttribute("id",matches[i].matchId);
 				
-				document.getElementsByTagName("tbody")[3].appendChild(newtr);
+				document.getElementsByTagName("tbody")[4].appendChild(newtr);
+
+			} else if (gameOfMatch == "TableTennis") {
+
+				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName1));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName2));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].scheduledTime));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+				
+				//put save
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","save("+matches[i].matchId+",event);");
+				newbutton.setAttribute("class","btn btn-success");
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put show
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","toggleShow("+matches[i].matchId+",this);");
+				if(matches[i].show == false){
+					newbutton.setAttribute("class","btn btn-default");
+				}
+				else{
+					newbutton.setAttribute("class","btn btn-warning");
+				}
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put email check
+				var newtd = document.createElement("td");
+				var newcheckbox = document.createElement("input");
+				newcheckbox.setAttribute("value",matches[i].matchId);
+				newcheckbox.setAttribute("type","checkbox");
+				newcheckbox.setAttribute("name","email_check");
+				newtd.appendChild(newcheckbox);
+				newtr.appendChild(newtd);
+
+				newtr.setAttribute("id",matches[i].matchId);
+				
+				document.getElementsByTagName("tbody")[5].appendChild(newtr);
+
+			} else if (gameOfMatch == "Tennikoit") {
+
+				var newtr = document.createElement("tr");
+				//put team1 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName1));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put score
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].score));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put team2 name
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].teamName2));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put round
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].round));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put scheduled_time
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].scheduledTime));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put location
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].location));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put status
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].status));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+
+				//put winner
+				var newtd = document.createElement("td");
+				newtd.appendChild(document.createTextNode(matches[i].winner));
+				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
+				newtr.appendChild(newtd);
+				
+				//put save
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","save("+matches[i].matchId+",event);");
+				newbutton.setAttribute("class","btn btn-success");
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put show
+				var newtd = document.createElement("td");
+				var newbutton = document.createElement("button");
+				newbutton.setAttribute("onclick","toggleShow("+matches[i].matchId+",this);");
+				if(matches[i].show == false){
+					newbutton.setAttribute("class","btn btn-default");
+				}
+				else{
+					newbutton.setAttribute("class","btn btn-warning");
+				}
+				newtd.appendChild(newbutton);
+				newtr.appendChild(newtd);
+				
+				//put email check
+				var newtd = document.createElement("td");
+				var newcheckbox = document.createElement("input");
+				newcheckbox.setAttribute("value",matches[i].matchId);
+				newcheckbox.setAttribute("type","checkbox");
+				newcheckbox.setAttribute("name","email_check");
+				newtd.appendChild(newcheckbox);
+				newtr.appendChild(newtd);
+
+				newtr.setAttribute("id",matches[i].matchId);
+				
+				document.getElementsByTagName("tbody")[6].appendChild(newtr);
 
 			} else if (gameOfMatch == "ThrowBall") {
 
@@ -544,18 +799,18 @@ setInterval(function(){loginCheck();},60*1000);
 				newtd.appendChild(newbutton);
 				newtr.appendChild(newtd);
 				
-				//put email
+				//put email check
 				var newtd = document.createElement("td");
-				var newimg = document.createElement("img");
-				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
-				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
-				newimg.setAttribute("class","my-email-icon");
-				newtd.appendChild(newimg);
+				var newcheckbox = document.createElement("input");
+				newcheckbox.setAttribute("value",matches[i].matchId);
+				newcheckbox.setAttribute("type","checkbox");
+				newcheckbox.setAttribute("name","email_check");
+				newtd.appendChild(newcheckbox);
 				newtr.appendChild(newtd);
 
 				newtr.setAttribute("id",matches[i].matchId);
 				
-				document.getElementsByTagName("tbody")[4].appendChild(newtr);
+				document.getElementsByTagName("tbody")[7].appendChild(newtr);
 
 			} else if (gameOfMatch == "VolleyBall") {
 
@@ -629,103 +884,18 @@ setInterval(function(){loginCheck();},60*1000);
 				newtd.appendChild(newbutton);
 				newtr.appendChild(newtd);
 				
-				//put email
+				//put email check
 				var newtd = document.createElement("td");
-				var newimg = document.createElement("img");
-				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
-				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
-				newimg.setAttribute("class","my-email-icon");
-				newtd.appendChild(newimg);
+				var newcheckbox = document.createElement("input");
+				newcheckbox.setAttribute("value",matches[i].matchId);
+				newcheckbox.setAttribute("type","checkbox");
+				newcheckbox.setAttribute("name","email_check");
+				newtd.appendChild(newcheckbox);
 				newtr.appendChild(newtd);
 
 				newtr.setAttribute("id",matches[i].matchId);
 				
-				document.getElementsByTagName("tbody")[5].appendChild(newtr);
-
-			} else if (gameOfMatch == "BasketBall") {
-
-				var newtr = document.createElement("tr");
-				//put team1 name
-				var newtd = document.createElement("td");
-				newtd.appendChild(document.createTextNode(matches[i].teamName1));
-				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
-				newtr.appendChild(newtd);
-
-				//put score
-				newtd = document.createElement("td");
-				newtd.appendChild(document.createTextNode(matches[i].score));
-				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
-				newtr.appendChild(newtd);
-
-				//put team2 name
-				newtd = document.createElement("td");
-				newtd.appendChild(document.createTextNode(matches[i].teamName2));
-				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
-				newtr.appendChild(newtd);
-
-				//put round
-				newtd = document.createElement("td");
-				newtd.appendChild(document.createTextNode(matches[i].round));
-				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
-				newtr.appendChild(newtd);
-
-				//put scheduled_time
-				newtd = document.createElement("td");
-				newtd.appendChild(document.createTextNode(matches[i].scheduledTime));
-				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
-				newtr.appendChild(newtd);
-
-				//put location
-				newtd = document.createElement("td");
-				newtd.appendChild(document.createTextNode(matches[i].location));
-				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
-				newtr.appendChild(newtd);
-
-				//put status
-				newtd = document.createElement("td");
-				newtd.appendChild(document.createTextNode(matches[i].status));
-				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
-				newtr.appendChild(newtd);
-
-				//put winner
-				newtd = document.createElement("td");
-				newtd.appendChild(document.createTextNode(matches[i].winner));
-				newtd.setAttribute("onclick","selected("+matches[i].matchId+");");
-				newtr.appendChild(newtd);
-				
-				//put save
-				newtd = document.createElement("td");
-				var newbutton = document.createElement("button");
-				newbutton.setAttribute("onclick","save("+matches[i].matchId+",event);");
-				newbutton.setAttribute("class","btn btn-success");
-				newtd.appendChild(newbutton);
-				newtr.appendChild(newtd);
-				
-				//put show
-				newtd = document.createElement("td");
-				newbutton = document.createElement("button");
-				newbutton.setAttribute("onclick","toggleShow("+matches[i].matchId+",this);");
-				if(matches[i].show == false){
-					newbutton.setAttribute("class","btn btn-default");
-				}
-				else{
-					newbutton.setAttribute("class","btn btn-warning");
-				}
-				newtd.appendChild(newbutton);
-				newtr.appendChild(newtd);
-				
-				//put email
-				var newtd = document.createElement("td");
-				var newimg = document.createElement("img");
-				newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
-				newimg.setAttribute("onclick","email("+matches[i].matchId+",event);");
-				newimg.setAttribute("class","my-email-icon");
-				newtd.appendChild(newimg);
-				newtr.appendChild(newtd);
-
-				newtr.setAttribute("id",matches[i].matchId);
-				
-				document.getElementsByTagName("tbody")[6].appendChild(newtr);
+				document.getElementsByTagName("tbody")[8].appendChild(newtr);
 
 			}
 		}
@@ -784,14 +954,14 @@ function save(id,e){
 		while(copyRow.hasChildNodes()){
 			if(copyRow.firstChild.firstChild.getAttribute("class") == "form-control"){
 				switch(copyRow.childElementCount){
-				case 3 : winner = copyRow.firstChild.firstChild.value;break;
-				case 4 : status = copyRow.firstChild.firstChild.value;break;
-				case 5 : location = copyRow.firstChild.firstChild.value;break;
-				case 6 : time = copyRow.firstChild.firstChild.value;break;
-				case 7 : round = copyRow.firstChild.firstChild.value;break;
-				case 8 : newTeam2 = copyRow.firstChild.firstChild.value;break;
-				case 9 : score = copyRow.firstChild.firstChild.value;break;
-				case 10 : newTeam1 = copyRow.firstChild.firstChild.value;break;
+				case 4 : winner = copyRow.firstChild.firstChild.value;break;
+				case 5 : status = copyRow.firstChild.firstChild.value;break;
+				case 6 : location = copyRow.firstChild.firstChild.value;break;
+				case 7 : time = copyRow.firstChild.firstChild.value;break;
+				case 8 : round = copyRow.firstChild.firstChild.value;break;
+				case 9 : newTeam2 = copyRow.firstChild.firstChild.value;break;
+				case 10 : score = copyRow.firstChild.firstChild.value;break;
+				case 11 : newTeam1 = copyRow.firstChild.firstChild.value;break;
 				}
 			}
 			copyRow.removeChild(copyRow.firstChild);
@@ -826,7 +996,7 @@ function save(id,e){
 					}
 					copyRow.removeChild(copyRow.firstChild);
 				}
-				document.getElementById(id).childNodes[document.getElementById(id).childNodes.length-2].firstChild.setAttribute("class","btn btn-success");
+				//document.getElementById(id).childNodes[document.getElementById(id).childNodes.length-2].firstChild.setAttribute("class","btn btn-success");
 				currentlyModifying = false;
 			}
 			else if(xmlhttp.readyState == 4 && xmlhttp.status == 400){
@@ -877,22 +1047,41 @@ function toggleShow(id,button){
 	}
 }
 
-function email(matchId){
+function send_emails(gameName){
+	var records = $('input:checkbox[name=email_check]').filter(':checked');
+	toField = "";
+	if(records.length == 0){
+		records = $("tbody[id='"+gameName+"']>tr");
+		for(var i = 0 ; i<records.length ; i++){
+			fetchPlayersEmails(records[i].id);
+		}
+	}
+	else{
+		for(var i = 0 ; i<records.length ; i++){
+			fetchPlayersEmails(records[i].value);
+		}
+	}
+	 window.location = "mailto:"+toField;
+}
+
+function fetchPlayersEmails(matchId){
 	$.ajax({
 		url: 'http://'+ HOST_AND_PORT +'/Sports/api/matches/'+matchId+'/playeremails',
 		type: 'get',
 		dataType: 'json',
 		contentType: 'application/json',
+		async:false,
 		success: function(data){
-			var toField = "";
 			for(var i=0; i<data.length; i++){
-				toField = data[i]+",";
+				toField += data[i]+",";
 			}
-			 window.location = "mailto:"+toField;
 		},
 		error: function(xhr){
 			if(xhr.status == 404){
 				vex.dialog.alert("Services not Running");
+			}
+			else if(xhr.status == 500){
+				vex.dialog.alert("OOPS! something went wrong we are figuring it now. Until then please do add the feedback to improvise!");
 			}
 			else{
 				vex.dialog.alert(xhr.responseText);
@@ -916,8 +1105,8 @@ function email(matchId){
 				<ul>
 					<li><a class="icon icon-wallet"	href="#">Match Live Scores</a></li>
 					<li><a class="icon icon-wallet" href="administrator-team-livescores.html">Team Live Scores</a></li>
-					<li><a class="icon icon-wallet"	href="administrator-dashboard.html">Dashboard</a></li>
-					<li><a class="icon icon-wallet" href="logout">Log Out</a></li>
+					<li><a class="icon icon-wallet"	href="administrator-forms.html">Forms</a></li>
+					<li><a class="icon icon-wallet" onclick="logout()">Log Out</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -949,10 +1138,41 @@ function email(matchId){
 										<th>Won By</th>
 										<th>Save</th>
 										<th>Show</th>
-										<th>Email</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('BADMINTON');" class="my-email-icon">
+										</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="BADMINTON">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>BASKET BALL</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Category</th>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Won By</th>
+										<th>Save</th>
+										<th>Show</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('BASKET BALL');" class="my-email-icon">
+										</th>
+									</tr>
+								</thead>
+								<tbody id="BASKET BALL">
 								</tbody>
 							</table>
 						</div>
@@ -976,10 +1196,12 @@ function email(matchId){
 										<th>Won By</th>
 										<th>Save</th>
 										<th>Show</th>
-										<th>Email</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('CARROM');" class="my-email-icon">
+										</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="CARROM">
 								</tbody>
 							</table>
 						</div>
@@ -1002,10 +1224,12 @@ function email(matchId){
 										<th>Won By</th>
 										<th>Save</th>
 										<th>Show</th>
-										<th>Email</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('CHESS');" class="my-email-icon">
+										</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="CHESS">
 								</tbody>
 							</table>
 						</div>
@@ -1028,10 +1252,70 @@ function email(matchId){
 										<th>Won By</th>
 										<th>Save</th>
 										<th>Show</th>
-										<th>Email</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('CRICKET');" class="my-email-icon">
+										</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="CRICKET">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>TABLE TENNIS</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Category</th>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Won By</th>
+										<th>Save</th>
+										<th>Show</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('TABLE TENNIS');" class="my-email-icon">
+										</th>
+									</tr>
+								</thead>
+								<tbody id="TABLE TENNIS">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>TENNIKOIT</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Category</th>
+										<th>Player/Team</th>
+										<th>Score</th>
+										<th>Player/Team</th>
+										<th>Round</th>
+										<th>Scheduled Time</th>
+										<th>Location</th>
+										<th>Status</th>
+										<th>Won By</th>
+										<th>Save</th>
+										<th>Show</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('TENNIKOIT');" class="my-email-icon">
+										</th>
+									</tr>
+								</thead>
+								<tbody id="TENNIKOIT">
 								</tbody>
 							</table>
 						</div>
@@ -1054,10 +1338,12 @@ function email(matchId){
 										<th>Won By</th>
 										<th>Save</th>
 										<th>Show</th>
-										<th>Email</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('THROW BALL');" class="my-email-icon">
+										</th>
 										</tr>
 								</thead>
-								<tbody>
+								<tbody id="THROW BALL">
 								</tbody>
 							</table>
 						</div>
@@ -1080,36 +1366,12 @@ function email(matchId){
 										<th>Won By</th>
 										<th>Save</th>
 										<th>Show</th>
-										<th>Email</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('VOLLEY BALL');" class="my-email-icon">
+										</th>
 									</tr>
 								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
-					</div>
-					<div class="game">
-					<div class="topic">
-						<p>BASKET BALL</p>
-						</div>
-						<div class="span4">
-							<table class="table table-striped">
-								<thead>
-									<tr>
-										<th>Player/Team</th>
-										<th>Score</th>
-										<th>Player/Team</th>
-										<th>Round</th>
-										<th>Scheduled Time</th>
-										<th>Location</th>
-										<th>Status</th>
-										<th>Won By</th>
-										<th>Save</th>
-										<th>Show</th>
-										<th>Email</th>
-									</tr>
-								</thead>
-								<tbody>
+								<tbody id="VOLLEY BALL">
 								</tbody>
 							</table>
 						</div>

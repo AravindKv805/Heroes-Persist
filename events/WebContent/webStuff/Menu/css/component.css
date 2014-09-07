@@ -129,9 +129,9 @@ html, body, .container, .scroller {
 /* overlap */
 .mp-overlap .mp-level.mp-level-open {
 	box-shadow: 1px 0 2px rgba(0,0,0,0.2);
-	-webkit-transform: translate3d(-40px, 0, 0);
-	-moz-transform: translate3d(-40px, 0, 0);
-	transform: translate3d(-40px, 0, 0);
+	-webkit-transform: translate3d(-0px, 0, 0);
+	-moz-transform: translate3d(-0px, 0, 0);
+	transform: translate3d(-0px, 0, 0);
 }
 
 /* First level */

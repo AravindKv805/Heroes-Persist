@@ -21,32 +21,25 @@
 <head>
 <meta charset="ISO-8859-1">
 <link rel="shortcut icon" href="webStuff/default/images/icon-32x32.png">
+<script src="webStuff/jquery/jquery-2.0.3.js"></script>
+<script src="webStuff/jQuery Cookie Plugin/jQuery Cookie Plugin.js"></script>
 
 <!-- Login Check Start -->
 <script>
 function loginCheck(){
-	var xmlhttp;
-	if(window.XMLHttpRequest){
-		xmlhttp = new XMLHttpRequest();
-	}else{port
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	if(!$.cookie('HeroesPersist_Username')){
+		window.location.assign("login.html");
 	}
-	xmlhttp.onreadystatechange=function(){
-		if(xmlhttp.readyState==4 && xmlhttp.status==200){
-			if(xmlhttp.responseText=="true"){
-				
-			}
-			else{
-				window.location.assign("login.html");
-			}
-		}
-	}
-		xmlhttp.open("GET","logincheck",true);
-		xmlhttp.send();
+}
+
+function logout(){
+	$.removeCookie('HeroesPersist_Username');
+	$.removeCookie('HeroesPersist_Password');
+	window.location.assign("index.html")
 }
 
 loginCheck();
-setInterval(function(){loginCheck();},60*1000);
+//setInterval(function(){loginCheck();},108000000);
 </script>
 <!-- Login Check End -->
 
@@ -62,7 +55,6 @@ setInterval(function(){loginCheck();},60*1000);
 <link href="webStuff/default/css/default.css" rel="stylesheet" media="screen">
 <link rel="stylesheet" href="webStuff/vex/css/vex.css" />
 <link rel="stylesheet" href="webStuff/vex/css/vex-theme-os.css" />
-<script src="webStuff/jquery/jquery-2.0.3.js"></script>
 <script src="webStuff/bootstrap/js/bootstrap.min.js"></script>
 <script src="webStuff/Menu/js/modernizr.custom.js"></script>
 <script src="webStuff/Menu/js/classie.js"></script>
@@ -77,6 +69,7 @@ setInterval(function(){loginCheck();},60*1000);
 	var HOST_AND_PORT = "10.106.50.32:8080";
 	var newTeam1 = "";
 	var newTeam2 = "";
+	var toField = "";
 	
 	$.ajax({
 		url: 'http://'+ HOST_AND_PORT +'/Sports/api/monitor',
@@ -90,8 +83,18 @@ setInterval(function(){loginCheck();},60*1000);
 		$.ajax({
 			type: 'get',
 			dataType: 'json',
-			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=Carrom&gameCategory=Singles&showCriteria=false",
-			success:function(data){populateTable(data,"Carrom")},
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=Badminton&gameCategory=Singles&showCriteria=false",
+			success:function(data){populateTable(data,"Badminton")},
+			error:function(xhr){
+				vex.dialog.alert(xhr.responseText);
+			}
+		});
+		
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=Badminton&gameCategory=Doubles&showCriteria=false",
+			success:function(data){populateTable(data,"Badminton")},
 			error:function(xhr){
 				vex.dialog.alert(xhr.responseText);
 			}
@@ -107,17 +110,140 @@ setInterval(function(){loginCheck();},60*1000);
 			}
 		});
 		
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=Carrom&gameCategory=Singles&showCriteria=false",
+			success:function(data){populateTable(data,"Carrom")},
+			error:function(xhr){
+				vex.dialog.alert(xhr.responseText);
+			}
+		});
+		
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=Carrom&gameCategory=Doubles&showCriteria=false",
+			success:function(data){populateTable(data,"Carrom")},
+			error:function(xhr){
+				vex.dialog.alert(xhr.responseText);
+			}
+		});
+		
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=Cricket&gameCategory=NotApplicable&showCriteria=false",
+			success:function(data){populateTable(data,"Cricket")},
+			error:function(xhr){
+				vex.dialog.alert(xhr.responseText);
+			}
+		});
+		
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=PageTurnerzQuiz&gameCategory=NotApplicable&showCriteria=false",
+			success:function(data){populateTable(data,"PageTurnerzQuiz")},
+			error:function(xhr){
+				vex.dialog.alert(xhr.responseText);
+			}
+		});
+		
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=TableTennis&gameCategory=Singles&showCriteria=false",
+			success:function(data){populateTable(data,"TableTennis")},
+			error:function(xhr){
+				vex.dialog.alert(xhr.responseText);
+			}
+		});
+		
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=TableTennis&gameCategory=Doubles&showCriteria=false",
+			success:function(data){populateTable(data,"TableTennis")},
+			error:function(xhr){
+				vex.dialog.alert(xhr.responseText);
+			}
+		});
+		
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=Tennikoit&gameCategory=Singles&showCriteria=false",
+			success:function(data){populateTable(data,"Tennikoit")},
+			error:function(xhr){
+				vex.dialog.alert(xhr.responseText);
+			}
+		});
+		
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=Tennikoit&gameCategory=Doubles&showCriteria=false",
+			success:function(data){populateTable(data,"Tennikoit")},
+			error:function(xhr){
+				vex.dialog.alert(xhr.responseText);
+			}
+		});
+		
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=ThrowBall&gameCategory=NotApplicable&showCriteria=false",
+			success:function(data){populateTable(data,"ThrowBall")},
+			error:function(xhr){
+				vex.dialog.alert(xhr.responseText);
+			}
+		});
+		
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			url:"http://"+HOST_AND_PORT+"/Sports/api/games/teams?gameName=VolleyBall&gameCategory=NotApplicable&showCriteria=false",
+			success:function(data){populateTable(data,"VolleyBall")},
+			error:function(xhr){
+				vex.dialog.alert(xhr.responseText);
+			}
+		});
 	}
 
 	ajaxCall();
 
 	function populateTable(response,game) {
 		var index = 0;
-		if(game == "Carrom"){
+		if(game == "Badminton"){
 			index = 0;
 		}
-		if(game == "BasketBall"){
+		else if(game == "BasketBall"){
 			index = 1;
+		}
+		else if(game == "Carrom"){
+			index = 2;
+		}
+		else if(game == "Chess"){
+			index = 3;
+		}
+		else if(game == "Cricket"){
+			index =4;
+		}
+		else if(game == "PageTurnerzQuiz"){
+			index =5;
+		}
+		else if(game == "TableTennis"){
+			index =6;
+		}
+		else if(game == "Tennikoit"){
+			index =7;
+		}
+		else if(game == "ThrowBall"){
+			index =8;
+		}
+		else if(game == "VolleyBall"){
+			index =9;
 		}
 		var teams = response.teams;
 		//clear all the records
@@ -167,13 +293,13 @@ setInterval(function(){loginCheck();},60*1000);
 			newtd.appendChild(newbutton);
 			newtr.appendChild(newtd);
 			
-			//put email
+			//put email check
 			var newtd = document.createElement("td");
-			var newimg = document.createElement("img");
-			newimg.setAttribute("src", "webStuff/default/images/email_icon.png");
-			newimg.setAttribute("onclick","email("+teams[i].teamId+",event);");
-			newimg.setAttribute("class","my-email-icon");
-			newtd.appendChild(newimg);
+			var newcheckbox = document.createElement("input");
+			newcheckbox.setAttribute("value",teams[i].teamId);
+			newcheckbox.setAttribute("type","checkbox");
+			newcheckbox.setAttribute("name","email_check");
+			newtd.appendChild(newcheckbox);
 			newtr.appendChild(newtd);
 
 			newtr.setAttribute("id",teams[i].teamId);
@@ -232,9 +358,9 @@ function save(id,e){
 		while(copyRow.hasChildNodes()){
 			if(copyRow.firstChild.firstChild.getAttribute("class") == "form-control"){
 				switch(copyRow.childElementCount){
-				case 3 : score = copyRow.firstChild.firstChild.value;break;
-				case 4 : newTeam = copyRow.firstChild.firstChild.value;break;
-				case 5 : round = copyRow.firstChild.firstChild.value;break;
+				case 4 : score = copyRow.firstChild.firstChild.value;break;
+				case 5 : newTeam = copyRow.firstChild.firstChild.value;break;
+				case 6 : round = copyRow.firstChild.firstChild.value;break;
 				}
 			}
 			copyRow.removeChild(copyRow.firstChild);
@@ -269,7 +395,7 @@ function save(id,e){
 					}
 					copyRow.removeChild(copyRow.firstChild);
 				}
-				document.getElementById(id).childNodes[document.getElementById(id).childNodes.length-2].firstChild.setAttribute("class","btn btn-success");
+				//document.getElementById(id).childNodes[document.getElementById(id).childNodes.length-2].firstChild.setAttribute("class","btn btn-success");
 				currentlyModifying = false;
 			}
 			else if(xmlhttp.readyState == 4 && xmlhttp.status == 400){
@@ -317,22 +443,42 @@ function toggleShow(id,button){
 	}
 }
 
-function email(teamId){
+function send_emails(gameName){
+	var records = $('input:checkbox[name=email_check]').filter(':checked');
+	toField = "";
+	if(records.length == 0){
+		records = $("tbody[id='"+gameName+"']>tr");
+		for(var i = 0 ; i<records.length ; i++){
+			fetchPlayersEmails(records[i].id);
+		}
+	}
+	else{
+		for(var i = 0 ; i<records.length ; i++){
+			fetchPlayersEmails(records[i].value);
+		}
+	}
+	 window.location = "mailto:"+toField;
+}
+
+
+function fetchPlayersEmails(teamId){
 	$.ajax({
 		url: 'http://'+ HOST_AND_PORT +'/Sports/api/teams/'+teamId+'/playeremails',
 		type: 'get',
 		dataType: 'json',
+		async:false,
 		contentType: 'application/json',
 		success: function(data){
-			var toField = "";
 			for(var i=0; i<data.length; i++){
-				toField = data[i]+",";
+				toField += data[i]+",";
 			}
-			 window.location = "mailto:"+toField;
 		},
 		error: function(xhr){
 			if(xhr.status == 404){
 				vex.dialog.alert("Services not Running");
+			}
+			else if(xhr.status == 500){
+				vex.dialog.alert("OOPS! something went wrong we are figuring it now. Until then please do add the feedback to improvise!");
 			}
 			else{
 				vex.dialog.alert(xhr.responseText);
@@ -356,8 +502,8 @@ function email(teamId){
 				<ul>
 					<li><a class="icon icon-wallet" href="administrator-livescores.html">Match Live Scores</a></li>
 					<li><a class="icon icon-wallet" href="#">Team Live Scores</a></li>
-					<li><a class="icon icon-wallet"	href="administrator-dashboard.html">Dashboard</a></li>
-					<li><a class="icon icon-wallet" href="logout">Log Out</a></li>
+					<li><a class="icon icon-wallet"	href="administrator-forms.html">Forms</a></li>
+					<li><a class="icon icon-wallet" onclick="logout()">Log Out</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -372,6 +518,52 @@ function email(teamId){
 				<div class="livescores">
 					<div class="game">
 						<div class="topic">
+							<p>BADMINTON</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Round</th>
+										<th>Team</th>
+										<th>Score</th>
+										<th>Save</th>
+										<th>Show</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('BADMINTON');" class="my-email-icon">
+										</th>
+									</tr>
+								</thead>
+								<tbody id="BADMINTON">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>BASKET BALL</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Round</th>
+										<th>Team</th>
+										<th>Score</th>
+										<th>Save</th>
+										<th>Show</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('BASKET BALL');" class="my-email-icon">
+										</th>
+									</tr>
+								</thead>
+								<tbody id="BASKET BALL">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
 							<p>CARROM</p>
 						</div>
 						<div class="span4">
@@ -383,17 +575,19 @@ function email(teamId){
 										<th>Score</th>
 										<th>Save</th>
 										<th>Show</th>
-										<th>Email</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('CARROM');" class="my-email-icon">
+										</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="CARROM">
 								</tbody>
 							</table>
 						</div>
 					</div>
 					<div class="game">
 						<div class="topic">
-							<p>BASKETBALL</p>
+							<p>CHESS</p>
 						</div>
 						<div class="span4">
 							<table class="table table-striped">
@@ -404,10 +598,150 @@ function email(teamId){
 										<th>Score</th>
 										<th>Save</th>
 										<th>Show</th>
-										<th>Email</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('CHESS');" class="my-email-icon">
+										</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="CHESS">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>CRICKET</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Round</th>
+										<th>Team</th>
+										<th>Score</th>
+										<th>Save</th>
+										<th>Show</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('CRICKET');" class="my-email-icon">
+										</th>
+									</tr>
+								</thead>
+								<tbody id="CRICKET">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>PAGE TURNERZ QUIZ</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Round</th>
+										<th>Team</th>
+										<th>Score</th>
+										<th>Save</th>
+										<th>Show</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('PAGE TURNERZ QUIZ');" class="my-email-icon">
+										</th>
+									</tr>
+								</thead>
+								<tbody id="PAGE TURNERZ QUIZ">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>TABLE TENNIS</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Round</th>
+										<th>Team</th>
+										<th>Score</th>
+										<th>Save</th>
+										<th>Show</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('TABLE TENNIS');" class="my-email-icon">
+										</th>
+									</tr>
+								</thead>
+								<tbody id="TABLE TENNIS">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>TENNIKOIT</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Round</th>
+										<th>Team</th>
+										<th>Score</th>
+										<th>Save</th>
+										<th>Show</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('TENNIKOIT');" class="my-email-icon">
+										</th>
+									</tr>
+								</thead>
+								<tbody id="TENNIKOIT">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>THROW BALL</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Round</th>
+										<th>Team</th>
+										<th>Score</th>
+										<th>Save</th>
+										<th>Show</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('THROW BALL');" class="my-email-icon">
+										</th>
+									</tr>
+								</thead>
+								<tbody id="THROW BALL">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="game">
+						<div class="topic">
+							<p>VOLLEY BALL</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Round</th>
+										<th>Team</th>
+										<th>Score</th>
+										<th>Save</th>
+										<th>Show</th>
+										<th>Email
+											<img src="webStuff/default/images/email_icon.png" onclick="send_emails('VOLLEY BALL');" class="my-email-icon">
+										</th>
+									</tr>
+								</thead>
+								<tbody id="VOLLEY BALL">
 								</tbody>
 							</table>
 						</div>

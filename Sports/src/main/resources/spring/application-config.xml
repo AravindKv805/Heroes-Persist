@@ -26,12 +26,14 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="annotatedClasses">
 			<list value-type="java.lang.String">
-				<value>com.lister.sports.model.Game</value>
-				<value>com.lister.sports.model.Match</value>
-				<value>com.lister.sports.model.Player</value>
-				<value>com.lister.sports.model.Team</value>
-				<value>com.lister.sports.model.Monitor</value>
-				<value>com.lister.sports.model.Feedback</value>
+				<value>com.heroespersist.sports.model.Game</value>
+				<value>com.heroespersist.sports.model.Match</value>
+				<value>com.heroespersist.sports.model.Player</value>
+				<value>com.heroespersist.sports.model.Team</value>
+				<value>com.heroespersist.sports.model.Monitor</value>
+				<value>com.heroespersist.sports.model.Feedback</value>
+				<value>com.heroespersist.sports.model.User</value>
+				<value>com.heroespersist.sports.model.Registration</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -52,7 +54,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<context:component-scan base-package="com.lister.sports" />
+	<context:component-scan base-package="com.heroespersist.sports" />
 	<context:property-placeholder location="classpath:jdbc.properties" />
 
 

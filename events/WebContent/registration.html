@@ -28,8 +28,8 @@
 <link rel="stylesheet" type="text/css" href="webStuff/Menu/css/demo.css" />
 <link rel="stylesheet" type="text/css" href="webStuff/Menu/css/icons.css" />
 <link rel="stylesheet" type="text/css" href="webStuff/Menu/css/component.css" />
-<link href="webStuff/default/css/default.css" rel="stylesheet" media="screen">
 <link href="webStuff/select2/select2.css" rel="stylesheet" media="screen">
+<link href="webStuff/default/css/default.css" rel="stylesheet" media="screen">
 <link rel="stylesheet" href="webStuff/vex/css/vex.css" />
 <link rel="stylesheet" href="webStuff/vex/css/vex-theme-os.css" />
 <script src="webStuff/bootstrap/js/bootstrap.min.js"></script>
@@ -47,6 +47,7 @@
 	var returnString = '';
 	var teamPlayers = '';
 	var $vexContent;
+	var registrationOpen = true;
 	
 	var playersArray = new Array();
 	playersArray.push(false);
@@ -133,6 +134,9 @@
 								if(xhr.status == 404){
 									vex.dialog.alert("Services Not Running");
 								}
+								else if(xhr.status == 500){
+									vex.dialog.alert("OOPS! something went wrong we are figuring it now. Until then please do add the feedback to improvise!");
+								}
 						   }
 					});
 			}
@@ -154,6 +158,9 @@
 							if(xhr.status == 404){
 								vex.dialog.alert("Services Not Running");
 							}
+							else if(xhr.status == 500){
+								vex.dialog.alert("OOPS! something went wrong we are figuring it now. Until then please do add the feedback to improvise!");
+							}
 					   }
 				});
 			break;
@@ -171,12 +178,10 @@
 			var newdiv = document.createElement("div");
 			
 			var newlabel = document.createElement("label");
-			newlabel.setAttribute("class","label label-default");
-			newlabel.innerHTML = "Select Team's Players Here";
-			newdiv.appendChild(newlabel);
-			
-			var newtextnode = document.createTextNode("			");
-			newdiv.appendChild(newtextnode);
+			newlabel.setAttribute("class","label label-primary");
+			newlabel.setAttribute("color","#FFFFFF");
+			newlabel.innerHTML = " Select Player's Employee Id Here ";
+			newdiv.appendChild(newlabel);	
 			
 			var newinput = document.createElement("input");
 			newinput.setAttribute("id","players-select");
@@ -191,7 +196,7 @@
 			
 			var newbutton = document.createElement("button");
 			newbutton.setAttribute("class","btn btn-default");
-			newbutton.innerHTML = "Aahw hell no";
+			newbutton.innerHTML = "Oh no";
 			newbutton.setAttribute("onclick","vexClose();");
 			newdiv.appendChild(newbutton);
 			
@@ -250,6 +255,9 @@
 						if(xhr.status == 404){
 							vex.dialog.alert("Services Not Running");
 						}
+						else if(xhr.status == 500){
+							vex.dialog.alert("OOPS! something went wrong we are figuring it now. Until then please do add the feedback to improvise!");
+						}
 				   }
 			});
 	}
@@ -272,6 +280,9 @@
 			error: function(xhr){
 						if(xhr.status == 404){
 							vex.dialog.alert("Services Not Running");
+						}
+						else if(xhr.status == 500){
+							vex.dialog.alert("OOPS! something went wrong we are figuring it now. Until then please do add the feedback to improvise!");
 						}
 				   }
 			});
@@ -307,20 +318,23 @@
 				vex.dialog.alert("Select the players");
 				validate = false;
 			}
+			if(!registrationOpen){
+				vex.dialog.alert("HEY! enthusiastic fellow registrations starts from 8th September 2014 ");
+				validate = false;
+			}
 			if(validate){
 				$.ajax({
 					type: "post",
 					url: "http://" + HOST_AND_PORT + "/Sports/api/teams",
 					dataType: 'json',
 					contentType: 'application/json',
-					data: JSON.stringify({"name":document.getElementById("team-name").value,"rating":0,"score":0,"round":0,"show":false,"players":players,"game":{"gameName":document.getElementById("team-game").value,"gameCategory":document.getElementById("team-category").value}}),
+					data: JSON.stringify({"name":document.getElementById("team-name").value,"rating":0,"score":0,"round":0,"show":false,"players":players,"game":{"gameName":document.getElementById("team-game").value,"gameCategory":document.getElementById("team-category").value},"whoAmI":"user"}),
 					success: function(){vex.dialog.alert("Team successfully added");},
 					error: function(xhr){
 						if(xhr.status==404){
 							vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");
 						}
 						else{
-							
 							vex.dialog.alert(xhr.responseText);
 						}
 					}
@@ -374,6 +388,26 @@
 											<li><a href="fullscores-carrom-doubles.html">Doubles</a></li>
 										</ul>
 									</div></li>
+								<li class="icon icon-arrow-left"><a 
+									href="#">Table Tennis<img src="webStuff/default/images/tabletennis-icon.png" class="my-menu-icon"/></a>
+									<div class="mp-level">
+										<h2>Table Tennis</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-tabletennis-singles.html">Singles</a></li>
+											<li><a href="fullscores-tabletennis-doubles.html">Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon icon-arrow-left"><a 
+									href="#">Tennikoit<img src="webStuff/default/images/tennikoit-icon.png" class="my-menu-icon"/></a>
+									<div class="mp-level">
+										<h2>Tennikoit</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-tennikoit-singles.html">Singles</a></li>
+											<li><a href="fullscores-tennikoit-doubles.html">Doubles</a></li>
+										</ul>
+									</div></li>
 								<li class="icon"><a href="fullscores-chess-notapplicable.html">Chess<img src="webStuff/default/images/chess-icon.png" class="my-menu-icon"/></a>
 								</li>
 								<li class="icon"><a href="fullscores-cricket-notapplicable.html">Cricket<img src="webStuff/default/images/cricket-icon.png" class="my-menu-icon"/></a>
@@ -402,25 +436,37 @@
 						<select id="team-game">
 							<option></option>
 							<option>Badminton</option>
+							<option>BasketBall</option>
 							<option>Carrom</option>
 							<option>Chess</option>
 							<option>Cricket</option>
+							<!-- <option>PageTurnerzQuiz</option> -->
+							<option>TableTennis</option>
+							<option>Tennikoit</option>
 							<option>ThrowBall</option>
 							<option>VolleyBall</option>
-							<option>PageTurnerzQuiz</option>
 						</select>
 						<select id="team-category">
 							<option></option>
 							<option>NotApplicable</option>
 							<option>Singles</option>
 							<option>Doubles</option>
-							<option>Mixed</option>
+							<!-- <option>Mixed</option> -->
 						</select>
 						<input type="text" id="team-name" class="form-control" placeholder="Team Name"></input>
 						<button class="btn btn-warning pull-left" id="team_players_button" onClick="team_players_button();">Select Players</button>
 						<button class="btn btn-success pull-right" onClick="team('add');">Add</button>
 					</div>
 				</div>
+				<!-- instructions -->
+				<div class="frame-right frame-right-side">
+					<div class="frame-header">Instructions</div>
+					<h3>You can register a team for a game ONLY ONCE from your computer</h3>
+					<p>Employee Ids having T are replaced with 10</p>
+					<p>Employee Ids having V are replaced with 50</p>
+					
+				</div>
+				
 				<!-- /scroller-inner -->
 			</div>
 			<!-- /scroller -->

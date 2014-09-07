@@ -29,16 +29,16 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lister.sports.interfaces.game.GameService;
-import com.lister.sports.interfaces.match.MatchService;
-import com.lister.sports.interfaces.player.PlayerService;
-import com.lister.sports.interfaces.team.TeamService;
-import com.lister.sports.interfaces.utility.UtilityDao;
-import com.lister.sports.webservice.game.GameForm;
-import com.lister.sports.webservice.game.GameFormWithoutNumberOfPlayers;
-import com.lister.sports.webservice.match.MatchForm;
-import com.lister.sports.webservice.player.PlayerForm;
-import com.lister.sports.webservice.team.TeamForm; 
+import com.heroespersist.sports.interfaces.game.GameService;
+import com.heroespersist.sports.interfaces.match.MatchService;
+import com.heroespersist.sports.interfaces.player.PlayerService;
+import com.heroespersist.sports.interfaces.team.TeamService;
+import com.heroespersist.sports.interfaces.utility.UtilityDao;
+import com.heroespersist.sports.webservice.game.GameForm;
+import com.heroespersist.sports.webservice.game.GameFormWithoutNumberOfPlayers;
+import com.heroespersist.sports.webservice.match.MatchForm;
+import com.heroespersist.sports.webservice.player.PlayerForm;
+import com.heroespersist.sports.webservice.team.TeamForm;
 
 /**
  * @author aarti_rao
@@ -86,7 +86,8 @@ public class TestServices extends AbstractTestNGSpringContextTests {
 			
 			gameForm.setName("Throwball");
 			gameForm.setCategory("NotApplicable");
-			gameForm.setNoPlayers(1);
+			gameForm.setMinNoPlayers(1);
+			gameForm.setMaxNoPlayers(2);
 			int id = gameService.addGame(gameForm);
 			Assert.assertNotNull(utilityDao.getGame(id));
 			Assert.assertEquals(gameService.modifyGame(id, gameForm),id);
@@ -164,7 +165,7 @@ public class TestServices extends AbstractTestNGSpringContextTests {
 			teamForm.setRound(0);
 			teamForm.setScore("");
 			teamForm.setShow(true);
-			int id = teamService.addTeam(teamForm);
+			int id = teamService.addTeam("10.106.50.32", teamForm);
 			Assert.assertNotNull(utilityDao.getTeam(id));
 			teamForm.setName("team2");
 			teamForm.setGame(gameFormWithoutNumberOfPlayers);
@@ -193,7 +194,7 @@ public class TestServices extends AbstractTestNGSpringContextTests {
 			playerForm.setEmployeeName("saip");
 			playerForm.setEmployeeEmail("player1@gmail.com");
 			int player2 = playerService.addPlayer(playerForm);*/
-			int id = teamService.addTeam(teamForm);
+			int id = teamService.addTeam("10.106.50.32", teamForm);
 			Assert.assertEquals(teamService.modifyTeamDeletePlayer(id, "1215"),id);
 			Assert.assertEquals(teamService.modifyTeamAddPlayer(id, "1215"),id);
 			teamService.deleteTeam(2);

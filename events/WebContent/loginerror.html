@@ -6,6 +6,7 @@
 <link rel="shortcut icon" href="webStuff/default/images/icon-32x32.png">
 <link href="webStuff/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <script src="webStuff/jquery/jquery-2.0.3.js"></script>
+<script src="webStuff/jQuery Cookie Plugin/jQuery Cookie Plugin.js"></script>
 <script src="webStuff/bootstrap/js/bootstrap.min.js"></script>
 
 <script>
@@ -17,6 +18,25 @@ $.ajax({
 	contentType: 'application/json',
 	data: JSON.stringify({"page":"loginerror.html"})
 });
+
+function check(){
+	$.ajax({
+		url: 'http://'+ HOST_AND_PORT +'/Sports/api/user/check',
+		type: 'post',
+		async: false,
+		dataType: 'json',
+		contentType: 'application/json',
+		data: JSON.stringify({"username":$("input[name='username']").val(),"password":$("input[name='password']").val()}),
+		success: function(){
+				$.cookie('HeroesPersist_Username', $("input[name='username']").val()); 
+				$.cookie('HeroesPersist_Password', $("input[name='password']").val());
+				window.location.assign("administrator-livescores.html");
+			},
+		error: function(){
+				window.location.assign("loginerror.html");
+			}
+	});
+}
 </script>
 
 <title>Login</title>
@@ -25,9 +45,9 @@ $.ajax({
 <body>
 	<!-- Login Start-->
 	<div class="login jumbotron">
-		<h2>Lister Sports Portal</h2>
+		<h2>Heroes Persist</h2>
 		<h4>Great Power comes with Great Responsibility</h4>
-		<form class="form-inline" method="post" action="loginvalidate">
+		<div class="form-inline">
 			<div class="form-group">
 				<label class="sr-only" for="username">Username</label> <input
 					type="text" class="form-control" name="username" placeholder="Username">
@@ -36,8 +56,8 @@ $.ajax({
 				<label class="sr-only" for="exampleInputPassword2">Password</label>
 				<input type="password" class="form-control"	name="password" placeholder="Password">
 			</div>
-			<button type="submit" class="btn btn-primary">Admin SignIn</button>
-		</form>
+			<button type="submit" onclick="check()" class="btn btn-primary">Admin SignIn</button>
+		</div>
 		<div class="loginerror">
 			<label class="label label-danger">Invalid login credentials</label>
 		</div>
