@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<!-- Heroes Persist
+    Product which helps in organizing, broadcasting, celebrating events
+    Copyright (C) 2014  Sai Pranav
+    Email: rsaipranav92@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+<head>
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="webStuff/default/images/icon-32x32.png">
+<script src="webStuff/jquery/jquery-2.0.3.js"></script>
+
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/demo.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/icons.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/component.css" />
+<link href="webStuff/select2/select2.css" rel="stylesheet" media="screen">
+<link href="webStuff/default/css/default.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="webStuff/vex/css/vex.css" />
+<link rel="stylesheet" href="webStuff/vex/css/vex-theme-os.css" />
+<link rel="stylesheet" href="webStuff/ElasticSlideShow/css/style.css" />
+<script src="webStuff/bootstrap/js/bootstrap.min.js"></script>
+<script src="webStuff/Menu/js/modernizr.custom.js"></script>
+<script src="webStuff/Menu/js/classie.js"></script>
+<script src="webStuff/Menu/js/mlpushmenu.js"></script>
+<script src="webStuff/select2/select2.js"></script>
+<script src="webStuff/vex/js/vex.combined.min.js"></script>
+<script>vex.defaultOptions.className = 'vex-theme-os';</script>
+<noscript>
+	<link rel="stylesheet" type="text/css" href="webStuff/ElasticSlideShow/css/noscript.css" />
+</noscript>
+
+<!-- Script Start -->
+<script type="text/javascript">
+	/* Global variables */
+	var HOST_AND_PORT = "10.106.50.32:8080";
+	var $vexContent;
+	var photos = [];
+	/*setTimeout(function(){
+		vex.dialog.alert("We are building it right now!<br> You will now be redirected to live scores page");
+		setTimeout(function(){window.location.href="index.html"}, 3*1000);
+	},0.25*1000);*/
+	
+	/* Onload initial */
+	function initial() {
+		getPhotos();
+		$.ajax({
+			url: 'http://'+ HOST_AND_PORT +'/Sports/api/monitor',
+			type: 'post',
+			dataType: 'json',
+			contentType: 'application/json',
+			data: JSON.stringify({"page":"gallery.html"})
+		});
+		
+	}
+	
+	/* Utility functions */
+	function displayPhotos(){
+		photos.forEach(function(entry){
+			$(".ei-slider-large").append(generateLargeElement(entry));
+			$(".ei-slider-thumbs").append(generateThumbElement(entry));
+		});
+	}
+	
+	function generateLargeElement(data){
+		/* if(data.title == undefined){
+			data.title = "";
+		}
+		if(data.subTitle == undefined){
+			data.subTitle = "";
+		} */
+		if(data){
+			return $("<li><img src='"+data+"'/></li>");
+		}
+	}
+	
+	function generateThumbElement(data){
+		if(data){
+			return $("<li><a href='#'>Slide</a><img src='"+data+"'/></li>");
+		}
+	}
+	
+	function getPhotos(){
+		$.ajax({
+		  url: "http://" + HOST_AND_PORT + "/events/webStuff/gallery/",
+		  async: false,
+		  success: function(data){
+		     $(data).find("td > a").each(function(){
+		        // will loop through 
+		        if($(this).attr("href").match(".jpg")){
+		        	//alert("Found a file: " + $(this).attr("href"));
+		        	photos.push($(this).attr("href"));
+		        }
+		     });
+		  }
+		});
+		displayPhotos();
+	}
+	
+	
+	function vexClose(){
+		vex.close($vexContent.data().vex.id);
+	}
+</script>
+<!-- Script End -->
+<title>::: Heroes Persist Registration :::</title>
+</head>
+<body onload="initial();">
+
+	<!-- Push Wrapper -->
+	<div class="mp-pusher" id="mp-pusher">
+		<!-- mp-menu -->
+		<nav id="mp-menu" class="mp-menu">
+			<div class="mp-level">
+				<h2><img src="webStuff/default/images/icon.png" height="80px" width="80px"></img>Menu</h2>
+				<ul>
+					<li><a class="icon" href="index.html">Live Scores<img src="webStuff/default/images/livescores-icon.png" class="my-menu-icon"/></a></li>
+					<li><a class="icon" href="gallery.html">Gallery<img src="webStuff/default/images/gallery-icon.png" class="my-menu-icon"/></a></li>
+					<li><a class="icon" href="vote-for-photos.html">Vote For Photos<img src="webStuff/default/images/vote-icon.png" class="my-menu-icon"/></a></li>
+					<li class="icon icon-arrow-left"><a class="icon"href="#">Full Scores<img src="webStuff/default/images/fullscores-icon.png" class="my-menu-icon"/></a>
+						<div class="mp-level">
+							<h2 class="icon icon-display">Full Scores</h2>
+							<a class="mp-back" href="#">back</a>
+							<ul>
+								<li class="icon icon-arrow-left"><a href="#">Badminton<img src="webStuff/default/images/badminton-icon.png" class="my-menu-icon"/></a>
+									<div class="mp-level">
+										<h2>Badminton</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-badminton-singles.html">Singles</a></li>
+											<li><a href="fullscores-badminton-doubles.html">Doubles</a></li>
+											<li><a href="fullscores-badminton-mixed.html">Mixed Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon icon-arrow-left"><a 
+									href="#">Carrom<img src="webStuff/default/images/carrom-icon.png" class="my-menu-icon"/></a>
+									<div class="mp-level">
+										<h2>Carrom</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-carrom-singles.html">Singles</a></li>
+											<li><a href="fullscores-carrom-doubles.html">Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon icon-arrow-left"><a 
+									href="#">Table Tennis<img src="webStuff/default/images/tabletennis-icon.png" class="my-menu-icon"/></a>
+									<div class="mp-level">
+										<h2>Table Tennis</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-tabletennis-singles.html">Singles</a></li>
+											<li><a href="fullscores-tabletennis-doubles.html">Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon icon-arrow-left"><a 
+									href="#">Tennikoit<img src="webStuff/default/images/tennikoit-icon.png" class="my-menu-icon"/></a>
+									<div class="mp-level">
+										<h2>Tennikoit</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-tennikoit-singles.html">Singles</a></li>
+											<li><a href="fullscores-tennikoit-doubles.html">Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon"><a href="fullscores-chess-notapplicable.html">Chess<img src="webStuff/default/images/chess-icon.png" class="my-menu-icon"/></a>
+								</li>
+								<li class="icon"><a href="fullscores-cricket-notapplicable.html">Cricket<img src="webStuff/default/images/cricket-icon.png" class="my-menu-icon"/></a>
+								</li>
+								<li class="icon"><a href="fullscores-throwball-notapplicable.html">Throw Ball<img src="webStuff/default/images/throwball-icon.png" class="my-menu-icon"/></a></li>
+								<li class="icon"><a href="fullscores-volleyball-notapplicable.html">Volley	Ball<img src="webStuff/default/images/volleyball-icon.png" class="my-menu-icon"/></a></li>
+								<li class="icon"><a href="fullscores-basketball-notapplicable.html">Basket	Ball<img src="webStuff/default/images/volleyball-icon.png" class="my-menu-icon"/></a></li>
+								<li class="icon"><a href="fullscores-pageturnersquiz-notapplicable.html">PageTurnerz Quiz<img src="webStuff/default/images/quiz-icon.png" class="my-menu-icon"/></a></li>
+							</ul>
+						</div></li>
+					<!--<li><a class="icon" href="registration.html">Register<img src="webStuff/default/images/registration-icon.png" class="my-menu-icon"/></a></li>-->
+					<li><a class="icon" href="about.html">About<img src="webStuff/default/images/about-icon.png" class="my-menu-icon"/></a></li>
+				</ul>
+			</div>
+		</nav>
+		<!-- /mp-menu -->
+
+		<div class="scroller">
+			<!-- this is for emulating position fixed of the nav -->
+			<div class="scroller-inner">
+				<a href="#" id="trigger" class="menu-trigger">Menu<img src="webStuff/default/images/logo.png" id="logo"></img></a>
+				<div class="page-header">Gallery</div>
+				<div class="wrapper">
+					<div id="ei-slider" class="ei-slider">
+	                    <ul class="ei-slider-large">
+	                    	<!-- Place holder for large images -->
+	                    </ul>
+	                    <!-- ei-slider-large -->
+	                    <ul class="ei-slider-thumbs">
+	                        <li class="ei-slider-element">Current</li>
+	                        <!-- Place holder for small images -->
+	                    </ul><!-- ei-slider-thumbs -->
+	                </div><!-- ei-slider -->
+				</div>				
+				<!-- /scroller-inner -->
+			</div>
+			<!-- /scroller -->
+		</div>
+		<!-- /pusher -->
+	</div>
+	<!-- /container -->
+	<script type="text/javascript" src="webStuff/ElasticSlideShow/js/jquery.eislideshow.js"></script>
+        <script type="text/javascript" src="webStuff/ElasticSlideShow/js/jquery.easing.1.3.js"></script>
+	<script>
+		new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
+	</script>
+	<script type="text/javascript">
+            $(function() {
+            	setTimeout(function(){
+            		$('#ei-slider').eislideshow({
+    					animation			: 'center',
+    					autoplay			: true,
+    					slideshow_interval	: 3000,
+    					titlesFactor		: 0,
+						speed           : 1500
+                    });
+            	}, 1000);
+            });
+        </script>
+</body>
+</html>

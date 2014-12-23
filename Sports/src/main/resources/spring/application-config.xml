@@ -34,6 +34,8 @@
 				<value>com.heroespersist.sports.model.Feedback</value>
 				<value>com.heroespersist.sports.model.User</value>
 				<value>com.heroespersist.sports.model.Registration</value>
+				<value>com.heroespersist.sports.model.Vote</value>
+				<value>com.heroespersist.sports.model.Artifact</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

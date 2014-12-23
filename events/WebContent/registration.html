@@ -47,7 +47,7 @@
 	var returnString = '';
 	var teamPlayers = '';
 	var $vexContent;
-	var registrationOpen = true;
+	var registrationOpen = false;
 	
 	var playersArray = new Array();
 	playersArray.push(false);
@@ -62,6 +62,10 @@
 		});
 		$("#team-category").select2({
 			placeholder : "Category",
+			allowClear : true
+		});
+		$("#team-name").select2({
+			placeholder : "Cricket Type",
 			allowClear : true
 		});
 		
@@ -180,7 +184,8 @@
 			var newlabel = document.createElement("label");
 			newlabel.setAttribute("class","label label-primary");
 			newlabel.setAttribute("color","#FFFFFF");
-			newlabel.innerHTML = " Select Player's Employee Id Here ";
+			//newlabel.innerHTML = " Select Player's Employee Id Here ";
+			newlabel.innerHTML = " Select your Employee Id Here ";
 			newdiv.appendChild(newlabel);	
 			
 			var newinput = document.createElement("input");
@@ -306,30 +311,37 @@
 				players.push(tempPlayers[i]);
 			}
 			var validate = true;
-			if(document.getElementById("team-game").value == "" || document.getElementById("team-category").value == ""){
+			/*if(document.getElementById("team-game").value == "" || document.getElementById("team-category").value == ""){
 				vex.dialog.alert("Select the game and category");
 				validate = false;
-			}
-			if( (document.getElementById("team-name").value).trim() == ""){
-				vex.dialog.alert("Give a team name");
+			}*/
+			if(document.getElementById("team-name").value == ""){
+				vex.dialog.alert("Select the type of cricket which suits you");
 				validate = false;
 			}
+			/*if( (document.getElementById("team-name").value).trim() == ""){
+				vex.dialog.alert("Give a team name");
+				validate = false;
+			}*/
 			if( players.length < 1 || players[0].trim() == ""){
 				vex.dialog.alert("Select the players");
 				validate = false;
 			}
 			if(!registrationOpen){
-				vex.dialog.alert("HEY! enthusiastic fellow registrations starts from 8th September 2014 ");
+				vex.dialog.alert("Sorry! Registrations are closed. If you have a genuine reason mail to lister.sports@listertechnologies.com with the following details:<br><br>Your genuine reason but its up to organizer to add your team<br>Game Name<br>Game Category<br>Team Name<br>Player ids of your team.");
 				validate = false;
 			}
+			//COPYED AS BACKUP
+			/*data: JSON.stringify({"name":document.getElementById("team-name").value,"rating":0,"score":0,"round":0,"show":false,"players":players,"game":{"gameName":document.getElementById("team-game").value,"gameCategory":document.getElementById("team-category").value},"whoAmI":"user"}), */
+			var random_teamname = document.getElementById("team-name").value+" "+Math.floor((Math.random() * 50000) + 1);
 			if(validate){
 				$.ajax({
 					type: "post",
 					url: "http://" + HOST_AND_PORT + "/Sports/api/teams",
 					dataType: 'json',
 					contentType: 'application/json',
-					data: JSON.stringify({"name":document.getElementById("team-name").value,"rating":0,"score":0,"round":0,"show":false,"players":players,"game":{"gameName":document.getElementById("team-game").value,"gameCategory":document.getElementById("team-category").value},"whoAmI":"user"}),
-					success: function(){vex.dialog.alert("Team successfully added");},
+					data: JSON.stringify({"name":random_teamname,"rating":0,"score":0,"round":0,"show":false,"players":players,"game":{"gameName":"CricketSurvey","gameCategory":"NotApplicable"},"whoAmI":"user"}),
+					success: function(){vex.dialog.alert("CHEERS! Your have been successfully registered for the game. Event organizer will contact you soon");},
 					error: function(xhr){
 						if(xhr.status==404){
 							vex.dialog.alert("Give all the details required to process <br> (OR) <br> Services not running");
@@ -363,6 +375,8 @@
 				<h2><img src="webStuff/default/images/icon.png" height="80px" width="80px"></img>Menu</h2>
 				<ul>
 					<li><a class="icon" href="index.html">Live Scores<img src="webStuff/default/images/livescores-icon.png" class="my-menu-icon"/></a></li>
+					<li><a class="icon" href="gallery.html">Gallery<img src="webStuff/default/images/gallery-icon.png" class="my-menu-icon"/></a></li>
+					<li><a class="icon" href="vote-for-photos.html">Vote For Photos<img src="webStuff/default/images/vote-icon.png" class="my-menu-icon"/></a></li>
 					<li class="icon icon-arrow-left"><a class="icon"href="#">Full Scores<img src="webStuff/default/images/fullscores-icon.png" class="my-menu-icon"/></a>
 						<div class="mp-level">
 							<h2 class="icon icon-display">Full Scores</h2>
@@ -431,42 +445,61 @@
 				<a href="#" id="trigger" class="menu-trigger">Menu<img src="webStuff/default/images/logo.png" id="logo"></img></a>
 				<div class="page-header">Registration</div>
 				<div class="frame-left">
-					<div class="frame-header">Team</div>
+					<div class="frame-header">Corporate Cricket Members Registrations</div>
 					<div class="col-lg-8">
-						<select id="team-game">
+						<!-- <select id="team-game">
 							<option></option>
 							<option>Badminton</option>
 							<option>BasketBall</option>
 							<option>Carrom</option>
 							<option>Chess</option>
 							<option>Cricket</option>
-							<!-- <option>PageTurnerzQuiz</option> -->
+							<option>PageTurnerzQuiz</option>
 							<option>TableTennis</option>
 							<option>Tennikoit</option>
 							<option>ThrowBall</option>
-							<option>VolleyBall</option>
-						</select>
-						<select id="team-category">
+							<option>VolleyBall</option> 
+							<option>CricketSurvey</option>
+						</select> -->
+						<!-- <select id="team-category">
 							<option></option>
 							<option>NotApplicable</option>
 							<option>Singles</option>
 							<option>Doubles</option>
-							<!-- <option>Mixed</option> -->
+							<option>Mixed</option> 
+						</select> -->
+						<select id="team-name">
+							<option></option>
+							<option>Red Tennis</option>
+							<option>Soft Tennis (Green)</option>
 						</select>
-						<input type="text" id="team-name" class="form-control" placeholder="Team Name"></input>
+						<!-- <input type="text" id="team-name" class="form-control" placeholder="Team Name" ></input> -->
 						<button class="btn btn-warning pull-left" id="team_players_button" onClick="team_players_button();">Select Players</button>
 						<button class="btn btn-success pull-right" onClick="team('add');">Add</button>
 					</div>
 				</div>
 				<!-- instructions -->
-				<div class="frame-right frame-right-side">
+				<!-- <div class="frame-right frame-right-side">
 					<div class="frame-header">Instructions</div>
-					<h3>You can register a team for a game ONLY ONCE from your computer</h3>
+					<h3>You can register ONLY ONCE from your computer</h3>
+					<p>If you are intrested to play some team game and struggling to form a team, then mail us we will make sure you will be happy <b>lister.sports@listertechnologies.com</b></p>
+					<h4>New games are added this year:</h4>
+					<p>Throw Ball</p>
+					<p>Basket Ball</p>
+					<p>Table Tennis</p>
+					<p>Tennikoit</p>
+					<h4>Some Employee Ids are changed</h4>
 					<p>Employee Ids having T are replaced with 10</p>
 					<p>Employee Ids having V are replaced with 50</p>
-					
+					<br>
+					<p>For Chess the category is NotApplicable and not Singles</p>
+				</div>-->
+				<div class="frame-right frame-right-side">
+					<div class="frame-header">Instructions</div>
+					<h4>Select the cricket type which suits you, give your employee Id in dropdown and click ADD. &nbsp;&nbsp;SIMPLE!</h4>
+					<h3>You can register ONLY ONCE from your computer</h3>
+					<h4>You will be required to regularly attend week end practices</h4>
 				</div>
-				
 				<!-- /scroller-inner -->
 			</div>
 			<!-- /scroller -->

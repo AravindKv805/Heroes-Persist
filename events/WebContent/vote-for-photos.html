@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+<!-- Heroes Persist
+    Product which helps in organizing, broadcasting, celebrating events
+    Copyright (C) 2014  Sai Pranav
+    Email: rsaipranav92@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+<head>
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="webStuff/default/images/icon-32x32.png">
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/demo.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/icons.css" />
+<link rel="stylesheet" type="text/css" href="webStuff/Menu/css/component.css" />
+<link href="webStuff/default/css/default.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="webStuff/vex/css/vex.css" />
+<link rel="stylesheet" href="webStuff/vex/css/vex-theme-os.css" />
+<link rel="stylesheet" href="webStuff/galleriffic/css/galleriffic-3.css" type="text/css" />
+<script src="webStuff/jquery/jquery-2.0.3.js"></script>
+<script src="webStuff/bootstrap/js/bootstrap.min.js"></script>
+<script src="webStuff/Menu/js/modernizr.custom.js"></script>
+<script src="webStuff/Menu/js/classie.js"></script>
+<script src="webStuff/Menu/js/mlpushmenu.js"></script>
+<script src="webStuff/vex/js/vex.combined.min.js"></script>
+<script type="text/javascript" src="webStuff/galleriffic/js/jquery.history.js"></script>
+<script type="text/javascript" src="webStuff/galleriffic/js/jquery.galleriffic.js"></script>
+<script type="text/javascript" src="webStuff/galleriffic/js/jquery.opacityrollover.js"></script>
+<script>vex.defaultOptions.className = 'vex-theme-os';</script>
+
+<title>::: Vote For Photos :::</title>
+<script>
+
+	var HOST_AND_PORT = "10.106.50.32:8080";
+	setTimeout(function(){
+		vex.dialog.alert("We are building it right now!<br> You will now be redirected to live scores page");
+		//setTimeout(function(){window.location.href="index.html"}, 3*1000);
+	},0.25*1000);
+	/*setTimeout(function(){vex.dialog.alert("<b>Instructions</b><br>See all photos and click the WOW button for which you think its wow.<br>Select and rearrange ( using drag & drop ) the 1st, 2nd, 3rd places and click Done.<br>You can vote ONLY ONCE from your computer.<br>Simple !");},0.25*1000);*/
+	$.ajax({
+		url: 'http://'+ HOST_AND_PORT +'/Sports/api/monitor',
+		type: 'post',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: JSON.stringify({"page":"vote-for-photos.html"})
+	});
+	
+	$(document).ready(function() {
+	$("#feedback").css("margin-top","500px");
+		setInterval(function(){
+			if($("#feedback").hasClass("down")){
+				$("#feedback").animate({marginTop:'+=10px'});
+				$("#feedback").removeClass("down");
+				$("#feedback").addClass("up");
+			}
+			else{
+				$("#feedback").animate({marginTop:'-=10px'});
+				$("#feedback").removeClass("up");
+				$("#feedback").addClass("down");
+			}
+		}, 250);
+		$("#feedback>.close").click(function(){
+			$(".alert").alert("close");
+		});
+		$("#feedback").click(function(){
+			vex.dialog.open({
+				message: 'Thank you for your time and effort',
+				input: '<input name="feedback_email" class="form-control" placeholder="Email Address"></input><textarea name="feedback_feed" class="form-control" placeholder="Feed Here"></textarea>',
+				callback: function(data){
+					if(data.feedback_feed == ""){
+						vex.dialog.alert("You can submit feedback as anonymous but not as blank feed.");
+					}
+					else{
+						$.ajax({
+							url: 'http://'+ HOST_AND_PORT +'/Sports/api/feedback',
+							type: 'post',
+							dataType: 'json',
+							contentType: 'application/json',
+							data: JSON.stringify({"email":data.feedback_email, "feed":data.feedback_feed})
+						});
+					}
+				}
+			});
+		});
+		$("#gallery>#thumbs>ul>.thumb").click(function(){
+			var current = $(this);
+			$("#thumbs>ul>.thumb").removeClass("selected");
+			current.addClass("selected");
+			$("#show").fadeOut(function(){
+				$("#show").attr("src", current.find("a>img").attr("src"));
+				$("#show").attr("artifactId", current.find("a>img").attr("artifactId"));
+				$("#show").fadeIn();
+			});
+		});
+		$("#instructions").click(function(){
+			vex.dialog.alert("<b>Instructions</b><br>See all photos and click the WOW button for which you think its wow.<br>Select and rearrange ( using drag & drop ) the 1st, 2nd, 3rd places and click Done.<br>You can vote ONLY ONCE from your computer.<br>Simple !");
+		});
+		$("#like").click(function(){
+			if($("#1stplace").attr("src") == $("#show").attr("src") || $("#2ndplace").attr("src") == $("#show").attr("src") || $("#3rdplace").attr("src") == $("#show").attr("src")){
+				vex.dialog.alert("Are you testing the WOW button?<br>The photo is already selected!");
+			}
+			else{
+				if($("#1stplace").attr("src").search("blank") != -1){
+					$("#1stplace").attr("src", $("#show").attr("src"));
+					$("#1stplace").attr("artifactId", $("#show").attr("artifactId"));
+				}
+				else if($("#2ndplace").attr("src").search("blank") != -1){
+					$("#2ndplace").attr("src", $("#show").attr("src"));
+					$("#2ndplace").attr("artifactId", $("#show").attr("artifactId"));
+				}
+				else if($("#3rdplace").attr("src").search("blank") != -1){
+					$("#3rdplace").attr("src", $("#show").attr("src"));
+					$("#3rdplace").attr("artifactId", $("#show").attr("artifactId"));
+				}
+				else{
+					$("#3rdplace").attr("src", $("#2ndplace").attr("src"));
+					$("#3rdplace").attr("artifactId", $("#2ndplace").attr("artifactId"));
+					$("#2ndplace").attr("src", $("#1stplace").attr("src"));
+					$("#2ndplace").attr("artifactId", $("#1stplace").attr("artifactId"));
+					$("#1stplace").attr("src", $("#show").attr("src"));
+					$("#1stplace").attr("artifactId", $("#show").attr("artifactId"));
+				}
+			}
+		});	
+		$("#done").click(function(){
+			if($("#1stplace").attr("artifactId") != null && $("#2ndplace").attr("artifactId") != null && $("#3rdplace").attr("artifactId") != null && $("#1stplace").attr("src").search("blank") == -1 && $("#2ndplace").attr("src").search("blank") == -1 && $("#3rdplace").attr("src").search("blank") == -1){
+				$.ajax({
+					type: 'post',
+					dataType: 'json',
+					url:"http://"+HOST_AND_PORT+"/Sports/api/vote",
+					contentType: 'application/json',
+					data: JSON.stringify( {"subVoteForms":[{"points":3,"artifactId":$("#1stplace").attr("artifactId")},{"points":2,"artifactId":$("#2ndplace").attr("artifactId")},{"points":1,"artifactId":$("#3rdplace").attr("artifactId")}]}),
+					success:function(data){
+						vex.dialog.alert("Cheers! You have now become the SUPREME JUDGE.<br>View live scores to know current standing");
+					},
+					error:function(xhr){
+						if(xhr.status==404){
+							vex.dialog.alert("Services not running");
+						}
+						else{
+							vex.dialog.alert(xhr.responseText);
+						}
+					}
+				});
+			}
+			else{
+				vex.dialog.alert("Select 3 photos!");
+			}
+		});
+	});
+	
+</script>
+</head>
+<body class="fullscorebody">
+	<!-- Push Wrapper -->
+	<div class="mp-pusher" id="mp-pusher">
+		<!-- mp-menu -->
+		<nav id="mp-menu" class="mp-menu">
+			<div class="mp-level">
+				<h2><img src="webStuff/default/images/icon.png" height="80px" width="80px"></img>Menu</h2>
+				<ul>
+					<li><a class="icon" href="index.html">Live Scores<img src="webStuff/default/images/livescores-icon.png" class="my-menu-icon"/></a></li>
+					<li><a class="icon" href="gallery.html">Gallery<img src="webStuff/default/images/gallery-icon.png" class="my-menu-icon"/></a></li>
+					<li><a class="icon" href="vote-for-photos.html">Vote For Photos<img src="webStuff/default/images/vote-icon.png" class="my-menu-icon"/></a></li>
+					<li class="icon icon-arrow-left"><a class="icon"href="#">Full Scores<img src="webStuff/default/images/fullscores-icon.png" class="my-menu-icon"/></a>
+						<div class="mp-level">
+							<h2 class="icon icon-display">Full Scores</h2>
+							<a class="mp-back" href="#">back</a>
+							<ul>
+								<li class="icon icon-arrow-left"><a href="#">Badminton<img src="webStuff/default/images/badminton-icon.png" class="my-menu-icon"/></a>
+									<div class="mp-level">
+										<h2>Badminton</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-badminton-singles.html">Singles</a></li>
+											<li><a href="fullscores-badminton-doubles.html">Doubles</a></li>
+											<li><a href="fullscores-badminton-mixed.html">Mixed Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon icon-arrow-left"><a 
+									href="#">Carrom<img src="webStuff/default/images/carrom-icon.png" class="my-menu-icon"/></a>
+									<div class="mp-level">
+										<h2>Carrom</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-carrom-singles.html">Singles</a></li>
+											<li><a href="fullscores-carrom-doubles.html">Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon icon-arrow-left"><a 
+									href="#">Table Tennis<img src="webStuff/default/images/tabletennis-icon.png" class="my-menu-icon"/></a>
+									<div class="mp-level">
+										<h2>Table Tennis</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-tabletennis-singles.html">Singles</a></li>
+											<li><a href="fullscores-tabletennis-doubles.html">Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon icon-arrow-left"><a 
+									href="#">Tennikoit<img src="webStuff/default/images/tennikoit-icon.png" class="my-menu-icon"/></a>
+									<div class="mp-level">
+										<h2>Tennikoit</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="fullscores-tennikoit-singles.html">Singles</a></li>
+											<li><a href="fullscores-tennikoit-doubles.html">Doubles</a></li>
+										</ul>
+									</div></li>
+								<li class="icon"><a href="fullscores-chess-notapplicable.html">Chess<img src="webStuff/default/images/chess-icon.png" class="my-menu-icon"/></a>
+								</li>
+								<li class="icon"><a href="fullscores-cricket-notapplicable.html">Cricket<img src="webStuff/default/images/cricket-icon.png" class="my-menu-icon"/></a>
+								</li>
+								<li class="icon"><a href="fullscores-throwball-notapplicable.html">Throw Ball<img src="webStuff/default/images/throwball-icon.png" class="my-menu-icon"/></a></li>
+								<li class="icon"><a href="fullscores-volleyball-notapplicable.html">Volley	Ball<img src="webStuff/default/images/volleyball-icon.png" class="my-menu-icon"/></a></li>
+								<li class="icon"><a href="fullscores-basketball-notapplicable.html">Basket	Ball<img src="webStuff/default/images/volleyball-icon.png" class="my-menu-icon"/></a></li>
+								<li class="icon"><a href="fullscores-pageturnersquiz-notapplicable.html">PageTurnerz Quiz<img src="webStuff/default/images/quiz-icon.png" class="my-menu-icon"/></a></li>
+							</ul>
+						</div></li>
+					<!--<li><a class="icon" href="registration.html">Register<img src="webStuff/default/images/registration-icon.png" class="my-menu-icon"/></a></li>-->
+					<li><a class="icon" href="about.html">About<img src="webStuff/default/images/about-icon.png" class="my-menu-icon"/></a></li>
+				</ul>
+			</div>
+		</nav>
+		<!-- /mp-menu -->
+
+		<div class="scroller">
+			<!-- this is for emulating position fixed of the nav -->
+			<div class="scroller-inner">
+				<a href="#" id="trigger" class="menu-trigger">Menu<a href="http://www.listertechnologies.com" target="_blank"><img src="webStuff/default/images/logo.png" id="logo"></img></a></a>
+				
+				<div id="feedback" class="alert down">
+					<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+					<p>Your feedback is valuable.</p>
+				</div>
+				
+				<div class="livescores">
+					<span class="livescorestag">VOTE FOR PHOTOS</span>
+					<h3 class="center-text"> <button class="btn" id="instructions">Instructions</button> </h3>
+					
+					<div id="gallery">
+						<div id="thumbs">
+							<ul>
+								<li class="thumb selected">
+									<a name="pic1">
+										<img artifactId="1" src="webStuff/photography/229_1.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="2" src="webStuff/photography/229_2.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="3" src="webStuff/photography/229_3.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="4" src="webStuff/photography/229_4.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="5" src="webStuff/photography/229_5.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="52" src="webStuff/photography/229_6.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="53" src="webStuff/photography/229_7.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="54" src="webStuff/photography/229_8.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="55" src="webStuff/photography/229_9.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="56" src="webStuff/photography/229_10.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="57" src="webStuff/photography/229_11.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="6" src="webStuff/photography/230_1.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="7" src="webStuff/photography/230_2.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="8" src="webStuff/photography/230_3.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="9" src="webStuff/photography/230_4.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="10" src="webStuff/photography/230_5.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="58" src="webStuff/photography/230_6.jpg"></img>
+									</a>
+								</li>
+								<!-- <li class="thumb">
+									<a name="pic1">
+										<img artifactId="59" src="webStuff/photography/230_7.jpg"></img>
+									</a>
+								</li> -->
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="60" src="webStuff/photography/230_8.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="61" src="webStuff/photography/230_9.jpg"></img>
+									</a>
+								</li>
+
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="16" src="webStuff/photography/232_1.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="17" src="webStuff/photography/232_2.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="18" src="webStuff/photography/232_3.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="19" src="webStuff/photography/232_4.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="20" src="webStuff/photography/232_5.jpg"></img>
+									</a>
+								</li>
+
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="26" src="webStuff/photography/234_1.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="27" src="webStuff/photography/234_2.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="28" src="webStuff/photography/234_3.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="29" src="webStuff/photography/234_4.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="30" src="webStuff/photography/234_5.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="36" src="webStuff/photography/234_6.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="37" src="webStuff/photography/234_7.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="38" src="webStuff/photography/234_8.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="39" src="webStuff/photography/234_9.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="40" src="webStuff/photography/234_10.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="41" src="webStuff/photography/234_11.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="42" src="webStuff/photography/234_12.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="43" src="webStuff/photography/234_13.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="44" src="webStuff/photography/234_14.jpg"></img>
+									</a>
+								</li>
+
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="31" src="webStuff/photography/235_1.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="32" src="webStuff/photography/235_2.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="33" src="webStuff/photography/235_3.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="34" src="webStuff/photography/235_4.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="35" src="webStuff/photography/235_5.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="45" src="webStuff/photography/235_6.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="46" src="webStuff/photography/235_7.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="47" src="webStuff/photography/235_8.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="48" src="webStuff/photography/235_9.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="49" src="webStuff/photography/235_10.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="50" src="webStuff/photography/235_11.jpg"></img>
+									</a>
+								</li>
+								<li class="thumb">
+									<a name="pic1">
+										<img artifactId="51" src="webStuff/photography/235_12.jpg"></img>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div id="staging">
+							<input type="button" id="like" class="btn" value="WOW !"></input>
+							<div id="drag_pics">
+								<ul>
+									<li class="thumb">
+										<a name="pic1">
+											1<div class="drag" draggable="true"><img artifactId="" id="1stplace" src="webStuff/default/images/blank.png"></img></div>
+										</a>
+									</li>
+									<li class="thumb">
+										<a name="pic1">
+											2<div class="drag" draggable="true"><img artifactId="" id="2ndplace" src="webStuff/default/images/blank.png"></img></div>
+										</a>
+									</li>
+									<li class="thumb">
+										<a name="pic1">
+											3<div class="drag" draggable="true"><img artifactId="" id="3rdplace" src="webStuff/default/images/blank.png"></img></div>
+										</a>
+									</li>
+									<li class="thumb">
+										<a name="pic1">
+											Not WOW<div class="dustbin" draggable="false"><img artifactId="" id="dustbin" src="webStuff/default/images/dustbin.png"></img></div>
+										</a>
+									</li>
+								</ul>
+							</div>
+							<center>
+								<input type="button" id="done" class="btn btn-success" value="Done"></input>
+							</center>
+						</div>
+						<div id="slideshow-container">
+							<center>
+								<img id="show" artifactId="1" src="webStuff/default/images/Sai Pranav.png" height="600px"></img>
+							</center>
+						</div>
+					</div>
+				</div>
+					
+			</div>
+		<!-- /scroller-inner -->
+		
+		<div id="madeWith">Made with <img src ="webStuff/default/images/heart-icon.png" height = "19px" width = "19px"></img> in Bean Bag Room, Lister Technologies, India.</div>
+	</div>
+	<!-- /scroller -->
+	</div>
+	<!-- /pusher -->
+	</div>
+	<!-- /container -->
+	<script>
+		var dragSrcEl = null;
+
+		function handleDragStart(e) {
+		  // Target (this) element is the source node.
+		  this.style.opacity = '0.4';
+
+		  dragSrcEl = $(this);
+
+		  e.dataTransfer.effectAllowed = 'move';
+		  e.dataTransfer.setData('text/html', this.innerHTML);
+		}
+
+		function handleDragOver(e) {
+		  if (e.preventDefault) {
+		    e.preventDefault(); // Necessary. Allows us to drop.
+		  }
+
+		  e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+
+		  return false;
+		}
+
+		function handleDragEnter(e) {
+		  // this / e.target is the current hover target.
+		  this.classList.add('over');
+		}
+
+		function handleDragLeave(e) {
+		  this.classList.remove('over');  // this / e.target is previous target element.
+		}
+
+		function handleDrop(e) {
+		  // this/e.target is current target element.
+		  if(e.preventDefault) { e.preventDefault(); }
+		  if (e.stopPropagation) {
+		    e.stopPropagation(); // Stops some browsers from redirecting.
+		  }
+
+		  // Don't do anything if dropping the same column we're dragging.
+		  if (dragSrcEl != $(this)) {
+		    // Set the source column's HTML to the HTML of the column we dropped on.
+		    //dragSrcEl.innerHTML = this.innerHTML;
+		    if($(this).hasClass("dustbin")){
+		    }
+		    else{
+		    	var temp = dragSrcEl.children("img").attr("src");
+			    dragSrcEl.children("img").attr("src",$(this).children("img").attr("src"));
+			    $(this).children("img").attr("src",temp);
+			    temp = dragSrcEl.children("img").attr("artifactId");
+			    dragSrcEl.children("img").attr("artifactId",$(this).children("img").attr("artifactId"));
+			    $(this).children("img").attr("artifactId",temp);
+		    }
+		  }
+
+		  return false;
+		}
+
+		function handleDustbinDrop(e) {
+		  // this/e.target is current target element.
+		  if(e.preventDefault) { e.preventDefault(); }
+		  if (e.stopPropagation) {
+		    e.stopPropagation(); // Stops some browsers from redirecting.
+		  }
+
+		  // Don't do anything if dropping the same column we're dragging.
+		  if (dragSrcEl != $(this)) {
+		    // Set the source column's HTML to the HTML of the column we dropped on.
+		    //dragSrcEl.innerHTML = this.innerHTML;
+		    if($(this).hasClass("dustbin")){
+		    	dragSrcEl.children("img").attr("src","webStuff/default/images/blank.png");
+		    	dragSrcEl.children("img").attr("artifactId","");
+		    }
+		    else{
+		    }
+		  }
+
+		  return false;
+		}
+
+		function handleDragEnd(e) {
+		  // this/e.target is the source node.
+		  this.style.opacity = '1';
+		  [].forEach.call(drags, function (drag) {
+		    drag.classList.remove('over');
+		  });
+		}
+
+                var drags = document.getElementsByClassName('drag');
+		[].forEach.call(drags, function(drag) {
+		  drag.addEventListener('dragstart', handleDragStart, false);
+		  drag.addEventListener('dragenter', handleDragEnter, false);
+		  drag.addEventListener('dragover', handleDragOver, false);
+		  drag.addEventListener('dragleave', handleDragLeave, false);
+		  drag.addEventListener('drop', handleDrop, false);
+		  drag.addEventListener('dragend', handleDragEnd, false);
+		});
+
+		var dustbinDrags = document.getElementsByClassName('dustbin');
+		[].forEach.call(dustbinDrags, function(drag) {
+		  drag.addEventListener('dragstart', function(){return false;}, false);
+		  drag.addEventListener('dragenter', function(){return false;}, false);
+		  drag.addEventListener('dragover', handleDragOver, false);
+		  drag.addEventListener('dragleave', function(){return false;}, false);
+		  drag.addEventListener('drop', handleDustbinDrop, false);
+		  drag.addEventListener('dragend', function(){return false;}, false);
+		});
+
+		new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
+	</script>
+</body>
+</html>

@@ -29,12 +29,14 @@ import org.springframework.stereotype.Repository;
 
 import com.heroespersist.sports.exception.SportsException;
 import com.heroespersist.sports.interfaces.utility.UtilityDao;
+import com.heroespersist.sports.model.Artifact;
 import com.heroespersist.sports.model.Game;
 import com.heroespersist.sports.model.Match;
 import com.heroespersist.sports.model.Player;
 import com.heroespersist.sports.model.Registration;
 import com.heroespersist.sports.model.Team;
 import com.heroespersist.sports.model.User;
+import com.heroespersist.sports.model.Vote;
 
 /**
  * @author Sai Pranav
@@ -212,6 +214,22 @@ public class UtilityDaoImpl implements UtilityDao {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Vote getVote(String ipAddress) {
+		Session session = getSession();
+		List<Vote> voteList = session.createCriteria(Vote.class).add(Restrictions.eq("ipAddress", ipAddress)).list();
+		if(voteList.size()==1){
+			return voteList.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	public Artifact getArtifact(int id) {
+		Session session = getSession();
+		return (Artifact) session.get(Artifact.class, id);
 	}
 
 }

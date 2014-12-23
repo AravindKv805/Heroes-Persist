@@ -52,13 +52,15 @@
 		data: JSON.stringify({"page":"index.html"})
 	});
 	
-	setTimeout(function(){vex.dialog.alert("<img src='webStuff/default/images/Heroes Persist with tag.png'><br><br>Heroes Persist is a product specially created for organizing events, broadcasting scores, sharing happiness.See About page for more details.<br><br>To view results of all matches go for Full Scores.<br>Your Feedback is valuable.");},0.25*1000);
+	setTimeout(function(){vex.dialog.alert("<img src='webStuff/default/images/Heroes Persist with tag.png'><br><br>Heroes Persist is a product specially created for organizing events, broadcasting scores, sharing happiness.See <a class='about-link' href='about.html'>About</a> page for more details.<br><br>To view results of all matches go for Full Scores.<br>Your Feedback is valuable.");},0.25*1000);
 	setTimeout(function(){clearAll()},1*1000);
 	setTimeout(function(){teamsAjaxCall()},1*1000);
 	setTimeout(function(){matchAjaxCall()},1*1000);
+	setTimeout(function(){artifactAjaxCall()},1*1000);
 	setInterval(function(){clearAll()},60*1000);
 	setInterval(function(){teamsAjaxCall()},60*1000);
 	setInterval(function(){matchAjaxCall()},60*1000);
+	setInterval(function(){artifactAjaxCall()},60*1000);
 	
 	$(document).ready(function() {
 		setInterval(function(){
@@ -127,12 +129,29 @@
 	
 	function teamsAjaxCall() {
 		$.ajax({
-			url: 'http://'+ HOST_AND_PORT +'/Sports/api/games/teams?gameName=PageTurnerzQuiz&gameCategory=NotApplicable&showCriteria=true',
+			url: 'http://'+ HOST_AND_PORT +'/Sports/api/games/teams?gameName=Photography&gameCategory=NotApplicable&showCriteria=true',
 			type: 'get',
 			dataType: 'json',
 			contentType: 'application/json',
 			success: function(data){
 						populateTeamTable(data);
+					},
+			error: function(xhr){
+						if(xhr.status == 404){
+							vex.dialog.alert("Services not Running");
+						}
+					}
+		});
+	}
+
+	function artifactAjaxCall() {
+		$.ajax({
+			url: 'http://'+ HOST_AND_PORT +'/Sports/api/artifact/best?numberOfElementsNeeded=3',
+			type: 'get',
+			dataType: 'json',
+			contentType: 'application/json',
+			success: function(data){
+						populateArtifactTable(data);
 					},
 			error: function(xhr){
 						if(xhr.status == 404){
@@ -200,7 +219,7 @@
 				newtd.appendChild(document.createTextNode(matches[i].winner));
 				newtr.appendChild(newtd);
 
-				document.getElementsByTagName("tbody")[0].appendChild(newtr);
+				document.getElementsByTagName("tbody")[1].appendChild(newtr);
 
 			} else if (gameOfMatch == "Carrom") {
 
@@ -254,7 +273,7 @@
 				newtd.appendChild(document.createTextNode(matches[i].winner));
 				newtr.appendChild(newtd);
 
-				document.getElementsByTagName("tbody")[2].appendChild(newtr);
+				document.getElementsByTagName("tbody")[3].appendChild(newtr);
 
 			} else if (gameOfMatch == "Chess") {
 
@@ -302,7 +321,7 @@
 				newtd.appendChild(document.createTextNode(matches[i].winner));
 				newtr.appendChild(newtd);
 
-				document.getElementsByTagName("tbody")[3].appendChild(newtr);
+				document.getElementsByTagName("tbody")[4].appendChild(newtr);
 
 			} else if (gameOfMatch == "Cricket") {
 
@@ -350,7 +369,7 @@
 				newtd.appendChild(document.createTextNode(matches[i].winner));
 				newtr.appendChild(newtd);
 
-				document.getElementsByTagName("tbody")[4].appendChild(newtr);
+				document.getElementsByTagName("tbody")[5].appendChild(newtr);
 
 			} else if (gameOfMatch == "ThrowBall") {
 
@@ -398,7 +417,7 @@
 				newtd.appendChild(document.createTextNode(matches[i].winner));
 				newtr.appendChild(newtd);
 
-				document.getElementsByTagName("tbody")[8].appendChild(newtr);
+				document.getElementsByTagName("tbody")[9].appendChild(newtr);
 
 			} else if (gameOfMatch == "VolleyBall") {
 
@@ -446,7 +465,7 @@
 				newtd.appendChild(document.createTextNode(matches[i].winner));
 				newtr.appendChild(newtd);
 
-				document.getElementsByTagName("tbody")[9].appendChild(newtr);
+				document.getElementsByTagName("tbody")[10].appendChild(newtr);
 
 			} else if (gameOfMatch == "BasketBall") {
 
@@ -494,7 +513,7 @@
 				newtd.appendChild(document.createTextNode(matches[i].winner));
 				newtr.appendChild(newtd);
 
-				document.getElementsByTagName("tbody")[1].appendChild(newtr);
+				document.getElementsByTagName("tbody")[2].appendChild(newtr);
 
 			} else if (gameOfMatch == "TableTennis") {
 
@@ -548,7 +567,7 @@
 				newtd.appendChild(document.createTextNode(matches[i].winner));
 				newtr.appendChild(newtd);
 
-				document.getElementsByTagName("tbody")[6].appendChild(newtr);
+				document.getElementsByTagName("tbody")[7].appendChild(newtr);
 
 			} else if (gameOfMatch == "Tennikoit") {
 
@@ -602,7 +621,7 @@
 				newtd.appendChild(document.createTextNode(matches[i].winner));
 				newtr.appendChild(newtd);
 
-				document.getElementsByTagName("tbody")[7].appendChild(newtr);
+				document.getElementsByTagName("tbody")[8].appendChild(newtr);
 
 			}
 		}
@@ -611,15 +630,10 @@
 	function populateTeamTable(response) {
 		var teams = response.teams;
 
-		//for every match record
+		//for every team record
 		for ( var i = 0; i < teams.length; i++) {
 			var newtr = document.createElement("tr");
 	
-			//put round
-			var newtd = document.createElement("td");
-			newtd.appendChild(document.createTextNode(teams[i].round));
-			newtr.appendChild(newtd);
-			
 			//put team name
 			var newtd = document.createElement("td");
 			newtd.appendChild(document.createTextNode(teams[i].teamName));
@@ -630,8 +644,22 @@
 			newtd.appendChild(document.createTextNode(teams[i].score));
 			newtr.appendChild(newtd);
 	
-			document.getElementsByTagName("tbody")[5].appendChild(newtr);
+			document.getElementsByTagName("tbody")[0].appendChild(newtr);
 		}
+	}
+
+	function populateArtifactTable(response) {
+		var artifacts = response;
+
+		var newtr = $("<ul></ul>");
+		
+		//for every team record
+		for ( var i = 0; i < artifacts.length; i++) {
+			//put team name
+			var photo = $('<li><a target="_blank" href="webStuff/photography/'+artifacts[i].elementId+'.jpg"><img class="index_thumb" src="webStuff/photography/'+artifacts[i].elementId+'.jpg"></li>');
+			newtr.append(photo);
+		}
+		$("#photos").html(newtr);
 	}
 	
 </script>
@@ -647,6 +675,8 @@
 				<h2><img src="webStuff/default/images/icon.png" height="80px" width="80px"></img>Menu</h2>
 				<ul>
 					<li><a class="icon" href="index.html">Live Scores<img src="webStuff/default/images/livescores-icon.png" class="my-menu-icon"/></a></li>
+					<li><a class="icon" href="gallery.html">Gallery<img src="webStuff/default/images/gallery-icon.png" class="my-menu-icon"/></a></li>
+					<li><a class="icon" href="vote-for-photos.html">Vote For Photos<img src="webStuff/default/images/vote-icon.png" class="my-menu-icon"/></a></li>
 					<li class="icon icon-arrow-left"><a class="icon"href="#">Full Scores<img src="webStuff/default/images/fullscores-icon.png" class="my-menu-icon"/></a>
 						<div class="mp-level">
 							<h2 class="icon icon-display">Full Scores</h2>
@@ -723,6 +753,33 @@
 				<!-- Live Scores Starts-->
 				<div class="livescores">
 					<span class="livescorestag">LIVE SCORES</span>
+
+					<div class="game">
+						<div class="topic">
+							<p>Best Photo</p>
+						</div>
+						<div id="photos" class="span4">
+							
+						</div>
+					</div>
+
+					<div class="game">
+						<div class="topic">
+							<p>Best Photographer</p>
+						</div>
+						<div class="span4">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Score</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
 
 					<div class="game">
 						<div class="topic">

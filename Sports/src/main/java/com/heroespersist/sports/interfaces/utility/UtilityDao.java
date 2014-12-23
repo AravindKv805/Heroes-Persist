@@ -23,12 +23,14 @@ import java.util.List;
 
 import org.hibernate.classic.Session;
 
+import com.heroespersist.sports.model.Artifact;
 import com.heroespersist.sports.model.Game;
 import com.heroespersist.sports.model.Match;
 import com.heroespersist.sports.model.Player;
 import com.heroespersist.sports.model.Registration;
 import com.heroespersist.sports.model.Team;
 import com.heroespersist.sports.model.User;
+import com.heroespersist.sports.model.Vote;
 
 /**
  * @author Sai Pranav
@@ -53,6 +55,8 @@ public interface UtilityDao {
 	public User getUser(int id);
 	public List<User> getUsers();
 	public Registration getRegistration(String ipAddress, Game game);
+	public Vote getVote(String ipAddress);
+	public Artifact getArtifact(int id);
 	
 	public List<Integer> getGameIds();
 

@@ -1,0 +1,8 @@
+Heroes Persist has Sports as a maven project which handles all backend and api level jobs for the application.
+Sports is build with Java, Spring, Hibernate frameworks.
+We have a DB schema design primary consisting of Game(Event), Player, Team, Match
+A Game(Event) = game name + game category. It also has other data like min_no_players and max_no_players for a game. Primary Id - Game Id
+A Player has a id, name, email address. It also has other data like you can add a game associated with the player (stating that the player is well versed in that game). Primary Id - Employee Id.
+A Team has many players and plays one game. Primary id - Team Id.
+A Match has 2 teams and plays a game. Primary Id - Match Id.
+You have lots of apis for adding, modifying, deleting the entities. Search for the webservices java files to get all apis.

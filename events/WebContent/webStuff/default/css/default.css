@@ -63,7 +63,6 @@ a {
 	display: block;
 	background: #D1D0CE;
 	color: #736F6E;
-	width: 150px;
 	height: 50px;
 	padding-left: 10px;
 	border-top-style: solid;
@@ -281,6 +280,106 @@ div.mp-level {
 .select2-container .select2-choice{
 	width: 200px;
 }
+
+.about-link{
+	color: #444;
+	font-size: 1.25em;
+}
+
+.center-text{
+	text-align: center;
+}
+
+#thumbs{
+	background-color: #151515;
+	height: 79% !important;
+	width: 15%;
+	position: absolute;
+	left: 0%;
+	overflow-y: scroll;
+}
+
+#thumbs>ul{
+	list-style: none;
+	display: inline-block;
+}
+
+.thumb{
+	margin: 5px;
+	width: 50px;
+	height: 50px;
+	display: inline-block;
+}
+
+.thumb:hover, .selected{
+	opacity: 0.6;
+}
+
+.thumb>a>img{
+	height:50px;
+	width:50px;
+}
+
+.thumb>a>div>img {
+	height: 50px;
+	width: 50px;
+}
+
+#show{
+	max-width: 100%;
+	border: 5px solid #151515;
+}
+
+#like{
+	margin-left: 30%;
+}
+
+#staging{	
+	background-color: #151515;
+	opacity: 0.8;
+	position: absolute;
+	height: 450px;
+	width: 150px;
+	left: 87%;
+	transition: all .25s ease-out;
+	border: 1px solid #FFFFFF;
+	border-radius: 5px;
+}
+
+#staging img{	
+	margin-bottom: 40px;
+}
+
+#staging:hover{	
+	opacity: 1;
+}
+
+.ei-slider-thumbs{
+	list-style: none;
+}
+
+#photos>ul{
+	list-style: none;
+	width: 100%;
+	display: inline-block;
+}
+
+#photos>ul>li{
+	display: inline-block;
+	margin: 0% 9.5%;
+}
+
+#photos .index_thumb{
+	margin: 5px;
+	width: 100px;
+	height: 100px;
+}
+
+#photos .index_thumb:hover{
+	opacity: 0.6;
+}
+
+
 
 /* BOOTSTRAP START */
 table {

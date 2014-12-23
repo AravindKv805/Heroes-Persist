@@ -840,7 +840,7 @@ loginCheck();
 				url: "http://" + HOST_AND_PORT + "/Sports/api/teams",
 				dataType: 'json',
 				contentType: 'application/json',
-				data: JSON.stringify({"name":document.getElementById("team-name").value,"rating":document.getElementById("team-rating").value,"score":0,"round":0,"show":false,"players":players,"game":{"gameName":document.getElementById("team-game").value,"gameCategory":document.getElementById("team-category").value},"whoAmI":"organizer"}),
+				data: JSON.stringify({"name":document.getElementById("team-name").value,"rating":document.getElementById("team-rating").value,"score":"0","round":0,"show":false,"players":players,"game":{"gameName":document.getElementById("team-game").value,"gameCategory":document.getElementById("team-category").value},"whoAmI":"organizer"}),
 				success: function(){vex.dialog.alert("Team successfully added");},
 				error: function(xhr){
 					if(xhr.status==404){
@@ -1103,6 +1103,7 @@ loginCheck();
 							<option>Chess</option>
 							<option>Cricket</option>
 							<option>PageTurnerzQuiz</option>
+							<option>Photography</option>
 							<option>TableTennis</option>
 							<option>Tennikoit</option>
 							<option>ThrowBall</option>
@@ -1156,6 +1157,7 @@ loginCheck();
 							<option>Chess</option>
 							<option>Cricket</option>
 							<option>PageTurnerzQuiz</option>
+							<option>Photography</option>
 							<option>TableTennis</option>
 							<option>Tennikoit</option>
 							<option>ThrowBall</option>
